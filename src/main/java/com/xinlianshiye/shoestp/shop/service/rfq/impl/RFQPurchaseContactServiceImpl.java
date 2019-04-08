@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.google.inject.Inject;
 import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
 import com.xinlianshiye.shoestp.shop.service.rfq.RFQPurchaseContactService;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQConsultRelationView;
@@ -14,6 +15,7 @@ import com.xinlianshiye.shoestp.shop.view.rfq.RFQPurchaseContactView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQQuotationView;
 import com.xinlianshiye.shoestp.shop.view.rfq.RFQSupplierView;
 
+import irille.Dao.SVS.SVSInfoService;
 import irille.Entity.RFQ.RFQConsult;
 import irille.Entity.RFQ.RFQConsultRelation;
 import irille.Entity.RFQ.RFQPurchaseContact;
@@ -25,11 +27,14 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.tb.FldLanguage.Language;
 import irille.pub.util.GetValue;
+import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 
 public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService {
+
+  @Inject private SVSInfoService svsInfoService;
 
   @Override
   public Page<RFQPurchaseContactView> page(
@@ -73,6 +78,7 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                       GetValue.get(map, UsrSupplier.T.CONTACTS, String.class, null));
                   supplier.setName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, ""));
                   supplier.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, ""));
+                  supplier.setSvsInfo(svsInfoService.getSvsRatingAndRos(supplier.getPkey()));
                   contact.setSupplier(supplier);
                   contact.setRelation(
                       listConsultRelation(
@@ -103,9 +109,11 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
     query.SELECT(RFQConsult.T.PKEY, "consultPkey");
     query.SELECT(RFQConsult.T.TITLE);
     query.SELECT(RFQConsult.T.IMAGE);
+    query.SELECT(PdtProduct.T.PICTURE);
     query.SELECT(RFQConsult.T.TYPE);
     query.FROM(RFQConsultRelation.class);
     query.LEFT_JOIN(RFQConsult.class, RFQConsultRelation.T.CONSULT, RFQConsult.T.PKEY);
+    query.LEFT_JOIN(PdtProduct.class, RFQConsult.T.PRODUCT, PdtProduct.T.PKEY);
     query.WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplierPkey);
     query.WHERE(RFQConsultRelation.T.PURCHASE_ID, "=?", purchasePkey);
     query.WHERE(RFQConsultRelation.T.IS_DELETED_PURCHASE, "=?", false);
@@ -129,6 +137,12 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                   consult.setPkey(GetValue.get(map, "consultPkey", Integer.class, null));
                   consult.setTitle(GetValue.get(map, RFQConsult.T.TITLE, String.class, ""));
                   consult.setType(GetValue.get(map, RFQConsult.T.TYPE, Byte.class, null));
+                  String productImages =
+                      GetValue.get(map, PdtProduct.T.PICTURE, String.class, null);
+                  if (productImages != null) {
+                    String[] productImage = productImages.split(",");
+                    consult.setProductImage(productImage.length > 0 ? productImage[0] : null);
+                  }
                   consult.setImages(
                       Arrays.asList(
                           GetValue.get(map, RFQConsult.T.IMAGE, String.class, "").split(",")));
@@ -274,7 +288,8 @@ public class RFQPurchaseContactServiceImpl implements RFQPurchaseContactService 
                   BeanQuery<RFQPurchaseContact> query = Query.SELECT(RFQPurchaseContact.class);
                   view.setCount(
                       map.getPkey() == null
-                          ? query.WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null")
+                          ? query
+                              .WHERE(RFQPurchaseContact.T.CONTACT_GROUP, "is null")
                               .WHERE(RFQPurchaseContact.T.PURCHASE, "=?", purchase.getPkey())
                               .queryCount()
                           : query

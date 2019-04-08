@@ -579,7 +579,7 @@
             handlePictureCardPreview(file, p2, p3) {
                 if (file.ret != 1) {
                     p3.splice(p3.length - 1, 1);
-                    this.$message.error(file.msg || "Upload error,please try again later");
+                    // this.$message.error(file.msg || "Upload error,please try again later");
                     return;
                 }
                 // 添加图片后，在前面显示 img
@@ -681,13 +681,15 @@
                                                 pay_type: 1, //支付方式
                                             }
                                             // 有传回跳地址时直接回跳，否则跳首页
-                                            let url = window.location.href;
-                                            if(url.indexOf("backUrl=")!=-1){
-                                                let backUrl = url.substr(url.indexOf("backUrl")+8);
-                                                window.location.href = backUrl;
-                                            }else{
-                                                window.location.href = "/";
-                                            }
+                                            // let url = window.location.href;
+                                            // if(url.indexOf("backUrl=")!=-1){
+                                            //     let backUrl = url.substr(url.indexOf("backUrl")+8);
+                                            //     window.location.href = backUrl;
+                                            // }else{
+                                            //     window.location.href = "/";
+                                            // }
+                                            // 跳转至消息中心 - 刚发布的在最上面，所以跳过去即直接显示该记录
+                                            window.location.href = "/home/usr_UsrMessages_center?showFirstInquiry=true";
 
                                         }, 2000)
                                         // 未登录时

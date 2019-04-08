@@ -202,6 +202,7 @@ public class SupplierView implements BaseView {
   @Getter @Setter private String numberOfForeignTradeTeams; // 外贸团队人数
   @Getter @Setter private String yearsOfForeignTradeExperience; // 外贸经验
   @Getter @Setter private Integer statusAuth; // SVS认证状态;未认证:0,认证成功:1
+  @Getter @Setter private Byte grade; // SVS等级,0:暂无等级,1:银牌,2:金牌,3:钻石
 
   public List<UsrSupIm> getImList() {
     return imList;
@@ -1227,6 +1228,47 @@ public class SupplierView implements BaseView {
         + productList
         + ", imList="
         + imList
+        + ", targetedMarkets='"
+        + targetedMarkets
+        + '\''
+        + ", annualOutput='"
+        + annualOutput
+        + '\''
+        + ", contactsName='"
+        + contactsName
+        + '\''
+        + ", rddepartment='"
+        + rddepartment
+        + '\''
+        + ", annualNumberOfNewShoes='"
+        + annualNumberOfNewShoes
+        + '\''
+        + ", numberOfProductionLines='"
+        + numberOfProductionLines
+        + '\''
+        + ", numberOfSewingMachines='"
+        + numberOfSewingMachines
+        + '\''
+        + ", annualExportValue='"
+        + annualExportValue
+        + '\''
+        + ", numberOfEmployees='"
+        + numberOfEmployees
+        + '\''
+        + ", exportLicense='"
+        + exportLicense
+        + '\''
+        + ", testEquipmentAndFacilities='"
+        + testEquipmentAndFacilities
+        + '\''
+        + ", numberOfForeignTradeTeams='"
+        + numberOfForeignTradeTeams
+        + '\''
+        + ", yearsOfForeignTradeExperience='"
+        + yearsOfForeignTradeExperience
+        + '\''
+        + ", statusAuth="
+        + statusAuth
         + '}';
   }
 }

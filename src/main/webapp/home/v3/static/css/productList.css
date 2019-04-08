@@ -305,9 +305,12 @@ a, a:link, a:visited, a:hover, a:active {
 	display:inline-block;
 	width:11px;
 }
-#productList .rightList .common .common-box .common-boxslide img{
+#productList .rightList .common .common-box .common-boxslide .goods-img{
 	display:inline-block;
-	width:100%;
+	width:195px;
+	height:195px;
+	-o-object-fit: cover;
+	object-fit: cover;
 	/*vertical-align: middle;*/
 }
 #productList .rightList .common .common-box .common-boxslide .el-carousel__arrow--left,
@@ -392,6 +395,11 @@ a, a:link, a:visited, a:hover, a:active {
 	padding-right:36px;
 	line-height:24px;
 }
+#productList .rightList .common .common-box .common-boxspan .common-a:hover{
+		text-decoration: none;
+		cursor: text;
+		color: inherit;
+}
 #productList .rightList .common .common-box .common-boxspan .h1{
 	overflow: hidden;
 	white-space: nowrap;
@@ -411,7 +419,7 @@ a, a:link, a:visited, a:hover, a:active {
 }
 #productList .rightList .common .common-box .common-boxspan img{
 	display:inline-block;
-	width:14px;
+	/*width:14px;*/
 }
 #productList .rightList .common .common-box .common-boxspan img.icon01{
 	width:17px;
@@ -573,4 +581,76 @@ a, a:link, a:visited, a:hover, a:active {
   animation-name: slideInRight;
 }
 
+/* 新增国家 筛选 */
+/*搜索region输入框*/
+#productList .region-area-input{
+  width: 400px;
+  margin-bottom: 10px;
+}
+#productList .region-area-input .el-input__inner{
+  border-color: #d9e1ec;
+  border-radius: 0;
+}
+#productList .region-area-input .el-input__inner .el-input__icon{
+  font-size: 20px;
+}
+/*自定义checkbox样式*/
+#productList .my-ele-checkbox-group{
+  /*max-height: 120px;*/
+  max-height: 140px;
+  padding: 10px 0;
+  overflow: auto;
+}
 
+#productList .my-ele-checkbox-group .el-checkbox{
+  min-width: 180px;
+  margin-bottom: 4px;
+  /*padding-right: 15px;*/
+  box-sizing: border-box;
+}
+/*长度计算*/
+#productList .my-ele-checkbox-group .el-checkbox.double-length{
+  min-width: 360px;
+}
+#productList .my-ele-checkbox-group.checkbox-width-135 .el-checkbox{
+  min-width: 135px;
+}
+#productList .my-ele-checkbox-group .el-checkbox + .el-checkbox{
+	margin-left: 0;
+}
+#productList .my-ele-checkbox-group .el-checkbox__input.is-checked + .el-checkbox__label ,#productList .my-ele-checkbox-group1 .el-checkbox__input.is-checked + .el-checkbox__label{
+	color: #606266;
+}
+#productList .my-ele-checkbox-group .el-checkbox__input.is-checked .el-checkbox__inner,#productList .my-ele-checkbox-group1 .el-checkbox__input.is-checked .el-checkbox__inner{
+	border-color: #dcdfe6;
+	background-color: #fff;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner::after,#productList .my-ele-checkbox-group1 .el-checkbox__inner::after{
+	border: 1px solid #3c5bae;
+	border-left: 0;
+	border-top: 0;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner:hover, #productList .my-ele-checkbox-group1 .el-checkbox__inner:hover{
+	border: 1px solid #dcdfe6;
+}
+
+#productList .my-ele-checkbox-group .el-checkbox__inner.is-focus,#productList .my-ele-checkbox-group1 .el-checkbox__inner.is-focus,
+#productList .my-ele-checkbox-group .el-checkbox__inner,#productList .my-ele-checkbox-group1 .el-checkbox__inner
+#productList .my-ele-checkbox-group .el-checkbox__input.is-focus .el-checkbox__inner,#productList .my-ele-checkbox-group1 .el-checkbox__input.is-focus .el-checkbox__inner{
+	border-color: #dcdfe6;
+}
+#productList .price-sort{
+	padding: 0 24px;
+	height: 35px;
+	line-height: 35px;
+	white-space: nowrap;
+	font-size: 14px;
+}
+#productList .price-sort:hover{
+	 background-color: #dee2ec;
+}
+#productList .price-sort-active{
+	background-color: #dee2ec;
+}

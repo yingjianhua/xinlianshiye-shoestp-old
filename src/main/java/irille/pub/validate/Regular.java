@@ -4,7 +4,7 @@ public class Regular {
 
   public static final String REGULAR_ENG = "[A-Za-z\\s]{0,}"; // 英文字符校验
   public static final String REGULAR_TEL = "^[+\\d]?\\d{1,3}-\\d{1,16}$"; // 国外手机校验
-  public static final String REGULAR_EMAIL = "^[\\w]{1,32}@\\w{1,15}.\\w{2,5}$"; // 邮箱校验
+  public static final String REGULAR_EMAIL = "^[\\w.]{1,32}@\\w{1,15}.\\w{2,5}$"; // 邮箱校验
   public static final String REGULAR_PWD = "^[^\\s]{6,20}$"; // 密码校验(6-20位字母加数字)
   public static final String REGULAR_ARRRESS =
       "^[^!@~`%^&*()+|\\\\}{\":?/].{1,180}$"; // 地址校验 限制!@%^&*()`~ 等符号输入 其他任意,
@@ -32,4 +32,5 @@ public class Regular {
       "^(^\\d{15}$)|(^\\d{18}$)|(^\\d{17}(\\d|X|x)$)$"; // 身份证号码校验 格式 330825199903236569
 
   public static String REGULAR_PKEY_ARRS = "^(\\d,?)+(?<!,)$"; // 校验主键组成的字符串 如1,2,3,4,5
+  public static String REGULAR_ZH_CN = "^[\\u0391-\\uFFE5]+$"; // 中文校验
 }

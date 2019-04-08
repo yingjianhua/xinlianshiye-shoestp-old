@@ -39,10 +39,11 @@ import irille.view.Page;
 public class PdtColorDAO {
   public static final Log LOG = new Log(PdtColorDAO.class);
 
-  /* public static void main(String[] args) {
-      PdtColor.TB.getCode();
-      new Table(Query.SELECT(T.PKEY, T.NAME).FROM(PdtColor.class).queryMaps()).print();
-  }*/
+  /*
+   * public static void main(String[] args) { PdtColor.TB.getCode(); new
+   * Table(Query.SELECT(T.PKEY, T.NAME).FROM(PdtColor.class).queryMaps()).print();
+   * }
+   */
 
   /**
    * 查询产品颜色列表 -平台查询
@@ -67,6 +68,9 @@ public class PdtColorDAO {
             if (name != null) {
               WHERE(PdtColor.T.NAME, "like ?", "%" + name + "%");
             }
+            WHERE(PdtColor.T.TYPE, " =? ", Pdt.OVer.NEW_1.getLine().getKey());
+            WHERE(PdtColor.T.DEFAULT_COLOR, " =? ", OYn.YES.getLine().getKey());
+            WHERE(PdtColor.T.DELETED, " =? ", OYn.NO.getLine().getKey());
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -78,7 +82,7 @@ public class PdtColorDAO {
                       {
                         setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-                        //            setCreatedby(BeanBase.load(SysUser.class,
+                        // setCreatedby(BeanBase.load(SysUser.class,
                         // Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
                         setPicture((String) bean.get(T.PICTURE.getFld().getCodeSqlField()));
                         Integer c =
@@ -129,7 +133,7 @@ public class PdtColorDAO {
                       {
                         setId((Integer) bean.get(T.PKEY.getFld().getCodeSqlField()));
                         setName((String) bean.get(T.NAME.getFld().getCodeSqlField()));
-                        //            setCreatedby(BeanBase.load(SysUser.class,
+                        // setCreatedby(BeanBase.load(SysUser.class,
                         // Integer.valueOf(String.valueOf(bean.get(T.CREATE_BY.getFld().getCodeSqlField())))).getLoginName());
                         Integer c =
                             (Integer) bean.get(PdtSize.T.CREATE_BY.getFld().getCodeSqlField());
@@ -288,7 +292,7 @@ public class PdtColorDAO {
     public void before() {
       super.before();
       getB().setDeleted(OYn.NO.getLine().getKey());
-      //            getB().setCreateBy(getUser());
+      // getB().setCreateBy(getUser());
       getB().setCreateTime(Env.getTranBeginTime());
       translateUtil.autoTranslate(getB());
     }
@@ -464,11 +468,13 @@ public class PdtColorDAO {
         .collect(Collectors.toList());
   }
 
-  public static void delColor(Integer pkey) {
+  public static void delColor(Integer pkey, Integer supId) {
     PdtColor color = Query.SELECT(PdtColor.class, pkey);
     if (color != null && color.getDefaultColor() != OYn.YES.getLine().getKey()) {
-      color.setDeleted(OYn.YES.getLine().getKey());
-      color.upd();
+      if (color.getSupplier() != null && color.getSupplier().equals(supId)) {
+        color.setDeleted(OYn.YES.getLine().getKey());
+        color.upd();
+      }
     }
   }
 

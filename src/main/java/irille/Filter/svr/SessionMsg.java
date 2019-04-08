@@ -6,9 +6,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-import org.apache.struts2.ServletActionContext;
-
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.xinlianshiye.shoestp.common.dao.usr.UsrMainDao;
 import com.xinlianshiye.shoestp.common.dao.usr.impl.UsrMainDaoImpl;
@@ -16,6 +16,7 @@ import com.xinlianshiye.shoestp.seller.service.usr.IUsrSupplierSellerDao;
 import com.xinlianshiye.shoestp.seller.service.usr.imp.UsrSupplierSellerDaoImp;
 
 import irille.pub.tb.FldLanguage.Language;
+import irille.pub.util.AppConfig;
 import irille.shop.plt.PltConfig;
 import irille.shop.plt.PltConfig.Variable;
 import irille.shop.plt.PltErate;
@@ -27,6 +28,7 @@ import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
 
 /**
  * 存放在session中,用于统计记录该会话的用户消息
@@ -70,17 +72,20 @@ public class SessionMsg {
   public static void update(SessionMsg sessionmsg, ActionInvocation actionInvocation) {
     HttpServletRequest request = ServletActionContext.getRequest();
     Map<String, Object> session = actionInvocation.getInvocationContext().getSession();
-
+    HttpServletResponse response =
+        (HttpServletResponse) ActionContext.getContext().get(ServletActionContext.HTTP_RESPONSE);
     // 设置是否为移动设备
     String agent = request.getHeader("User-Agent").toLowerCase();
-    Boolean isMobile = false;
-    for (String device : mobile_device_array) {
-      if (agent.indexOf(device) > 0) {
-        isMobile = true;
-        break;
+    if (request.getRequestURI() != null && request.getRequestURI().indexOf("/home/") == -1) {
+      for (String device : mobile_device_array) {
+        if (agent.indexOf(device) > 0) {
+          response.setStatus(301);
+          response.setHeader("Location", AppConfig.domain + "m");
+          response.setHeader("Connection", "close");
+          return;
+        }
       }
     }
-    sessionmsg.setIsMobile(isMobile);
 
     Object localObj = session.get(WW_TRANS_I18N_LOCALE);
     if (localObj == null) {
@@ -237,10 +242,12 @@ public class SessionMsg {
     this.currency = currency;
   }
 
+  //  TODO Remove Method 2019/4/10
   public Boolean getIsMobile() {
     return isMobile;
   }
 
+  //  TODO Remove Method 2019/4/10
   public void setIsMobile(Boolean isMobile) {
     this.isMobile = isMobile;
   }

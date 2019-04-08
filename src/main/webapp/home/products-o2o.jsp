@@ -50,6 +50,7 @@
     <!--分级导航-->
     <div class="topNav">
         <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
+        <div class="h1"><a :class="{'now':(!breadcrumbnav || breadcrumbnav.length<=0)}" href="/home/pdt_PdtProduct_o2oList"> All product</a><i v-if="breadcrumbnav && breadcrumbnav.length>0" class="el-icon-arrow-right"></i></div>
         <blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
             <div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
                 <a @click="categorySearch" :data-cated="item.pkey" href="javascript:;"
@@ -57,7 +58,6 @@
                 <i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
             </div>
         </blcok>
-        <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
     <!--分级导航 end-->
 
@@ -78,7 +78,8 @@
             <div class="h2" v-for="(item2,indextwo) in item.children" for-key="indextwo">
                 <p :class="[item2.value==cated?'active':'']"><span @click="categorySearch" :data-cated="item2.value">{{item2.label}}</span><img
                         class="pl-icon2" :class="[item2.xiala==2?'':'pl-icon22']"
-                        src="/home/v3/static/images/icon_down.png" alt="" @click="xiala" :data-index="index"
+                           v-if="item2&&item2.children"
+                        src="/home/v3/static/images/icon_up.png" alt="" @click="xiala" :data-index="index"
                         :data-indextwo="indextwo"/></p>
                 <el-collapse-transition>
                     <ul v-show="item2.xiala==2">
@@ -99,33 +100,50 @@
     <!--页面右部列表-->
     <div class="rightList fr">
         <div class="top">
-            <div class="top-box">
-                <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
-                <div class="i1"></div>
-                <ul>
-                    <li data-selelv="3" @click="seleLevel">
-                            <div class="s" :class="[selelv==3?'sele':'']"></div>
-                            <!-- <img src="/home/v3/static/images/icion_svs_1d.png" alt=""> -->
-                            <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">
-                            <!-- Level 3 -->
-                            Diamond
-                        </li>
-                        <li data-selelv="2" @click="seleLevel">
-                            <div class="s" :class="[selelv==2?'sele':'']"></div>
-                            <!-- <img src="/home/v3/static/images/icion_svs_2d.png" alt=""> -->
-                            <img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">
-                            <!-- Level 2 -->
-                            Gold
-                        </li>
-                        <li data-selelv="1" @click="seleLevel">
-                            <div class="s" :class="[selelv==1?'sele':'']"></div>
-                            <!-- <img src="/home/v3/static/images/icion_svs_3d.png" alt=""> -->
-                            <img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">
-                            <!-- Level 1 -->
-                            Silver
-                        </li>
-                </ul>
-            </div>
+                <div class="top-box">
+                        <p>Export Market<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                        <div class="i1"></div>
+                        <ul style="width:990px;height:auto;min-height: 215px;">
+                                <el-input class="region-area-input" size="small"
+                                          placeholder="Type to find a country or region"
+                                          prefix-icon="el-icon-search"
+                                          v-model.lazy.trim="filterAreaKeyword">
+                                </el-input>
+                                <el-checkbox-group class="my-ele-checkbox-group"
+                                                   style="padding-bottom: 0;max-height: 400px;"
+                                                   v-model="selectedMarketCountryList">
+                                        <el-checkbox :class="{'double-length': util_function_obj.getByteLen(item.name)>=12}"
+                                                v-for="item,index in countryList"
+                                                v-show="(!filterAreaKeyword) || (filterAreaKeyword && item.name.toLowerCase().indexOf(filterAreaKeyword.toLowerCase())!=-1 )"
+                                                :key="item.id"
+                                                :label="item.id"
+                                                @change="changeCountry"
+                                                >
+                                            {{item.name}}
+                                        </el-checkbox>
+                                </el-checkbox-group>
+                        </ul>
+                    </div>
+                    <div class="top-box">
+                        <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                        <div class="i1"></div>
+                        <ul style="height:auto;">
+                            <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
+                                <el-checkbox label="3" name="3" @change="changeSVSLevel"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
+                                <el-checkbox label="2" name="2" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
+                                <el-checkbox label="1" name="1" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
+                            </el-checkbox-group>
+                        </ul>
+                    </div>
+                    <div class="top-box">
+                        <p style="min-width: 120px;text-align: center;white-space: nowrap;">
+                        {{(sort || sort===0)? priceSortList[sort].name: "Price"}}
+                        <img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                        <div class="i1"></div>
+                        <ul style="padding:10px 0;width:168px;height:auto;text-align: center;">
+                            <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
+                        </ul>
+                    </div>
 
             <%-- <div class="top-box">
                 <p>Export Countries<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt="" /></p><div class="i1"></div>
@@ -146,14 +164,20 @@
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model.trim="lessthan"
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim="lessthan"
                        placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="min" placeholder="min."
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input class="w63" type="text" @blur="min222" @keyup.enter="min222" v-model.trim.number="max" placeholder="max."
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim.number="max" placeholder="max."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -175,7 +199,7 @@
                             <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
-                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
+                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl goods-img"
                                                                                      :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
@@ -218,10 +242,6 @@
                                         {{item.closed?item.closed:'No data'}}
                                     </div>
                                 </div>
-                                <!-- <a class="product-inquiry-btn" target="_blank"
-                                   :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId"
-                                   :data-id="item.supId">Product Inquiry</a> -->
-                                   
                                 </div>
                             </a>
                             <div class="product-inquiry-btn" @click.stop="ToProductInquiry(item.pdtId)">Product Inquiry</div>
@@ -232,35 +252,44 @@
                     <div>
                         <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
                         Certificate
-                        <div class="i"></div>
-                        <img class="mr6" src="/home/v3/static/images/ico/icon_svs.png" alt="SVS"/>
-                        <!--<img class="mr6" src="./images/icon_svs_2.png" alt="SVS" />-->
-                        <!--<img class="mr6" src="./images/icon_svs_3.png" alt="SVS" />-->
-                        SVS
-                        <div class="i"></div>
-
+                        <div class="i" v-if="item.svsInfo && item.svsInfo.status == 1"></div>
+                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0 && item.svsInfo.status == 1">
+                            <img v-if="item.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS"/>
+                            <img v-if="item.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS"/>
+                            <img v-if="item.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS"/>
+                            SVS
+                        </template>
                     </div>
-
                     <div>
                         <div class="ww42">R&D：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.researchBase + 12) > 20 ? 20 : (item.svsInfo.researchBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 + 3: item.svsInfo.researchBaseStar + 3" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                            </a>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.factoryBase + 12) > 20 ? 20 : (item.svsInfo.factoryBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 + 3: item.svsInfo.factoryBaseStar + 3" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                            </a>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.capacityBase + 12) > 20 ? 20 : (item.svsInfo.capacityBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 + 3: item.svsInfo.capacityBaseStar + 3" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                            </a>
                     </div>
                     <div>
                         {{item.originCountry}} ( {{item.originProvince}} )
                     </div>
-
-                    <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
-                    <!-- <a class="btn" target="_blank"
-                       :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id="item.pdtId">Contact
-                        Supplier</a> -->
                         <a class="btn" @click="ToContactSupplier(item.supId)">
                                 Contact Supplier
                             </a>
@@ -344,23 +373,62 @@
             selelv: "",
             selecount: "",
             selestore: "",
-            pName: '',
-            lessthan: '',
-            min: '',
-            max: '',
+            cated: '', // 分类
             lose: '',
             currentPage: 1,
             allpage: '',
             noData: false,
             productLists: [],
             breadcrumbnav: [],
-            page: 0,
-            limit: 8,
+            page: 0,   // 第几个商品开始
+            limit: 8,   // 每页请求数量
+            curr: 1,    // 当前页数
             classLists: [],
             bigPicBox: false,
             bigPicBoxpic: '',
+            countryList:[], // 国家列表
+            pName:'', // 搜索值
+            lessthan:'', // 最小起订量
+            sort:null, // 参数格式为 : [{name:"curPrice",sort:1,rule:1}] name为排序的字段  rule 1 为倒序,0为正序
+            grade:[], // SVS等级 0-无等级商家 1-银 2 -金 3-钻石
+            min:'', // 最小价格
+            max:'', //最大价格
+            filterAreaKeyword:'', // 过滤 搜索国家
+            selectedMarketCountryList:[], // 国家主键
+            priceSortList:[
+                {name:"From low to high",rule:0,},
+                {name:"From high to low",rule:1},
+            ],
+            pricerRuleActive:null,
         },
         methods: {
+            changeCountry(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
+            changeSVSLevel(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
+            priceBtn(rule){  // 价格排序 选择按钮
+                if(this.pricerRuleActive == rule){
+                    return;
+                }else{
+                    this.sort =  rule
+                    this.page = 0
+                    this.curr = 1
+                    this.productList();
+                }
+                this.pricerRuleActive = rule
+            },
+            getCountry(){  // 获取 国家列表
+                let self = this;
+                axios.get('/home/plt_PltCountry_list').then(function (res) {
+                    self.countryList = res.data.result
+                })
+            },
              // 跳转供应商表单
              ToContactSupplier(supplierPkey){
                 let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
@@ -401,26 +469,53 @@
             },
             // 获取产品列表
             productList(e) {
-                if (this.pName === null) {
-                    this.pName = ''
-                }
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
-                    params: {
-                        start: this.page,
-                        limit: this.limit,
-                        cate: this.cated,
-                        min: this.min,
-                        max: this.max,
-                        mOrder: this.lessthan,
-                        pName: unescape(decodeURIComponent(this.pName)),
-                        level: this.selelv,
-                        export: this.selecount,
-                        o2oAddress: this.selestore,
-                        orderfld: getParams("orderfld", "NONE"),
-                        lose: this.lose,
-                        IsO2o: 1,
+                // if (this.pName === null) {
+                //     this.pName = ''
+                // }
+                // axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
+                //     params: {
+                //         start: this.page,
+                //         limit: this.limit,
+                //         cate: this.cated,
+                //         min: this.min,
+                //         max: this.max,
+                //         mOrder: this.lessthan,
+                //         pName: unescape(decodeURIComponent(this.pName)),
+                //         level: this.selelv,
+                //         export: this.selecount,
+                //         o2oAddress: this.selestore,
+                //         orderfld: getParams("orderfld", "NONE"),
+                //         lose: this.lose,
+                //         IsO2o: 1,
+                //     }
+                // })
+                var params = {
+                        start:this.page,
+                        limit:this.limit,
+                        // "search.supplier":8,
+                        "search.export": this.selectedMarketCountryList.toString(),
+                        "search.minOq": this.lessthan,
+                        "search.minCurPrice": this.min,
+                        "search.maxCurPrice": this.max,
+                        "search.keywords": this.pName,
+                        "search.category": this.cated,
+                        "newSort[0].name":"curPrice",
+                        "newSort[0].rule":this.sort,
+                        "search.grade": this.grade.toString(),
+                        "search.isO2o": 1,
+                    };
+                    var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
+                    var numbers = 0
+                    for(var i in params){
+                        if(i != Object.keys(params).length - 1 && params[i] != null){
+                            url += "&"
+                        }
+                        if(params[i] != null){
+                            url += i+"="+params[i]
+                        }
+                        numbers++
                     }
-                })
+                axios.get(encodeURI(url))
                     .then((res) => {
                         this.productLists = res.data.result.items
                         this.allpage = res.data.result.totalCount
@@ -563,6 +658,9 @@
                     });
                     return
                 } else {
+                    this.limit = 8
+                    this.page = 0
+                    this.curr = 1
                     this.productList();
                 }
             },
@@ -608,13 +706,13 @@
         },
         mounted() {
             this.pName = this.GetQueryString("Keyword")
-            this.cated = this.GetQueryString("cated")
+            this.cated = getParams('cated','')
             // if(this.GetQueryString("cated").length>0){
             // 	this.lose=1
             // }
             this.classList();
             this.productList();
-
+            this.getCountry();
 
         },
         watch: {

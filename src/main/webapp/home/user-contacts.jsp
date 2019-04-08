@@ -121,7 +121,15 @@
                             <div class="h2 fl">
                                 <div class="supplier-name">{{item.supplier.name}}</div>
                                 <div class="fc999 supplier-svs">
-                                    <img src="/home/v3/static/images/user/icon-svs.png" alt="">SVS
+                                    <template v-if="item.supplier.svsInfo && item.supplier.svsInfo.grade != 0">
+                                        <img v-if="item.supplier.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="">
+                                        <img v-if="item.supplier.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="">
+                                        SVS
+                                    </template>
+                                    <!-- <template v-else>
+                                        No rating
+                                    </template> -->
                                     <span style="margin-left:5px;">{{item.supplier.contacts}}</span>
                                 </div>
                             </div>
@@ -164,7 +172,9 @@
                                 <h2>Inquiry History</h2>
                                 <ul>
                                     <li v-for="(inquiryItem,index) in item.relation" :key="index">
-                                        <a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey "
+                                        <%--<a :href="'/home/usr_UsrMessages_center?supplierPkey=' + item.supplier.pkey + '&consultPkey=' + inquiryItem.consult.pkey + '&relationPkey=' + inquiryItem.quotation.pkey " class="flexSb clearfix">--%>
+                                        <a @click="toChatWithSup"
+                                            :data-relation-pkey="inquiryItem.quotation.pkey"
                                             class="flexSb clearfix">
                                             <el-badge is-dot  class="h1" :hidden="!inquiryItem.quotation.isNew">
                                                 <img v-if="inquiryItem.consult.images != ''"
@@ -784,6 +794,17 @@
                     self.supplierPkey = pkey;
                     self.getSupplierDetail(pkey);
 
+                },
+                // 点击跳转至聊天框
+                toChatWithSup(e){
+                    console.log(e.currentTarget.dataset)
+                    let relationPkey = e.currentTarget.dataset.relationPkey;
+
+                    // 保存信息 传递至聊天页使用
+                    sessionStorage.setItem("whichPageFrom","contactsList")
+                    sessionStorage.setItem("relationPkey",relationPkey)
+                    // 跳转至聊天页
+                    window.location.href = "/home/usr_UsrMessages_center";
                 },
                 hoverMouseLeave() {
                     this.isAddSearchGroup = false

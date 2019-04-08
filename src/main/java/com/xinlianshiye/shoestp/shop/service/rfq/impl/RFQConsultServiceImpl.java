@@ -444,7 +444,19 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     view.setPrice(consult.getPrice());
     view.setCurrency(consult.getCurrency() == null ? null : consult.gtCurrency().getCurName());
     view.setType(consult.getType());
-    view.setMoreInformation(consult.getExtraDescription());
+    try {
+      if (consult.getExtraDescription() != null
+          && !consult.getExtraDescription().trim().isEmpty()) {
+        List<String> moreInformation =
+            om.readValue(consult.getExtraDescription(), new TypeReference<List<String>>() {});
+        view.setMoreInformation(moreInformation);
+      }
+    } catch (IOException e1) {
+      log.error(
+          "主键为{}的consult extraDescription[{}] 字段 数据格式异常!",
+          consult.getPkey(),
+          consult.getExtraDescription());
+    }
     view.setValieDate(consult.getValidDate());
     view.setShippingTerms(
         consult.getShippingType() == null ? null : consult.gtShippingType().getLine().getName());
@@ -453,18 +465,31 @@ public class RFQConsultServiceImpl implements RFQConsultService {
         consult.getPayType() == null ? null : consult.gtPayType().getLine().getName());
     view.setVerifyStatus(consult.getVerifyStatus());
     view.setStatus(consult.getStatus());
-    if (consult.gtType() == RFQConsultType.supplier_INQUIRY) {
-      view.setExtraRequest(consult.getExtraRequest());
-      try {
-        if (consult.getProductRequest() != null && !consult.getProductRequest().isEmpty()) {
-          view.setProductRequest(
-              om.readValue(
-                  consult.getProductRequest(),
-                  new TypeReference<List<RFQConsultProductView>>() {}));
+    switch (consult.gtType()) {
+      case supplier_INQUIRY:
+        view.setExtraRequest(consult.getExtraRequest());
+        try {
+          if (consult.getProductRequest() != null && !consult.getProductRequest().isEmpty()) {
+            view.setProductRequest(
+                om.readValue(
+                    consult.getProductRequest(),
+                    new TypeReference<List<RFQConsultProductView>>() {}));
+          }
+        } catch (IOException e) {
+          log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
         }
-      } catch (IOException e) {
-        log.warn("RFQConsult表主键为{}的记录 字段productRequest格式错误", consult.getPkey());
-      }
+        break;
+      case RFQ:
+        view.setChangeCount(consult.getChangeCount());
+        break;
+      case INQUIRY:
+        view.setProductImage(consult.gtProduct().getPicture().split(",")[0]);
+        break;
+      case Private_INQUIRY:
+        view.setProductImage(consult.gtProduct().getPicture().split(",")[0]);
+        break;
+      default:
+        break;
     }
     view.setImages(
         consult.getImage() == null
@@ -527,8 +552,33 @@ public class RFQConsultServiceImpl implements RFQConsultService {
       throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.time_wrong, language));
       //      throw new WebMessageException(ReturnCode.valid_illegal, "有效时间不合法");
     }
+    if (information == null || (information = information.trim()).isEmpty()) {
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.valid_tooShort, language));
+    }
+
+    if (information.length() > 100) {
+      throw new WebMessageException(MessageBuild.buildMessage(ReturnCode.valid_toolong, language));
+    }
     consult.setChangeCount((short) (consult.getChangeCount() + (short) 1));
-    consult.setExtraDescription(information);
+    List<String> extraDescription;
+    try {
+      if (consult.getExtraDescription() == null || consult.getExtraDescription().trim().isEmpty()) {
+        extraDescription = new ArrayList<>();
+      } else {
+        extraDescription =
+            om.readValue(consult.getExtraDescription(), new TypeReference<List<String>>() {});
+      }
+      extraDescription.add(information);
+      consult.setExtraDescription(om.writeValueAsString(extraDescription));
+    } catch (IOException e) {
+      log.error(
+          "主键为{}的consult extraDescription[{}] 字段 数据格式异常!",
+          consult.getPkey(),
+          consult.getExtraDescription());
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_wrong_data, language));
+    }
+    consult.setLastMessageSendTime(new Date());
     consult.setValidDate(validDate);
     consult.upd();
   }
@@ -593,6 +643,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     List<String> list = new ArrayList<>(Arrays.asList(consult.getImage().split(",")));
     list.addAll(Arrays.asList(images.split(",")));
     consult.setImage(list.stream().collect(Collectors.joining(",")));
+    consult.setLastMessageSendTime(new Date());
     consult.upd();
   }
 
@@ -693,6 +744,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     }
     try {
       consult.setProductRequest(om.writeValueAsString(target));
+      consult.setLastMessageSendTime(new Date());
       consult.upd();
     } catch (JsonProcessingException e) {
       e.printStackTrace();

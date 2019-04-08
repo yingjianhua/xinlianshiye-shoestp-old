@@ -17,6 +17,7 @@ import irille.shop.plt.PltErateDAO;
 import irille.shop.usr.UsrCartDAO;
 import irille.shop.usr.UsrConsultDAO;
 import irille.shop.usr.UsrFavoritesDAO;
+import irille.shop.usr.UsrSupplierDAO;
 import irille.view.usr.UserView;
 import irille.view.v2.Plt.PltSysConfigView;
 import irille.view.v2.Plt.PltUserInfo;
@@ -78,6 +79,9 @@ public class PltConfigAction extends HomeAction<PltConfig> {
         userInfo.setInquiry_count(0);
         userInfo.setFavorite_count(0);
         userInfo.setShopping_cart_count(0);
+        if (userView.getSupplierId() != null){
+          userInfo.setStore_type(UsrSupplierDAO.getStoreStatus(userView.getSupplierId()).getStoreStatus());
+        }
       }
       userInfo.setUser_type(userInfo.getUser_type()); // 判断是否为商家用户 赋值给usertype 0:普通用户 1: 商家用户
       sysConfigView.setUser(userInfo);

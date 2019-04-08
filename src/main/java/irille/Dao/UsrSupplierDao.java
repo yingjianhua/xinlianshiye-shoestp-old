@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import irille.Aops.Caches;
 import irille.Entity.SVS.SVSInfo;
+import irille.Entity.SVS.Enums.SVSAuthenticationStatus;
 import irille.core.sys.Sys;
 import irille.homeAction.usr.dto.Page_supplierProductView;
 import irille.homeAction.usr.dto.SupplierListView;
@@ -15,12 +16,15 @@ import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
 import irille.pub.util.SEOUtils;
-import irille.shop.pdt.Pdt;
 import irille.shop.pdt.PdtCat;
 import irille.shop.pdt.PdtProduct;
-import irille.shop.pdt.PdtTieredPricing;
-import irille.shop.usr.*;
+import irille.shop.usr.Usr;
+import irille.shop.usr.Usr.SStatus;
+import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplier.T;
+import irille.shop.usr.UsrSupplierCategory;
+import irille.shop.usr.UsrSupplierRole;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/5 Time: 16:36 */
 public class UsrSupplierDao {
@@ -194,6 +198,7 @@ public class UsrSupplierDao {
         .FROM(UsrSupplier.class)
         .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
+        .WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN)
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
         .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
     if (targetMarket != null) {
@@ -203,18 +208,29 @@ public class UsrSupplierDao {
               + targetMarket
               + "))");
     }
-    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+    if (null != checkedType && checkedType == 1)
+      query.WHERE(SVSInfo.T.STATUS, " =?", SVSAuthenticationStatus.SUCCESS);
     if (pdtCategory != null && pdtCategory > -1) {
       List listCate = getCatsNodeByCatId(pdtCategory);
       System.out.println(listCate);
       if (listCate != null)
-        query.WHERE(PdtProduct.T.CATEGORY, "in(" + listCate.stream().map(b->{return String.valueOf(b);}).collect(Collectors.joining(",")) + ")");
+        query.WHERE(
+            PdtProduct.T.CATEGORY,
+            "in("
+                + listCate.stream()
+                    .map(
+                        b -> {
+                          return String.valueOf(b);
+                        })
+                    .collect(Collectors.joining(","))
+                + ")");
     }
 
     query
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
-        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "desc");
+        .ORDER_BY(SVSInfo.T.GRADE, "desc")
+        .ORDER_BY(PdtProduct.T.VERIFY_TIME, "asc");
     if (start != null && limit != null) {
       query.limit(start, limit);
     }
@@ -252,11 +268,21 @@ public class UsrSupplierDao {
               + targetMarket
               + "))");
     }
-    if (null != checkedType && checkedType == 1) query.WHERE(SVSInfo.T.STATUS, " =?", 1);
+    if (null != checkedType && checkedType == 1)
+      query.WHERE(SVSInfo.T.STATUS, " =?", SVSAuthenticationStatus.SUCCESS);
     if (pdtCategory != null && pdtCategory > -1) {
       List listCate = getCatsNodeByCatId(pdtCategory);
       if (listCate != null)
-        query.WHERE(PdtProduct.T.CATEGORY, "in(" + listCate.stream().map(b->{return String.valueOf(b);}).collect(Collectors.joining(","))+ ")");
+        query.WHERE(
+            PdtProduct.T.CATEGORY,
+            "in("
+                + listCate.stream()
+                    .map(
+                        b -> {
+                          return String.valueOf(b);
+                        })
+                    .collect(Collectors.joining(","))
+                + ")");
     }
 
     query
@@ -283,7 +309,7 @@ public class UsrSupplierDao {
     SQL sql =
         new SQL() {
           {
-            SELECT(T.PKEY, T.NAME, T.LOGO).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", supId);
+            SELECT(T.PKEY, T.SHOW_NAME, T.LOGO).FROM(UsrSupplier.class).WHERE(T.PKEY, "=?", supId);
           }
         };
     return Query.sql(sql).queryMap();

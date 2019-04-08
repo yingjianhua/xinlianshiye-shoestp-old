@@ -129,6 +129,7 @@ public class O2OActivityDao {
                 PdtProduct.T.NAME,
                 "like ?",
                 "%" + pdtName + "%")
+            .ORDER_BY(PdtProduct.T.UPDATE_TIME,"desc")
             .limit(start, limit);
     return query.queryMaps();
   }

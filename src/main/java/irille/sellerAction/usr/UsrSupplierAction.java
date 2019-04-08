@@ -15,6 +15,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.xinlianshiye.shoestp.common.service.UsrMainService;
+
 import irille.Dao.RFQ.RFQConsultDao;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.Usr.IUsrSupplierManageService;
@@ -59,6 +61,7 @@ import lombok.Setter;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
+  @Inject UsrMainService usrMainService;
   @Getter @Setter private String logo;
   @Getter @Setter private String newPwd;
   @Getter @Setter private String oldPwd;
@@ -122,7 +125,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     if (password == null || Str.isEmpty(password)) throw LOG.err("loginCheck", "请输入密码");
     // TODO Email 改为小写
     UsrMain main = UsrMain.chkUniqueEmail(false, email.toLowerCase());
-    if (main == null) {
+    if (main == null || main.getIdentity() == 0) {
       throw LOG.err("Invalid User", "用户名不存在或无效的用户名");
     } else {
       if (!DateTools.getDigest(main.getPkey() + password).equals(main.getPassword())) {
@@ -141,9 +144,17 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
       writerOrExport(json);
       return;
+    }else if (supplier.getStoreStatus() == 0){
+      JSONObject json = new JSONObject();
+      json.put("ret", -2);
+      json.put("msg", "用户店铺已关闭,请重新开通店铺");
+      writerOrExport(json);
+      return;
     }
     if (supplier.gtStatus() == Usr.OStatus.INIT) {
       throw LOG.err("wait for appr", "审核中不能登录");
+    } else if(supplier.gtStatus() == Usr.OStatus.FAIL) {
+      throw LOG.err("wait for appr", "审核失败，请前往开通店铺页面");
     }
     user = UsrUserDAO.supplierSignIn(supplier, main);
     setUser(user);
@@ -459,6 +470,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       if (annex != null) {
         annex.setIdCardFrontPhotoName(idCardFrontPhotoName);
         annex.setContactsIdCardFrontPhotoName(contactsIdCardFrontPhotoName);
+        annex.upd();
       } else {
         UsrAnnex annex1 = new UsrAnnex();
         annex1.setSupplier(getBean().getPkey());
@@ -474,7 +486,6 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       }
       UsrSupplier newSupplier = UsrSupplierDAO.updInfo(getBean());
       newSupplier.upd();
-      annex.upd();
       write();
     } catch (Exp e) {
       writeErr(e.getLastMessage());
@@ -568,6 +579,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
   }
 
   public void logout() throws IOException, JSONException {
+    irille.Filter.svr.SessionMsg sessionMsg =
+        (irille.Filter.svr.SessionMsg) session.get(irille.Filter.svr.SessionMsg.session_key);
+    if (sessionMsg != null && sessionMsg.haveUser()) {
+      UsrMain usrMain = sessionMsg.getUsrMain();
+      usrMainService.signOut(usrMain);
+    }
     setUser(null);
     writeSuccess();
   }
@@ -690,14 +707,17 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     UsrSupplierInfo usi = new UsrSupplierInfo();
     Integer pkey = getSupplier().getPkey();
     usi.setSupplierDetailsDTO(dao.getSupplierDetails(pkey));
-    for (SVSGradeType value : SVSGradeType.values()) {
-      if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
-          == value.getLine().getKey()) {
-        usi.setSvsLevel(value.getLine().getName());
+    if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO() != null) {
+      for (SVSGradeType value : SVSGradeType.values()) {
+        if (usi.getSupplierDetailsDTO().getSvsRatingAndRosDTO().getGrade()
+            == value.getLine().getKey()) {
+          usi.setSvsLevel(value.getLine().getName());
+        }
       }
     }
     usi.setInquiriesCount(rfqConsultDao.getConsultCount(pkey));
     usi.setContactsCount(rfqConsultDao.getcontactsCount(pkey));
+    usi.setMessageCount(rfqConsultDao.getMessageCount(pkey));
     usi.setProductCount(pdtProductDAO.productCount(pkey));
     usi.setPrivateproductCount(pdtProductDAO.privateproductCount(pkey));
     usi.setWareHouseProductCount(pdtProductDAO.wareHouseProductCount(pkey));

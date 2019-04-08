@@ -15,4 +15,6 @@ public class PltUserInfo {
   private int shopping_cart_count;
   // 用户类型 0:普通用户 1:商家
   private int user_type;
+  // 店铺开启状态
+  private int store_type;
 }

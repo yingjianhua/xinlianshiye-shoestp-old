@@ -1,8 +1,7 @@
 package com.xinlianshiye.shoestp.common.errcode;
 
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
+import java.net.URL;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -12,8 +11,10 @@ import java.util.regex.Pattern;
 
 import irille.pub.exception.ReturnCode;
 import irille.pub.tb.FldLanguage;
+import lombok.extern.slf4j.Slf4j;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2019/3/13 Time: 16:02 */
+@Slf4j
 public class MessageBuild {
   private static ConcurrentHashMap<String, HashMap<Integer, String>> hashMap;
 
@@ -70,96 +71,41 @@ public class MessageBuild {
   //  }
 
   static {
-    hashMap = new ConcurrentHashMap();
+    Pattern numberPattern = Pattern.compile("(\\d{1,})");
+    hashMap = new ConcurrentHashMap<>();
     Properties properties = new Properties();
     for (FldLanguage.Language value : FldLanguage.Language.values()) {
+      String lang = value.name();
       try {
-
-        if (Files.isExecutable(
-            Paths.get(
-                new URI(
-                    MessageBuild.class.getResource("/")
-                        + "shoestp_"
-                        + value.name()
-                        + ".properties")))) {
+        URL resource = MessageBuild.class.getResource("/shoestp_" + lang + ".properties");
+        File file = new File(resource.toURI());
+        if (file.exists()) {
           try {
-            //            BufferedReader bufferedReader =
-            //                new BufferedReader(
-            //                    new InputStreamReader(
-            //                        MessageBuild.class
-            //                            .getResource("/shoestp_" + value.name() + ".properties")
-            //                            .openStream(),
-            //                        StandardCharsets.UTF_8));
-            properties.load(
-                MessageBuild.class
-                    .getResource("/shoestp_" + value.name() + ".properties")
-                    .openStream());
-
+            properties.load(resource.openStream());
             for (Entry<Object, Object> entry : properties.entrySet()) {
-
-              Pattern numberPattern = Pattern.compile("(\\d{1,})");
               if (!numberPattern.matcher(String.valueOf(entry.getKey())).matches()) {
                 continue;
               }
-              Integer i = Integer.valueOf(String.valueOf(entry.getKey()));
+              Integer code = Integer.valueOf(String.valueOf(entry.getKey()));
               String message = String.valueOf(entry.getValue());
-              HashMap<Integer, String> map = hashMap.get(value.name());
+              HashMap<Integer, String> map = hashMap.get(lang);
               if (map == null) {
                 map = new HashMap<>();
               }
-              MessageView body = null;
-              if (body != null) {
-                System.err.println(
-                    String.format("%d 该值存在重复,已存在的%s\r\n 现在存入值 %d,$s", i, body, i, message));
-              } else {
-                System.out.println(String.format("正在处理值\r\n%d=%s", i, message));
-                map.put(i, message);
-                hashMap.put(value.name(), map);
-              }
+              log.info("正在处理值\r\n{}={}", code, message);
+              map.put(code, message);
+              hashMap.put(lang, map);
             }
-            //            while (bufferedReader.ready()) {
-            //              String s = bufferedReader.readLine();
-            //              Pattern numberPattern = Pattern.compile("(\\d{1,})");
-            //                          if (!numberPattern.matcher(s.split("=")[0]).matches()) {
-            //                            continue;
-            //                          }
-            //                          Pattern pattern =
-            // Pattern.compile("(\\d{1,})=(.*[\\r\\n]?)");
-            //                          Matcher matcher = pattern.matcher(s);
-            //                          if (matcher.find()) {
-            //                            String message = matcher.group(2);
-            //                            Integer i = Integer.parseInt(matcher.group(1));
-            //                            HashMap<Integer, String> map = hashMap.get(value.name());
-            //                            if (map == null) {
-            //                              map = new HashMap<>();
-            //                            }
-            //                            MessageView body = null;
-            //                            if (body != null) {
-            //                              System.err.println(
-            //                                  String.format("%d 该值存在重复,已存在的%s\r\n 现在存入值 %d,$s", i,
-            // body, i,
-            //             message));
-            //                            } else {
-            //                              System.out.println(String.format("正在处理值\r\n%d=%s", i,
-            // message));
-            //                              map.put(i, message);
-            //                              hashMap.put(value.name(), map);
-            //                            }
-            //              }
-            //            }
           } catch (Exception e) {
             e.printStackTrace();
           }
+        } else {
+          log.error("文件[{}]不存在", file.getPath());
         }
-
       } catch (Exception e) {
-        e.printStackTrace();
+        log.error("MessageBuild 初始化错误", e);
       }
     }
-  }
-
-  public static void main(String[] args) {
-    System.out.println(hashMap);
   }
 
   public static MessageView build(int code, FldLanguage.Language language) {

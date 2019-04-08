@@ -14,6 +14,12 @@
     <link rel="stylesheet" href="/html/SVS/css/index.css">
     <title>Online and Offline B2B Shoes Trading Platform—Shoestp.com Shoes Wholesale O2O New Mode</title>
     <jsp:include page="/home/v3/header.jsp"/>
+    <style>
+        #svsSuplies .el-rate__item, #svsSuplies .el-rate__icon{
+            font-size: 16px;
+            margin: 0 !important;
+        }
+    </style>
 </head>
 <body>
 <jsp:include page="/home/v3/nav.jsp"></jsp:include>
@@ -74,7 +80,10 @@
                 <%--第一个筛选框 - 地区筛选--%>
                 <div class="navitem" :class="{active: select1}"
                      @mouseenter="getCountryList">
-                    <h3 @click="showcheck(1)">Target Market<img src="images/svssupicondown.png" alt=""></h3>
+                    <h3 @click="showcheck(1)">
+                        Target Market
+                        <img class="icon-down" src="images/svssupicondown.png" alt="">
+                    </h3>
                     <div class="select" :class="select1 ?  'height' : ''" style="width: 990px;">
                         <el-input class="region-area-input" size="small"
                                   placeholder="Type to find a country or region"
@@ -109,18 +118,24 @@
 
                 <%--第二个筛选框 - 材质筛选--%>
                 <div class="navitem" :class="{active: select2}">
-                    <h3 @click="showcheck(2)">Shoe-making process<img src="images/svssupicondown.png" alt=""></h3>
+                    <h3 @click="showcheck(2)" style="min-width: 206px;">
+                        {{selectedProcessTypeLabel?selectedProcessTypeLabel:"Shoe-making process"}}
+                        <img class="icon-down" src="images/svssupicondown.png" alt="">
+                    </h3>
                     <ul class="select shoes-make-wrap"  :class="select2 ?  'height' : ''"
-                        style="width: 100%;">
+                        style="min-width: 100%;">
                         <li class="shoes-make-item" :class="{active: processType.value == selectedProcessType}"
                             v-for="processType in processTypeList"
                             :data-type-value="processType.value"
+                            :data-type-label="processType.label"
                             @click="selectProcessType">{{processType.label}}</li>
                     </ul>
                 </div>
                 <%--第三个筛选框 - 等级--%>
                 <div class="navitem" :class="{active: select3}">
-                    <h3 @click="showcheck(3)">SVS Level<img src="images/svssupicondown.png" alt=""></h3>
+                    <h3 @click="showcheck(3)">
+                        SVS Level<img class="icon-down" src="images/svssupicondown.png" alt="">
+                    </h3>
                     <div class="select"  :class="select3 ?  'height' : ''"
                          style="padding-top: 0;padding-bottom: 0;">
                         <el-checkbox-group v-model="selectedLevelList"
@@ -137,8 +152,8 @@
                 </div>
                 <div class="grow"></div>
 
-                <el-button class="btn-search" style="margin-right: 20px;" size="small"
-                    @click="search">search</el-button>
+                <%--<el-button class="btn-search" style="margin-right: 20px;" size="small"--%>
+                    <%--@click="search">search</el-button>--%>
             </div>
 
             <%--主体内容    --%>
@@ -166,55 +181,58 @@
                     <%--中间分数--%>
                     <div class="introduce">
                         <a class="company-name ellipsis_2" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey=' + supplier.id" target="_blank">{{supplier.storeName}}</a>
-                        <%--test--%>
-                        <%--<p class="main-product ellipsis_2">Main Products: {{supplier.storeName}}</p>--%>
+                        <p class="main-product ellipsis_2"
+                            v-if="supplier.categories && supplier.categories.length">
+                            Main Products:
+                            <span v-for="category in supplier.categories">
+                                {{category.cateName}}
+                            </span>
+                        </p>
                         <div class="level">
-                            <template v-if="supplier.svs && supplier.svs.status==1">
-                                <img src="images/subliesiconcert.png" alt=""> Certificate | &nbsp;&nbsp;
-                                <template v-if="supplier.svs && supplier.svs.grade">
-                                    <img src="images/subliesiconsvs1.png" alt="" v-if="supplier.svs.grade  == 1">
-                                    <img src="images/subliesiconsvs2.png" alt="" v-else-if="supplier.svs.grade  == 2">
-                                    <img src="images/subliesiconsvs3.png" alt="" v-else-if="supplier.svs.grade  == 3">
+                            <template>
+                                <img src="images/subliesiconcert.png" alt=""> Certificate
+                                <template v-if="supplier.svs && supplier.svs.grade != 0 && supplier.svs.status==1">
+                                        &nbsp;&nbsp;  | &nbsp;&nbsp;
+                                    <img src="/home/static/images/ico/icon-svs-yp.png" alt="" v-if="supplier.svs.grade  == 1">
+                                    <img src="/home/static/images/ico/icon-svs-jp.png" alt="" v-else-if="supplier.svs.grade  == 2">
+                                    <img src="/home/static/images/ico/icon-svs-zs.png" alt="" v-else-if="supplier.svs.grade  == 3">
                                     SVS
                                 </template>
                             </template>
                         </div>
 
-                        <div class="score" v-if="supplier.svs && supplier.svs.researchBaseStar">
+                        <div class="score mb5">
                             <span class="title">R&D: </span>
-                            <template v-if="Math.floor(supplier.svs.researchBaseStar) < 1">
-                                <img src="images/subliesiconsc.png" class="star" alt="">
-                            </template>
-                            <template v-else>
-                                <img src="images/subliesiconros.png" class="star" alt=""
-                                     v-for="a in (Math.floor(supplier.svs.researchBaseStar))">
-                                <img src="images/subliesiconhalf.png" class="star" alt=""
-                                     v-if="supplier.svs.researchBaseStar%1">
-                            </template>
+                            <div style="display: inline-block;line-height: 24px;">
+                                <span v-if="supplier.svs" :title="(supplier.svs.researchBase + 12) > 20 ? 20 : (supplier.svs.researchBase + 12)">
+                                        <el-rate v-model="/[\.]/.test(supplier.svs.researchBaseStar)?Math.floor(supplier.svs.researchBaseStar) + 0.5 + 3: supplier.svs.researchBaseStar + 3" disabled></el-rate>
+                                </span>
+                                <span v-else title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </span>
+                            </div>
                         </div>
-                        <div class="score" v-if="supplier.svs && supplier.svs.capacityBaseStar">
+                        <div class="score mb5">
                             <span class="title"> Output: </span>
-                            <template v-if="Math.floor(supplier.svs.capacityBaseStar) < 1">
-                                <img src="images/subliesiconsc.png" class="star" alt="">
-                            </template>
-                            <template v-else>
-                                <img src="images/subliesiconros.png" class="star" alt=""
-                                     v-for="a in (Math.floor(supplier.svs.capacityBaseStar))">
-                                <img src="images/subliesiconhalf.png" class="star" alt=""
-                                     v-if="supplier.svs.capacityBaseStar%1">
-                            </template>
+                            <div style="display: inline-block;line-height: 24px;">
+                                <span v-if="supplier.svs" :title="(supplier.svs.capacityBase + 12) > 20 ? 20 : (supplier.svs.capacityBase + 12)">
+                                        <el-rate v-model="/[\.]/.test(supplier.svs.capacityBaseStar)?Math.floor(supplier.svs.capacityBaseStar) + 0.5 + 3: supplier.svs.capacityBaseStar + 3" disabled></el-rate>
+                                </span>
+                                <span v-else title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </span>
+                            </div>
                         </div>
-                        <div class="score" v-if="supplier.svs && supplier.svs.factoryBaseStar">
+                        <div class="score">
                             <span class="title">Scale: </span>
-                            <template v-if="Math.floor(supplier.svs.factoryBaseStar) < 1">
-                                <img src="images/subliesiconsc.png" class="star" alt="">
-                            </template>
-                            <template v-else>
-                                <img src="images/subliesiconros.png" class="star" alt=""
-                                     v-for="a in (Math.floor(supplier.svs.factoryBaseStar))">
-                                <img src="images/subliesiconhalf.png" class="star" alt=""
-                                     v-if="supplier.svs.factoryBaseStar%1">
-                            </template>
+                            <div style="display: inline-block;line-height: 24px;" :title="(supplier.svs && supplier.svs.factoryBase)?supplier.svs.factoryBase:0">
+                                <span v-if="supplier.svs" :title="(supplier.svs.factoryBase + 12) > 20 ? 20 : (supplier.svs.factoryBase + 12)">
+                                        <el-rate v-model="/[\.]/.test(supplier.svs.factoryBaseStar)?Math.floor(supplier.svs.factoryBaseStar) + 0.5 + 3: supplier.svs.factoryBaseStar + 3" disabled></el-rate>
+                                </span>
+                                <span v-else title="0">
+                                        <el-rate value="0" disabled></el-rate>
+                                </span>
+                            </div>
                         </div>
                         <p class="ellipsis_2" v-if="supplier.address">{{supplier.address}}</p>
                     </div>
@@ -222,8 +240,16 @@
                     <div class="product">
                         <div class="product-item" v-for="(pro, pdtIndex) in supplier.products" v-if="pdtIndex<3">
                             <a :href="'/' + pro.link" target="_blank">
+
                                 <img :src="util_function_obj.image(pro.pdtPictures.split(',')[0],144)" alt="">
-                                <p class="goods-name ellipsis_2">{{pro.pdtName}}</p>
+                                <p class="goods-name ellipsis_2">
+                                    <%--O2O图标--%>
+                                    <span class="o2o-icon-wrap" v-if="pro.isO2O == 1">
+                                        <img src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
+                                        O2O
+                                    </span>
+                                    {{pro.pdtName}}
+                                </p>
                             </a>
                         </div>
                     </div>
@@ -304,16 +330,18 @@
             selectedMarketCountryList:[],
             // 筛选的国家列表
             marketCountryList:[],
-            // 选中的制鞋工艺
+            // 选中的制鞋工艺-value值
             selectedProcessType: null,
+            // 选中的制鞋工艺-名称
+            selectedProcessTypeLabel: null,
             // 制鞋工艺
             processTypeList:[
                 {label: "All",value: null},
                 {label: "Vulcanization Shoes",value: 41},
                 {label: "Injection Shoes",value: 42},
-                {label: "Molded shoes",value: 40},
-                {label: "Sewing shoes",value: 43},
-                {label: "Adhesive shoes",value: 37},
+                {label: "Molded Shoes",value: 40},
+                {label: "Sewing Shoes",value: 43},
+                {label: "Adhesive Shoes",value: 37},
             ],
 
             // 选中的等级
@@ -428,6 +456,9 @@
             //选择制鞋工艺
             selectProcessType(e){
                 this.selectedProcessType = e.currentTarget.dataset.typeValue;
+                this.selectedProcessTypeLabel = e.currentTarget.dataset.typeLabel;
+                this.hiddenDropDown();
+                this.search();
             },
 
             // 改变分页
@@ -477,13 +508,9 @@
             // 点击搜索
             search(){
                 // 隐藏下拉框
-                this.hiddenDropDown();
+                // this.hiddenDropDown();
                 this.resetSearchParams();
-                // test
-                // console.log("search")
-                // util_function_obj.throttle(this.getSupplierList,2000)()
-                // return;
-
+                // util_function_obj._throttle(this.getSupplierList)()
                 this.getSupplierList();
             },
 
@@ -509,6 +536,14 @@
             // this.cated = getParams('cated', "NONE") //分类点击用的
             this.getClassList();
             this.getSupplierList();
+        },
+        watch:{
+            selectedLevelList: function (val) {
+                this.search();
+            },
+            selectedMarketCountryList: function (val) {
+                this.search();
+            },
         }
     })
 </script>

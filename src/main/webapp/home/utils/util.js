@@ -2,6 +2,12 @@ var util_function_obj={
     // 参数jumpUrl为login后跳转的页面 - 不传时login后刷新当前页
     //          如点击 按钮buy，判断并login后跳转至购物车
     alertWhenNoLogin: function(that,jumpUrl,callback){
+
+        // 如果在登录页点击的，不弹出登录框，直接刷新登录页
+        if( window.location.pathname.indexOf("usr_UsrPurchase_sign")!=-1 ){
+            window.location.reload();
+            return;
+        }
         // 显示登录弹框 - jsp引入的vue实例
         loginBoxVue.showLoginBox = true;
         loginBoxVue.jumpUrl = jumpUrl || null;
@@ -89,6 +95,48 @@ var util_function_obj={
         return Math.floor(byteLen)
 
     },
+
+    // 节流函数 - 计时器
+    _throttleTimeout: null,
+    // 节流函数 - 上次执行时间点
+    _throttlePrevious: 0,
+    // 节流函数 - 不管连续点击，wait时间内只生效一次
+    _throttle: function(func, wait, options) {
+        wait = wait || 1000;
+        var context, args, result;
+
+        if (!options) options = {};
+        // 延迟执行函数
+        var later = function() {
+            // 若设定了开始边界不执行选项，上次执行时间始终为0
+            util_function_obj._throttlePrevious = options.leading === false ? 0 : Date.now();
+            util_function_obj._throttleTimeout = null;
+            result = func.apply(context, args);
+            if (!util_function_obj._throttleTimeout) context = args = null;
+        };
+        return function() {
+            var now = Date.now();
+            // 首次执行时，如果设定了开始边界不执行选项，将上次执行时间设定为当前时间。
+            if (!util_function_obj._throttlePrevious && options.leading === false) util_function_obj._throttlePrevious = now;
+            // 延迟执行时间间隔
+            var remaining = wait - (now - util_function_obj._throttlePrevious);
+            context = this;
+            args = arguments;
+            // 延迟时间间隔remaining小于等于0，表示上次执行至此所间隔时间已经超过一个时间窗口
+            // remaining大于时间窗口wait，表示客户端系统时间被调整过
+            if (remaining <= 0 || remaining > wait) {
+                clearTimeout(util_function_obj._throttleTimeout);
+                util_function_obj._throttleTimeout = null;
+                util_function_obj._throttlePrevious = now;
+                result = func.apply(context, args);
+                if (!util_function_obj._throttleTimeout) context = args = null;
+                //如果延迟执行不存在，且没有设定结尾边界不执行选项
+            } else if (!util_function_obj._throttleTimeout && options.trailing !== false) {
+                util_function_obj._throttleTimeout = setTimeout(later, remaining);
+            }
+            return result;
+        };
+    }
 };
 
 
@@ -97,7 +145,7 @@ var util_regular_obj = {
         psd: /^[^\s]{6,20}$/,   //密码
         phoneChina: /^1\d{10}$/,  //国内手机
         phoneAreaCode: /^[+\d]?\d{1,3}-\d{6,16}$/,  //含国家区号手机 示例:0086-12345678,+86-12345678
-        email: /^[\w]{1,32}@\w{1,15}.\w{2,5}$/,  //邮箱正则
+        email: /^[\w.]{1,32}@\w{1,15}.\w{2,5}$/,  //邮箱正则
         nameChina: /^[\u4E00-\u9FA5]{2,6}$/,  //姓名-中古
         nameGlobal: /^[^`~!@#$%^&*()_+?><":\]\[}\{].{0,31}[^`~!@#$%^&*()_+?><":\]\[}\{]$/,  //姓名
         companyName: /^[^`~!@#$%^&*()_+?><":\]\[}\{].{0,51}[^`~!@#$%^&*()_+?><":\]\[}\{]$/,  //公司名称

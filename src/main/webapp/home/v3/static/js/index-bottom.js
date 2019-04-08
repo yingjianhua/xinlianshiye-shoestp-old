@@ -1,17 +1,23 @@
-   //   <a class="brand-item" target="_blank" href="http://www.shoesmat.com/">
-        //     <img src="/home/v3/static/images/brand02.png" alt="" />
-        //   </a>
-        //   <a class="brand-item" target="_blank" href="http://www.shoesrd.com/">
-        //     <img src="/home/v3/static/images/brand03.png" alt="" />
-        //   </a>
-        
+// <a class="brand-item" target="_blank" href="http://www.shoesmat.com/">
+//     <img src="/home/v3/static/images/brand02.png" alt="" />
+//     </a>
+//     <a class="brand-item" target="_blank" href="http://www.shoesrd.com/">
+//     <img src="/home/v3/static/images/brand03.png" alt="" />
+//     </a>
+
 Vue.component('index-bottom', {
     template: `<div id="o2obottom">
 <div class="brand-list" v-if="LogoIsShow()">
           <a class="brand-item" target="_blank" href="https://www.shoeslogo.com/">
             <img src="/home/v3/static/images/brand01.png" alt="" />
           </a>
-        
+          
+            <a class="brand-item" target="_blank" href="javascript: void(0);">
+               <img src="/home/v3/static/images/brand02.png" alt="" />
+            </a>
+            <a class="brand-item" target="_blank" href="javascript: void(0);">
+                <img src="/home/v3/static/images/brand03.png" alt="" />
+            </a>
      
           <a class="brand-item" target="_blank" href="http://www.wzsomt.com/">
             <img src="/home/v3/static/images/brand04.png" alt="" />

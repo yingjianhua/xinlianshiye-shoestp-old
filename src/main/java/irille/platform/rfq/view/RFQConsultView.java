@@ -50,7 +50,7 @@ public class RFQConsultView implements BaseView {
   private String destination; // 字符200 STR(200)<null>
   private Integer total; // 总抢单数 INT
   private Short changeCount; // 修改总数 SHORT
-  private String extraDescription; // 修改总数 STR(2000)<null>
+  private List<String> moreInformation; // 修改总数 STR(2000)<null>
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date createTime; // 创建时间 TIME

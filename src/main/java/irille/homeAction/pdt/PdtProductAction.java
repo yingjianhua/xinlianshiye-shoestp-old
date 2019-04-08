@@ -21,6 +21,7 @@ import com.xinlianshiye.shoestp.shop.service.rfq.RFQConsultMessageService;
 import com.xinlianshiye.shoestp.shop.view.pdt.ProdSearchView;
 import com.xinlianshiye.shoestp.shop.view.pdt.SortView;
 
+import irille.Dao.SVS.SVSInfoService;
 import irille.Filter.svr.ItpCheckPurchaseLogin.NeedLogin;
 import irille.Service.Pdt.IPdtProductService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
@@ -76,6 +77,8 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   @Inject private PdtProductService productService;
 
   @Inject private IPdtProductService pdtProduct;
+
+  @Inject private SVSInfoService svsInfoService;
 
   @Override
   public PdtProduct insRun() throws Exception {
@@ -357,6 +360,7 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
 
       if (null != infoView.getMap()) setMap(infoView.getMap());
       seoView = new SEOView();
+      infoView.setSvsInfo(svsInfoService.getSvsRatingAndRos(supplier.getPkey()));
       seoView.setTitle(translateUtil.getLanguage(infoView.getSeoTitle(), HomeAction.curLanguage()));
       seoView.setDescription(
           translateUtil.getLanguage(infoView.getSeoDescription(), HomeAction.curLanguage()));

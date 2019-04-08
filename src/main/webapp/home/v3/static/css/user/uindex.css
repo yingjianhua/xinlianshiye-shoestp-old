@@ -522,9 +522,6 @@
           white-space: nowrap;/*不换行*/
           text-overflow:ellipsis;/*超出部分文字以...显示*/
          }
-         #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .h2 .supplier-svs img{
-          margin: 0 3.5px 3.5px 0;
-         }
          #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box .diandian{
           margin: 10px 0px 0 15px;
            display:none;
@@ -674,6 +671,7 @@
             top: -20px;
             padding-right: 5px;
             background-color: #FFF;
+            transition: all 0.2s linear;
         }
           /* #personalCenter .contacts-main .contacts-main-left .cml-list .cml-box2 li .h2{
           	width:140px;
@@ -946,6 +944,21 @@
         height: 40px;
         line-height: 20px;
         overflow: hidden;
+    }
+      #personalCenter  .icon-o2o{
+        width: 48px;
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
+        border-radius: 50%;
+        background: #f6f7f9;
+        display: inline-block;
+        color: #999;
+        font-weight: 200;
+    }
+      #personalCenter .icon-o2o img{
+        margin-right:3px;
+        margin-top:-4px;
     }
 
     #personalCenter .favorite-main .favorite-list .favorite-item .porduct-name .text {

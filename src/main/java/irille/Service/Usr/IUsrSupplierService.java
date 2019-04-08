@@ -84,6 +84,13 @@ public interface IUsrSupplierService {
    **/
   Integer isSupplier(String loginName);
 
+  /**
+   * 获取供应商showName，logo，SVS等级
+   *
+   * @param supplierPkey
+   * @zjl
+   * @return
+   */
   SuplierDetailView getSuplierDetail(Integer supplierPkey);
   /**
    * 供应商详情(暂时针对手机端提供接口)

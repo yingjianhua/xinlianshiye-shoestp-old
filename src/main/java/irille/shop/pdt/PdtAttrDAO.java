@@ -64,6 +64,8 @@ public class PdtAttrDAO {
             if (category != null) {
               WHERE(T.CATEGORY, "=?", category);
             }
+            WHERE(PdtAttr.T.SUPPLIER, " IS NULL ");
+            WHERE(PdtAttr.T.DELETED, " =? ", OYn.NO.getLine().getKey());
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -103,6 +105,29 @@ public class PdtAttrDAO {
   public static class InsAttr extends IduIns<PdtAttrDAO.Ins, PdtAttr> {
     @Override
     public void before() {
+      try {
+        JSONObject json = new JSONObject(getB().getName());
+        for (Language l : FldLanguage.Language.values()) {
+          if (null != json.getString(l.name()) && !"".equals(json.getString(l.name()).trim())) {
+            SQL sql = new SQL();
+            sql.SELECT(PdtAttr.T.PKEY);
+            sql.FROM(PdtAttr.class);
+            sql.WHERE(
+                PdtAttr.class.getSimpleName() + "." + PdtAttr.T.NAME + "->'$." + l.name() + "' = ?",
+                json.getString(l.name()));
+            sql.WHERE(PdtAttr.T.CATEGORY, " =? ", getB().getCategory());
+            sql.WHERE(PdtAttr.T.DELETED, "=?", OYn.NO.getLine().getKey());
+            Integer attrs = Query.sql(sql).queryCount();
+            if (null != attrs && attrs > 0) {
+              throw LOG.err(
+                  "nameCopy", l.displayName() + "名称【" + json.getString(l.name()) + "】已存在");
+            }
+          }
+        }
+      } catch (JSONException e) {
+        throw LOG.err("noaccess", "非法参数");
+      }
+
       getB().setDeleted(OYn.NO.getLine().getKey());
       getB().setCreateTime(Env.getTranBeginTime());
       setB(
@@ -121,6 +146,28 @@ public class PdtAttrDAO {
   public static class UpdAttr extends IduUpd<PdtAttrDAO.Upd, PdtAttr> {
     @Override
     public void before() {
+      try {
+        JSONObject json = new JSONObject(getB().getName());
+        for (Language l : FldLanguage.Language.values()) {
+          if (null != json.getString(l.name()) && !"".equals(json.getString(l.name()).trim())) {
+            SQL sql = new SQL();
+            sql.SELECT(PdtAttr.T.PKEY);
+            sql.FROM(PdtAttr.class);
+            sql.WHERE(
+                PdtAttr.class.getSimpleName() + "." + PdtAttr.T.NAME + "->'$." + l.name() + "' = ?",
+                json.getString(l.name()));
+            sql.WHERE(PdtAttr.T.CATEGORY, " =? ", getB().getCategory());
+            sql.WHERE(PdtAttr.T.DELETED, "=?", OYn.NO.getLine().getKey());
+            Integer attrs = Query.sql(sql).queryCount();
+            if (null != attrs && attrs > 1) {
+              throw LOG.err(
+                  "nameCopy", l.displayName() + "名称【" + json.getString(l.name()) + "】已存在");
+            }
+          }
+        }
+      } catch (JSONException e) {
+        throw LOG.err("noaccess", "非法参数");
+      }
       PdtAttr dbBean = loadThisBeanAndLock();
       // getB().setCreateTime(Env.getSystemTime());//自动生成修改时间
       PropertyUtils.copyPropertiesWithout(
@@ -255,12 +302,17 @@ public class PdtAttrDAO {
           supplier);
       sql1.WHERE(PdtAttrCat.T.STATE, " =? ", OYn.NO.getLine().getKey());
       sql1.WHERE(PdtAttrPro.T.PROCAT, " IN (" + parentCat + ") ");
+      sql1.ORDER_BY(PdtAttr.T.SUPPLIER, " ASC ");
 
       return Query.sql(sql1).queryList(PdtAttr.class).stream()
           .map(
               l -> {
                 PdtProductVueView attr = new PdtProductVueView();
-                translateUtil.getAutoTranslate(l, language);
+                if (l.getSupplier() != null) {
+                  translateUtil.getAutoTranslate(l, Language.en);
+                } else {
+                  translateUtil.getAutoTranslate(l, language);
+                }
                 attr.setId(l.getPkey());
                 attr.setName(l.getName());
                 attr.setSupplier(l.getSupplier());
@@ -277,7 +329,11 @@ public class PdtAttrDAO {
                         false)
                     .forEach(
                         ll -> {
-                          translateUtil.getAutoTranslate(ll, language);
+                          if (ll.gtMain().getSupplier() != null) {
+                            translateUtil.getAutoTranslate(ll, Language.en);
+                          } else {
+                            translateUtil.getAutoTranslate(ll, language);
+                          }
                           PdtProductVueView line = new PdtProductVueView();
                           line.setId(ll.getPkey());
                           line.setName(ll.getName());
@@ -285,6 +341,14 @@ public class PdtAttrDAO {
                         });
                 attr.setItems(lineList);
                 return attr;
+              })
+          .filter(
+              l -> {
+                if (l.getItems().size() > 0) {
+                  return true;
+                } else {
+                  return false;
+                }
               })
           .collect(Collectors.toList());
     }
@@ -460,7 +524,7 @@ public class PdtAttrDAO {
     PdtProductVueView attrView = new PdtProductVueView();
     attrView.setId(attr.getPkey());
     try {
-      attrView.setName(attr.getName(lag));
+      attrView.setName(attr.getName(Language.en));
     } catch (JSONException e) {
       e.printStackTrace();
     }
@@ -478,10 +542,15 @@ public class PdtAttrDAO {
             false)
         .forEach(
             ll -> {
-              translateUtil.getAutoTranslate(ll, lag);
+              translateUtil.autoTranslate(ll);
               PdtProductVueView line = new PdtProductVueView();
               line.setId(ll.getPkey());
-              line.setName(ll.getName());
+              try {
+                line.setName(ll.getName(Language.en));
+              } catch (JSONException e) {
+                line.setName(ll.getName());
+                e.printStackTrace();
+              }
               lineList.add(line);
             });
     attrView.setItems(lineList);

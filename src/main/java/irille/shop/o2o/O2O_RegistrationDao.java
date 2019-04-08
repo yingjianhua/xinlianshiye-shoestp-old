@@ -109,7 +109,7 @@ public class O2O_RegistrationDao {
                           }
                         }
                         setMarketing(marketingBuff.toString());
-                        setBuyertype(O2O_BuyerType.values()[bean.getBuyerType()].toString());
+                        setBuyertype(O2O_BuyerType.values()[bean.getBuyerType()-1].toString());
                         String[] exhibitionCountry = bean.getExhibitionCountry().split(",");
                         StringBuffer exhibitionCountryBuff = new StringBuffer("");
                         if (exhibitionCountry != null && exhibitionCountry.length > 0) {
@@ -200,7 +200,7 @@ public class O2O_RegistrationDao {
               }
             }
             setMarketing(marketingBuff.toString());
-            setBuyertype(O2O_BuyerType.values()[bean.getBuyerType()].toString());
+            setBuyertype(O2O_BuyerType.values()[bean.getBuyerType()-1].toString());
             String[] exhibitionCountry = bean.getExhibitionCountry().split(",");
             StringBuffer exhibitionCountryBuff = new StringBuffer("");
             if (exhibitionCountry != null && exhibitionCountry.length > 0) {

@@ -89,6 +89,16 @@ public class SQL {
     return mybatisSQL.LEFT_OUTER_JOIN(sql, beanAlias, fld1, fld2);
   }
 
+  public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(
+      SQL sql, String alias, IEnumFld fld1, IEnumFld fld2) {
+    return mybatisSQL.LEFT_OUTER_JOIN(sql, alias, fld1, fld2);
+  }
+
+  public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(
+          SQL sql, String alias, String fld1, IEnumFld fld2) {
+    return mybatisSQL.LEFT_OUTER_JOIN(sql, alias, fld1, fld2);
+  }
+
   public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(String join) {
     return mybatisSQL.LEFT_OUTER_JOIN(join);
   }
@@ -373,6 +383,32 @@ public class SQL {
               + columnLabelWithAlias(fld1)
               + "="
               + columnLabelWithAlias(fld2));
+    }
+
+    public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(
+        SQL sql, String alias, IEnumFld fld1, IEnumFld fld2) {
+      return super.LEFT_OUTER_JOIN(
+          "("
+              + sql
+              + ") "
+              + alias
+              + " ON "
+              + columnLabelWithAlias(fld1)
+              + "="
+              + columnLabelWithAlias(fld2));
+    }
+
+    public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(
+            SQL sql, String alias, String fld1, IEnumFld fld2) {
+      return super.LEFT_OUTER_JOIN(
+              "("
+                      + sql
+                      + ") "
+                      + alias
+                      + " ON "
+                      + fld1
+                      + "="
+                      + columnLabelWithAlias(fld2));
     }
 
     public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, IEnumFld fld2) {
