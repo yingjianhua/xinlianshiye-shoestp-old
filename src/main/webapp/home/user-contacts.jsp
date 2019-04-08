@@ -121,7 +121,7 @@
                             <div class="h2 fl">
                                 <div class="supplier-name">{{item.supplier.name}}</div>
                                 <div class="fc999 supplier-svs">
-                                    <template v-if="item.supplier.svsInfo">
+                                    <template v-if="item.supplier.svsInfo && item.supplier.svsInfo.grade != 0 && item.supplier.svsInfo.status == 1">
                                         <img v-if="item.supplier.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="">
                                         <img v-if="item.supplier.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="">
                                         <img v-if="item.supplier.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="">

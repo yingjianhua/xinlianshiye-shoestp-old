@@ -252,8 +252,8 @@
                     <div>
                         <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
                         Certificate
-                        <div class="i" v-if="item.svsInfo && item.svsInfo.status == 1"></div>
                         <template  v-if="item.svsInfo && item.svsInfo.grade != 0 && item.svsInfo.status == 1">
+                            <div class="i"></div>
                             <img v-if="item.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS"/>
                             <img v-if="item.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS"/>
                             <img v-if="item.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS"/>
