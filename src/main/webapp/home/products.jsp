@@ -3,52 +3,47 @@
 <jsp:include page="v3/header.jsp"/>
 <link rel="stylesheet" href="/home/v3/static/css/productList.css">
 <link href="./static/css/style.css" rel="stylesheet" type="text/css">
-<link href="./static/css/global.css" rel="stylesheet" type="text/css">
+<!-- <link href="./static/css/global.css" rel="stylesheet" type="text/css"> -->
 <link href="./static/css/user.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="./static/js/jquery-1.7.2.min.js"></script>
 <script type="text/javascript" src="/home/static/js/user.js"></script>
 <script type="text/javascript" src="/home/static/js/lang/${env.curLanguage }.js"></script>
 <script type="text/javascript" src="/home/static/js/global.js"></script>
 <script type="text/javascript" src="/home/static/js/global(1).js"></script>
-<body>
-<jsp:include page="v3/nav.jsp"></jsp:include>
-<div id="new_navs">
-    <index-top class="product"></index-top>
-</div>
-<script src="/home/v3/static/js/index-top.js">
-</script>
+<link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>
 <style media="screen">
     #o2otop .o2otopcon .topsearch > input {
         height: unset !important;
         border: 0;
     }
 
-    .el-pagination{
+    .el-pagination {
         position: relative;
         overflow: hidden;
     }
-    .el-pagination:before{
-        content:"鞋贸港";
+
+    .el-pagination:before {
+        content: "鞋贸港";
         position: absolute;
         z-index: -1;
         color: transparent;
         left: 9999px;
     }
 </style>
-<script>     new Vue({
-    el: "#new_navs"
-})
-
-$('html').on('click', '#signin_close', function () {
-    $('#signin_module').remove();
-    global_obj.div_mask(1);
-
-})
-</script>
+<%--<script>--%>
+    <%--$('html').on('click', '#signin_close', function () {--%>
+        <%--$('#signin_module').remove();--%>
+        <%--global_obj.div_mask(1);--%>
+    <%--})--%>
+<%--</script>--%>
+<body>
+<jsp:include page="v3/nav-nobody.jsp"></jsp:include>
 <div id="productList" class="clearfix w1240">
+    <index-top class="product"></index-top>
     <!--分级导航-->
     <div class="topNav">
         <div class="h1"><a href="/">Home</a><i class="el-icon-arrow-right"></i></div>
+        <div class="h1"><a :class="{'now':(!breadcrumbnav || breadcrumbnav.length<=0)}" href="/home/pdt_PdtProduct"> All product</a><i v-if="breadcrumbnav && breadcrumbnav.length>0" class="el-icon-arrow-right"></i></div>
         <blcok v-if="breadcrumbnav && breadcrumbnav.length>0">
             <div class="h1" v-for="(item,index) in breadcrumbnav" for-key="index">
                 <a @click="categorySearch" :data-cated="item.pkey" href="javascript:;"
@@ -56,17 +51,7 @@ $('html').on('click', '#signin_close', function () {
                 <i class="el-icon-arrow-right" v-show="breadcrumbnav.length-1!=index"></i>
             </div>
         </blcok>
-        <div class="h1"><a class="now" href="/" v-if="!breadcrumbnav || breadcrumbnav.length<=0"> All product</a></div>
     </div>
-    <!--分级导航 end-->
-
-    <el-pagination
-            layout="prev, pager, next"
-            :total="allpage"
-            prev-text="Previous"
-            next-text="Next"
-            :current-page="1">
-    </el-pagination>
     <!--页面左部分类导航-->
     <div class="leftNav fl">
         <h1>Related categories</h1>
@@ -84,7 +69,8 @@ $('html').on('click', '#signin_close', function () {
             <div class="h2" v-for="(item2,indextwo) in item.children" for-key="indextwo">
                 <p :class="[item2.value==cated?'active':'']"><span @click="categorySearch" :data-cated="item2.value">{{item2.label}}</span><img
                         class="pl-icon2" :class="[item2.xiala==2?'':'pl-icon22']"
-                        src="/home/v3/static/images/icon_down.png" alt="" @click="xiala" :data-index="index"
+                       v-if="item2&&item2.children"
+                        src="/home/v3/static/images/icon_up.png" alt="" @click="xiala" :data-index="index"
                         :data-indextwo="indextwo"/></p>
                 <el-collapse-transition>
                     <ul v-show="item2.xiala==2">
@@ -106,24 +92,49 @@ $('html').on('click', '#signin_close', function () {
     <div class="rightList fr">
         <div class="top">
             <div class="top-box">
-                <p>Supplier Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <p>Export Market<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
                 <div class="i1"></div>
-                <ul>
-                    <li data-selelv="1" @click="seleLevel">
-                        <div class="s" :class="[selelv==1?'sele':'']"></div>
-                        Level 1
-                    </li>
-                    <li data-selelv="2" @click="seleLevel">
-                        <div class="s" :class="[selelv==2?'sele':'']"></div>
-                        Level 2
-                    </li>
-                    <li data-selelv="3" @click="seleLevel">
-                        <div class="s" :class="[selelv==3?'sele':'']"></div>
-                        Level 3
-                    </li>
+                <ul style="width:990px;height:auto;min-height: 215px;">
+                        <el-input class="region-area-input" size="small"
+                                  placeholder="Type to find a country or region"
+                                  prefix-icon="el-icon-search"
+                                  v-model.lazy.trim="filterAreaKeyword">
+                        </el-input>
+                        <el-checkbox-group class="my-ele-checkbox-group"
+                                           style="padding-bottom: 0;max-height: 400px;"
+                                           v-model="selectedMarketCountryList">
+                                <el-checkbox :class="{'double-length': util_function_obj.getByteLen(item.name)>=12}"
+                                        v-for="item,index in countryList"
+                                        v-show="(!filterAreaKeyword) || (filterAreaKeyword && item.name.toLowerCase().indexOf(filterAreaKeyword.toLowerCase())!=-1 )"
+                                        :key="item.id"
+                                        :label="item.id"
+                                        @change="changeCountry"
+                                        >
+                                    {{item.name}}
+                                </el-checkbox>
+                        </el-checkbox-group>
                 </ul>
             </div>
-
+            <div class="top-box">
+                <p>SVS Level<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <div class="i1"></div>
+                <ul style="height:auto;">
+                    <el-checkbox-group v-model="grade" class="my-ele-checkbox-group1">
+                        <el-checkbox label="3" name="3" @change="changeSVSLevel"> <img src="/home/v3/static/images/supplier-level3.png" alt="" style="margin-right:8px;">Diamond</el-checkbox>
+                        <el-checkbox label="2" name="2" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level2.png" alt="" style="margin-right:8px;">Gold</el-checkbox>
+                        <el-checkbox label="1" name="1" @change="changeSVSLevel"><img src="/home/v3/static/images/supplier-level1.png" alt="" style="margin-right:8px;">Silver</el-checkbox>
+                    </el-checkbox-group>
+                </ul>
+            </div>
+            <div class="top-box">
+                <p style="min-width: 120px;text-align: center;white-space: nowrap;">
+                {{(sort || sort===0)? priceSortList[sort].name: "Price"}}
+                <img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt=""/></p>
+                <div class="i1"></div>
+                <ul style="padding:10px 0;width:168px;height:auto;text-align: center;">
+                    <div class="price-sort" :class="sort == item.rule?'price-sort-active' :''" v-for="(item, index) in priceSortList" :key="index" @click="priceBtn(item.rule)">{{item.name}}</div>
+                </ul>
+            </div>
             <%-- <div class="top-box">
                 <p>Export Countries<img class="pl-icon2" src="/home/v3/static/images/ico/icon_down.png" alt="" /></p><div class="i1"></div>
                 <ul>
@@ -143,14 +154,20 @@ $('html').on('click', '#signin_close', function () {
             </div> --%>
 
             <div class="top-box2" style="margin-left: 20px;">Min Order :
-                <input class="w63" type="text" @blur="lessthan222" @keyup.enter="lessthan222" v-model="lessthan"
-                       placeholder="less than" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
+                <input class="w63" type="text"
+                       v-model.trim="lessthan"
+                       placeholder="less than"
+                       @keyup.enter="search"
+                       onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
             <div class="i0"></div>
             <div class="top-box2">Price :
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="min" placeholder="min."
+                <input class="w63" type="text"
+                       @keyup.enter="search"
+                       v-model.trim.number="min" placeholder="min."
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/> -
-                <input type="text" @blur="min222" @keyup.enter="min222" v-model.number="max" placeholder="max."
+                <input class="w63" type="text" v-model.trim.number="max" placeholder="max."
+                       @keyup.enter="search"
                        onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')"/>
             </div>
 
@@ -172,85 +189,104 @@ $('html').on('click', '#signin_close', function () {
                             <el-carousel-item v-for="item2 in item.picture.split(',')" :key="item">
                                 <div class="h3" @mouseenter="bigPicBoxopen" @mouseleave="bigPicBoxclose"
                                      :data-pic="item2">
-                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl"
-                                                                                     :src="imgurl(item2,1)"/></a>
+                                    <a :href="'/'+item.rewrite" target="_blank"><img class="fl goods-img"
+                                                                                     :src="util_function_obj.image(item2,195)"/></a>
                                 </div>
                             </el-carousel-item>
                         </el-carousel>
                     </div>
                 </div>
-                <a :href="'/'+item.rewrite" class="common-boxtitle" target="_blank">
-                    <h1>
-                        <div class="ootit" v-show="item.pdtType"><img class="mtf4"
-                                                                      src="/home/v3/static/images/ico/icon_o2o.png"
-                                                                      alt="O2O"/>O2O
-                        </div>
-                        {{item.pdtName}}
-                    </h1>
-                    <div>
-                        <div class="fl">
-                            <h2>US <span>{{sysConfig.currency_symbol}}{{ item.price }}</span></h2>
-                            <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
-                        </div>
-                        <div class="fr" style="width: 196px;">
-                            <div class="">
-                                <div class="h3">Inner Material:</div>
-                                {{item.inner?item.inner:'No data'}}
+                <div class="common-boxtitle">
+                    <a :href="'/'+item.rewrite" target="_blank" style="width:100%;">
+                        <h1>
+                            <div class="ootit" v-show="item.pdtType"><img class="mtf4"
+                                                                          src="/home/v3/static/images/ico/icon_o2o.png"
+                                                                          alt="O2O"/>O2O
                             </div>
-                            <div class="">
-                                <div class="h3">Sole Material:</div>
-                                {{item.sole?item.sole:'No data'}}
+                            {{item.pdtName}}
+                        </h1>
+                        <div class="clearfix" style="position:relative;">
+                            <div class="fl" style="width: 180px;">
+                                <h2>
+                                    <span>{{sysConfig.currency_symbol}}
+                                    {{ item.minCurPrice == item.maxCurPrice ? item.minCurPrice: (item.minCurPrice +" ~ "+item.maxCurPrice) }}</span>
+                                </h2>
+                                <div class="h3">Min.Order: {{item.minOrder}} pairs</div>
                             </div>
-                            <div class="">
-                                <div class="h3">Upper Material:</div>
-                                {{item.upper?item.upper:'No data'}}
+                            <div class="fr" style="width: 196px;">
+                                <div class="">
+                                    <div class="h3">Inner Material:</div>
+                                    {{item.inner?item.inner:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Sole Material:</div>
+                                    {{item.sole?item.sole:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Upper Material:</div>
+                                    {{item.upper?item.upper:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Appropriate Season:</div>
+                                    {{item.season?item.season:'No data'}}
+                                </div>
+                                <div class="">
+                                    <div class="h3">Closed Way:</div>
+                                    {{item.closed?item.closed:'No data'}}
+                                </div>
                             </div>
-                            <div class="">
-                                <div class="h3">Appropriate Season:</div>
-                                {{item.season?item.season:'No data'}}
                             </div>
-                            <div class="">
-                                <div class="h3">Closed Way:</div>
-                                {{item.closed?item.closed:'No data'}}
-                            </div>
-                        </div>
-                    </div>
-                </a>
+                        </a>
+                        <div class="product-inquiry-btn" @click.stop="ToProductInquiry(item.pdtId)">Product Inquiry</div>
+                </div>
                 <div class="common-boxspan fr">
                     <a class="h1" :href="'/home/usr_UsrSupplier_gtSupIndex?pkey='+item.supId"
                        target="_blank"><%--<div class="year">{{item.enter}}YRS</div>--%>{{item.supName}}</a>
                     <div>
-                        <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
-                        Certificate
-                        <div class="i"></div>
-                        <img class="mr6" src="/home/v3/static/images/ico/icon_svs.png" alt="SVS"/>
-                        <!--<img class="mr6" src="./images/icon_svs_2.png" alt="SVS" />-->
-                        <!--<img class="mr6" src="./images/icon_svs_3.png" alt="SVS" />-->
-                        SVS
-                        <div class="i"></div>
-
+                       <img class="mr6 icon01" src="/home/v3/static/images/ico/icon_cert.png" alt="Certificate"/>
+                       Certificate
+                        <div class="i" v-if="item.svsInfo && item.svsInfo.status == 1"></div>
+                        <template  v-if="item.svsInfo && item.svsInfo.grade != 0 && item.svsInfo.status == 1">
+                            <img v-if="item.svsInfo.grade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="SVS"/>
+                            <img v-if="item.svsInfo.grade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="SVS"/>
+                            <img v-if="item.svsInfo.grade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="SVS"/>
+                            SVS
+                        </template>
                     </div>
-
                     <div>
                         <div class="ww42">R&D：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.researchBase + 12) > 20 ? 20 : (item.svsInfo.researchBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.researchBaseStar)?Math.floor(item.svsInfo.researchBaseStar) + 0.5 + 3 : item.svsInfo.researchBaseStar + 3" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                                <el-rate value="0" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         <div class="ww42">Output：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.factoryBase + 12) > 20 ? 20 : (item.svsInfo.factoryBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.factoryBaseStar)?Math.floor(item.svsInfo.factoryBaseStar) + 0.5 + 3: item.svsInfo.factoryBaseStar + 3" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                            <el-rate value="0" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
                         <div class="ww42">Scale：</div>
-                        <el-rate v-model="5.0" disabled></el-rate>
+                        <a v-if="item.svsInfo" class="common-a" href="javascript:void(0);" :title="(item.svsInfo.capacityBase + 12) > 20 ? 20 : (item.svsInfo.capacityBase + 12)">
+                            <el-rate v-model="/[\.]/.test(item.svsInfo.capacityBaseStar)?Math.floor(item.svsInfo.capacityBaseStar) + 0.5 + 3: item.svsInfo.capacityBaseStar + 3" disabled></el-rate>
+                        </a>
+                        <a v-else class="common-a" href="javascript:void(0);" title="0">
+                            <el-rate value="0" disabled></el-rate>
+                        </a>
                     </div>
                     <div>
-                        {{item.originCountry}} ( {{item.originProvince}} )
+                        {{item.originCountry}} {{item.originProvince? ("(" + item.originProvince + ")"): ""}}
                     </div>
-
                     <!-- <a class="btn" href="javascript:;" @click="addRFQ" :data-id = "item.pdtId">Contact Supplier</a> -->
-                    <a class="btn" target="_blank"
-                       :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtId" :data-id="item.pdtId">Contact
-                        Supplier</a>
+                    <a class="btn" @click="ToContactSupplier(item.supId)">
+                        Contact Supplier
+                    </a>
                 </div>
             </div>
             <!--产品 end-->
@@ -275,7 +311,7 @@ $('html').on('click', '#signin_close', function () {
     <!--页面右部列表  end-->
 
     <div class="bigPicBox" v-show="bigPicBox">
-        <img :src="imgurl(bigPicBoxpic)" alt=""/>
+        <img :src="util_function_obj.image(bigPicBoxpic,446)" alt=""/>
     </div>
 
 </div>
@@ -284,51 +320,120 @@ $('html').on('click', '#signin_close', function () {
     <index-bottom></index-bottom>
 </div>
 
-
+<script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
-
 <script>
-
     user_obj.sign_in_init();
     new Vue(
         {
             el: "#foot"
         }
     )
-    new Vue({
+    var app=new Vue({
         el: '#productList',
         data: {
             selelv: "",
             selecount: "",
             selestore: "",
-            pName: '',
-            lessthan: '',
-            min: '',
-            max: '',
-            cated: -1,
+            cated: '', // 分类
             lose: '',
             currentPage: 1,
             allpage: '',
             noData: false,
             productLists: [],
             breadcrumbnav: [],
-            page: 0,
-            limit: 8,
-            curr: 1,
+            page: 0,   // 第几个商品开始
+            limit: 8,   // 每页请求数量
+            curr: 1,    // 当前页数
             classLists: [],
             bigPicBox: false,
             bigPicBoxpic: '',
+            countryList:[], // 国家列表
+            pName:'', // 搜索值
+            lessthan:'', // 最小起订量
+            sort:null, // 参数格式为 : [{name:"curPrice",sort:1,rule:1}] name为排序的字段  rule 1 为倒序,0为正序
+            grade:[], // SVS等级 0-无等级商家 1-银 2 -金 3-钻石
+            min:'', // 最小价格
+            max:'', //最大价格
+            filterAreaKeyword:'', // 过滤 搜索国家
+            selectedMarketCountryList:[], // 国家主键
+            priceSortList:[
+                {name:"From low to high",rule:0,},
+                {name:"From high to low",rule:1},
+            ],
+            pricerRuleActive:null,
         },
         methods: {
-            imgurl(row, resize) {
-                if (row != "") {
-                    if (resize) {
-                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_195,w_195'
-                    } else {
-                        return 'https://image.shoestp.com/' + row + '?x-oss-process=image/resize,m_fill,h_500,w_500'
-                    }
+            changeCountry(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
+            changeSVSLevel(){
+                this.page = 0
+                this.curr = 1
+                this.productList();
+            },
+            priceBtn(rule){  // 价格排序 选择按钮
+                if(this.pricerRuleActive == rule){
+                    return;
+                }else{
+                    this.sort =  rule
+                    this.page = 0
+                    this.curr = 1
+                    this.productList();
                 }
-                return null
+                this.pricerRuleActive = rule
+            },
+            getCountry(){  // 获取 国家列表
+                let self = this;
+                axios.get('/home/plt_PltCountry_list').then(function (res) {
+                    self.countryList = res.data.result
+                })
+            },
+             // 获取产品列表
+            productList(){
+                var params = {
+                        start:this.page,
+                        limit:this.limit,
+                        // "search.supplier":8,
+                        "search.export": this.selectedMarketCountryList.toString(),
+                        "search.minOq": this.lessthan,
+                        "search.minCurPrice": this.min,
+                        "search.maxCurPrice": this.max,
+                        "search.keywords": this.pName,
+                        "search.category": this.cated,
+                        "newSort[0].name":"curPrice",
+                        "newSort[0].rule":this.sort,
+                        "search.grade": this.grade.toString(),
+                    };
+                    var url = '/home/pdt_PdtProduct_gtProductsIndexListAjax?v=4'
+                    var numbers = 0
+                    for(var i in params){
+                        if(i != Object.keys(params).length - 1 && params[i] != null){
+                            url += "&"
+                        }
+                        if(params[i] != null){
+                            url += i+"="+params[i]
+                        }
+                        numbers++
+                    }
+                axios.get(encodeURI(url))
+                    .then((res) => {
+                        console.log("res")
+                        console.log(res)
+                        this.productLists = res.data.result.items
+                        this.allpage = res.data.result.totalCount
+                        this.breadcrumbnav = res.data.result.breadcrumbnav
+                        if (res.data.result.items.length <= 0) {
+                            this.noData = true
+                        } else {
+                            this.noData = false
+                        }
+                    })
+                    .catch((error) => {
+                        console.log("err")
+                    });
             },
             // 读取链接带参
             GetQueryString(name) {
@@ -359,55 +464,55 @@ $('html').on('click', '#signin_close', function () {
                     });
             },
             // 获取产品列表
-            productList(e) {
-                var params = {}
-                if (this.cated != null || this.cated > 0) {
-                    this.lose = 1
-                    params = {
-                        start: this.page,
-                        limit: this.limit,
-                        cate: this.cated,
-                        min: this.min,
-                        max: this.max,
-                        mOrder: this.lessthan,
-                        pName: this.pName,
-                        level: this.selelv,
-                        export: this.selecount,
-                        o2oAddress: this.selestore,
-                        orderfld: getParams("orderfld", "NONE"),
-                        lose: this.lose
-                    }
-                } else {
-                    params = {
-                        start: this.page,
-                        limit: this.limit,
-                        min: this.min,
-                        max: this.max,
-                        mOrder: this.lessthan,
-                        pName: this.pName,
-                        level: this.selelv,
-                        export: this.selecount,
-                        o2oAddress: this.selestore,
-                        orderfld: getParams("orderfld", "NONE")
-                    }
-                }
-                axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
-                    params: params
-                })
-                    .then((res) => {
-                        this.productLists = res.data.result.items
-                        this.allpage = res.data.result.totalCount
-                        this.breadcrumbnav = res.data.result.breadcrumbnav
-                        if (res.data.result.items.length <= 0) {
-                            this.noData = true
-                        } else {
-                            this.noData = false
-                        }
-                    })
-                    .catch((error) => {
-                        console.log("err")
-                    });
-            },
+            // productList(e) {
+            //     var params = {}
+            //     if (this.cated != null || this.cated > 0) {
+            //         this.lose = 1
+            //         params = {
+            //             start: this.page,
+            //             limit: this.limit,
+            //             cate: this.cated,
+            //             min: this.min,
+            //             max: this.max,
+            //             mOrder: this.lessthan,
+            //             pName: this.pName,
+            //             level: this.selelv,
+            //             export: this.selecount,
+            //             o2oAddress: this.selestore,
+            //             orderfld: getParams("orderfld", "NONE"),
+            //             lose: this.lose
+            //         }
+            //     } else {
+            //         params = {
+            //             start: this.page,
+            //             limit: this.limit,
+            //             min: this.min,
+            //             max: this.max,
+            //             mOrder: this.lessthan,
+            //             pName: this.pName,
+            //             level: this.selelv,
+            //             export: this.selecount,
+            //             o2oAddress: this.selestore,
+            //             orderfld: getParams("orderfld", "NONE")
+            //         }
+            //     }
+            //     axios.get('/home/pdt_PdtProduct_gtProductsIndexListAjax?v=3', {
+            //         params: params
+            //     })
+            //         .then((res) => {
+            //             this.productLists = res.data.result.items
+            //             this.allpage = res.data.result.totalCount
+            //             this.breadcrumbnav = res.data.result.breadcrumbnav
+            //             if (res.data.result.items.length <= 0) {
+            //                 this.noData = true
+            //             } else {
+            //                 this.noData = false
+            //             }
+            //         })
+            //         .catch((error) => {
+            //             console.log("err")
+            //         });
+            // },
             // 左边列表下拉功能
             xiala(e) {
                 var i = e.currentTarget.dataset.index;
@@ -418,52 +523,35 @@ $('html').on('click', '#signin_close', function () {
                     this.$set(this.classLists[i].children[j], "xiala", 2)
                 }
             },
-            // 添加收藏呵取消收藏
+            // 添加收藏和取消收藏
             shoucang: function (e) {
                 var index = e.currentTarget.dataset.num;
-                // if(this.productLists[index].eshrine==false){
-                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
-                //       params: {
-                //       	pdtPkey:e.currentTarget.dataset.id
-                //       }
-                //   })
-                //     .then((res) => {
-                //     	if(ret!=-1){
-                //     		this.$set(this.productLists[index],"eshrine",true)
-                //     	}
-                //     })
-                //     .catch((error) => {
-                //
-                //     });
-                //
-                // }else{
-                // 	axios.get('/home/usr_UsrFavorites_addFavorite', {
-                //       params: {
-                //       	pdtPkey:e.currentTarget.dataset.id
-                //       }
-                //   })
-                //     .then((res) => {
-                //     	this.$set(this.productLists[index],"eshrine",false)
-                //     })
-                //     .catch((error) => {
-                //
-                //     });
-                // }
-                user_obj.inbox_init()
-                if (!isLogin) {
-                    // user_obj.set_form_sign_in('', window.location.href, 1);
-                    // return
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                if (!sysConfig || !sysConfig.user) {
+                    util_function_obj.alertWhenNoLogin(this);
+                    return
                 } else {
-
+                    if(sysConfig.user.user_type == 1){
+                        this.$alert("If you want to get this supplier or shoes in your wish list,please register or login your buyer account.",{
+                            confirmButtonText: 'Ok',
+                            customClass: "my-custom-element-alert-class fs-content-18",
+                            center: true,
+                            callback: action =>{
+                                return
+                            }
+                        });
+                        return
+                    }
                     axios.get('/home/usr_UsrFavorites_addFavorite', {
                         params: {
                             pdtPkey: e.currentTarget.dataset.id
                         }
                     })
                         .then((res) => {
-                            this.$set(this.productLists[index], "eshrine", !this.productLists[index].eshrine)
-                            /* this.productLists[index].eshrine = !this.productLists[index].eshrine; */
+                            if (res.data.ret == 1) {
+                                this.$set(this.productLists[index], "eshrine", !this.productLists[index].eshrine)
+                            } else {
+                                this.$message.error(res.data.msg || "The operation failed, please try again later");
+                            }
                         })
                         .catch((error) => {
 
@@ -528,7 +616,26 @@ $('html').on('click', '#signin_close', function () {
             },
             // 点击后才实现搜索
             search() {
-                if (this.min >= 0 && this.max > 0 && this.max < this.min) {
+                // min order正整数判断
+                if( this.lessthan && !util_regular_obj.register.positiveInteger.test(this.lessthan) ){
+                    this.$message({
+                        message: 'Min order should be positive integer number',
+                        type: 'warning'
+                    });
+                    return;
+                }else if( this.min && !util_regular_obj.register.priceDecimal.test(this.min) ){
+                    this.$message({
+                        message: 'Min price can\'t greater than 6 digit integer and 2 decimal places',
+                        type: 'warning'
+                    });
+                    return;
+                }else if( this.max && !util_regular_obj.register.priceDecimal.test(this.max) ){
+                    this.$message({
+                        message: 'Max price can\'t greater than 6 digit integer and 2 decimal places',
+                        type: 'warning'
+                    });
+                    return
+                }else if (this.min >= 0 && this.max > 0 && this.max < this.min) {
                     this.$message({
                         message: 'Max must be greater than Min',
                         type: 'warning'
@@ -544,15 +651,15 @@ $('html').on('click', '#signin_close', function () {
             categorySearch(e) {
                 this.lose = 1
                 this.cated = e.currentTarget.dataset.cated;
-                console.log(this.cated)
                 this.page = 0;
                 this.curr = 1
                 this.productList();
             },
             //   添加到询盘
             addRFQ(e) {
-                if (!isLogin) {
-                    user_obj.set_form_sign_in('', window.location.href, 1);
+                if (!sysConfig || !sysConfig.user) {
+                    // user_obj.set_form_sign_in('', window.location.href, 1);
+                    util_function_obj.alertWhenNoLogin(this);
                     return
                 }
                 axios({
@@ -579,18 +686,38 @@ $('html').on('click', '#signin_close', function () {
             bigPicBoxclose(e) {
                 this.bigPicBox = false
             },
-
+            // 跳转供应商表单
+            ToContactSupplier(supplierPkey){
+                let url = "/home/usr_UsrSupplier_goContactSupplier?supplierPkey=" + supplierPkey+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
+            },
+            // 跳转商品询盘表单
+            ToProductInquiry(pdtId){
+                let url = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId+ "&backUrl=" + window.location.href;
+                util_function_obj.supplierCantEnter(this, url,"Please register or login your buyer account if you want making enquiries.");
+            },
+            acTiveArrStringFun: function(obj) {
+                var arr = [];
+                if (obj != null && obj.length != 0) {
+                    for (var i = 0; i < obj.length; i++) {
+                        arr.push(obj[i]);
+                    }
+                }
+                return arr.toString();
+            }
         },
         mounted() {
             this.pName = this.GetQueryString("Keyword")
-            this.cated = getParams('cated', 0)
+            this.cated = getParams('cated','')
             // if(this.GetQueryString("cated").length>0){
             // 	this.lose=1
             // }
             this.classList();
             this.productList();
-
-
+            this.getCountry();
+            // console.log("向下取整  = = = = =  4.2  = = = ==" + Math.floor(4.2))
+            // console.log("向下取整  = = = = =  4.5  = =  = = =" + Math.floor(4.5))
+            // console.log("向下取整  = = = = =  4.8 = = = = = " + Math.floor(4.8))
         },
         watch: {
             // 输入监听

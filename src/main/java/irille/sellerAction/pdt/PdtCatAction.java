@@ -1,5 +1,12 @@
 package irille.sellerAction.pdt;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import javax.inject.Inject;
+
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.pub.Str;
 import irille.pub.idu.IduPage;
@@ -11,72 +18,62 @@ import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.inject.Inject;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 public class PdtCatAction extends SellerAction<PdtCat> implements IPdtCatAction {
-    @Inject
-    IPdtProductManageService iPdtProduct;
+  @Inject IPdtProductManageService iPdtProduct;
 
+  public String orderBy() {
+    return " ORDER BY PKEY ASC";
+  }
 
-    public String orderBy() {
-        return " ORDER BY PKEY ASC";
+  @Override
+  public void getComboTrigger() throws Exception {
+    String where = crtQueryAll();
+    if (!Str.isEmpty(getSarg1())) where += " AND (" + getSarg1() + ")";
+    where += orderBy();
+    IduPage page = newPage();
+    page.setStart(getStart());
+    page.setLimit(0); // 取所有数据，下拉框不分页
+    page.setWhere(where);
+    page.commit();
+    List<PdtCat> list = page.getList();
+
+    Map<Integer, String> map1 = new TreeMap<Integer, String>();
+    Map<Integer, String> map2 = new TreeMap<Integer, String>();
+    Map<Integer, String> map3 = new TreeMap<Integer, String>();
+    for (PdtCat line : list) {
+      if (line.getCategoryUp() == null) map1.put(line.getPkey(), "├" + line.getExtName());
     }
-
-    @Override
-    public void getComboTrigger() throws Exception {
-        String where = crtQueryAll();
-        if (!Str.isEmpty(getSarg1()))
-            where += " AND (" + getSarg1() + ")";
-        where += orderBy();
-        IduPage page = newPage();
-        page.setStart(getStart());
-        page.setLimit(0); // 取所有数据，下拉框不分页
-        page.setWhere(where);
-        page.commit();
-        List<PdtCat> list = page.getList();
-
-        Map<Integer, String> map1 = new TreeMap<Integer, String>();
-        Map<Integer, String> map2 = new TreeMap<Integer, String>();
-        Map<Integer, String> map3 = new TreeMap<Integer, String>();
-        for (PdtCat line : list) {
-            if (line.getCategoryUp() == null)
-                map1.put(line.getPkey(), "├" + line.getExtName());
-        }
-        for (PdtCat line : list) {
-            if (line.getCategoryUp() != null && map1.containsKey(line.getCategoryUp()))
-                map2.put(line.getPkey(), "｜├" + line.getExtName());
-        }
-        for (PdtCat line : list) {
-            if (line.getCategoryUp() != null && map2.containsKey(line.getCategoryUp()))
-                map3.put(line.getPkey(), "｜｜├" + line.getExtName());
-        }
-        map1.putAll(map2);
-        map1.putAll(map3);
-        JSONArray ja = new JSONArray();
-        JSONObject lineJson = null;
-        for (Integer value : map1.keySet()) {
-            lineJson = new JSONObject();
-            // 注意不论主键是否为STRING,都转成字符串
-            // 前EXT组件初始化时,数字也是以字符形式判断其值
-            lineJson.put("value", value.toString());
-            lineJson.put("text", map1.get(value));
-            ja.put(lineJson);
-        }
-        JSONObject json = new JSONObject();
-        json.put(STORE_ROOT, ja);
-        ServletActionContext.getResponse().getWriter().print(json.toString());
+    for (PdtCat line : list) {
+      if (line.getCategoryUp() != null && map1.containsKey(line.getCategoryUp()))
+        map2.put(line.getPkey(), "｜├" + line.getExtName());
     }
-
-    public void getPdtCatList() {
-        try {
-            write(iPdtProduct.getCatChildNodesByCatId(0, PltConfigDAO.supplierLanguage(getSupplier())));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    for (PdtCat line : list) {
+      if (line.getCategoryUp() != null && map2.containsKey(line.getCategoryUp()))
+        map3.put(line.getPkey(), "｜｜├" + line.getExtName());
     }
+    map1.putAll(map2);
+    map1.putAll(map3);
+    JSONArray ja = new JSONArray();
+    JSONObject lineJson = null;
+    for (Integer value : map1.keySet()) {
+      lineJson = new JSONObject();
+      // 注意不论主键是否为STRING,都转成字符串
+      // 前EXT组件初始化时,数字也是以字符形式判断其值
+      lineJson.put("value", value.toString());
+      lineJson.put("text", map1.get(value));
+      ja.put(lineJson);
+    }
+    JSONObject json = new JSONObject();
+    json.put(STORE_ROOT, ja);
+    ServletActionContext.getResponse().getWriter().print(json.toString());
+  }
 
+  @Override
+  public void getPdtCatList() {
+    try {
+      write(iPdtProduct.getCatChildNodesByCatIdRemoveDisplay(0, PltConfigDAO.supplierLanguage(getSupplier())));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+  }
 }

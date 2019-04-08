@@ -10,22 +10,25 @@ import irille.Entity.RFQ.RFQConsultMessage;
 @ImplementedBy(RFQConsultMessageDaoImpl.class)
 public interface RFQConsultMessageDao {
 
-	List<RFQConsultMessage> findAll(Integer start, Integer limit, Integer consultPkey, Integer supplierPkey);
-	
-	void save(RFQConsultMessage bean);
-	
-	/**
-	 * 统计有几个询盘有未读消息 
-	 * @param purchasePkey
-	 * @return
-	 */
-	Integer countUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey);
-	
-	/**
-	 * 通过uuid获取消息
-	 * @param uuid 唯一标识
-	 * @return
-	 * @author Jianhua Ying
-	 */
-	RFQConsultMessage findByUuid(String uuid);
+  List<RFQConsultMessage> findAll(
+      Integer start, Integer limit, Integer consultPkey, Integer supplierPkey);
+
+  void save(RFQConsultMessage bean);
+
+  /**
+   * 统计有几个询盘有未读消息
+   *
+   * @param purchasePkey
+   * @return
+   */
+  Integer countPurchaseUnreadByRelation_PurchaseGroupByRelation(Integer purchasePkey);
+
+  /**
+   * 通过uuid获取消息
+   *
+   * @param uuid 唯一标识
+   * @return
+   * @author Jianhua Ying
+   */
+  RFQConsultMessage findByUuid(String uuid);
 }

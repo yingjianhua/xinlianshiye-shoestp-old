@@ -31,7 +31,8 @@
     flex-grow: 1;
   }
   .w_1200 #lib_user_main{
-    width: 945px;
+    /*width: 945px;*/
+    width: 1000px;
   }
   #lib_user_main .lib_user_title{
     text-indent: 0;
@@ -48,7 +49,8 @@
       height: 100%;
   }
   .main_left{
-      width: 588px;
+      /*width: 588px;*/
+      width: 650px;
       float: left;
       padding: 20px;
       border: 1px solid #ddd;
@@ -111,6 +113,7 @@
           border: none;
           color: white;
           font-size: 16px;
+          cursor: pointer;
           background-color: #003d80;
           /* padding: 0 15px;
           min-width: 151px;
@@ -122,6 +125,9 @@
           background-color: rgba(235, 0, 0, 1);
           border-radius: 6px; */
       }
+        input.submit:hover{
+            background: #35c;
+        }
       .chooseImg{
           height: 100%;
           display: flex;
@@ -133,6 +139,10 @@
       height: 100%;
       /* margin:0 0 2px 7px; */
   }
+  /*上传图片超过5张后不显示加号按钮*/
+.chooseImg.no-plus-btn .el-upload--picture-card{
+    display: none;
+}
   .chooseBox p{
       text-align: center;
       border: 1px solid red;

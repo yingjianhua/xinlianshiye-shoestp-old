@@ -389,6 +389,15 @@ body {
   position: relative;
   top: 0;
   left: 0;
+  min-width: 150px;
+  white-space: nowrap;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   -webkit-transition: all .2s;
@@ -403,7 +412,13 @@ body {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#efefef));
   background-image: linear-gradient(to bottom, #ffffff, #efefef);
 }
-
+.tool-group .tool-drop-down-btn .select-text{
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 1;
+  flex-grow: 1;
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+}
 .tool-group .tool-drop-down-btn .icon-arrow-down {
   margin-left: 30px;
   -webkit-transition: all 0.2s;
@@ -628,7 +643,78 @@ body {
   font-size: 13px;
   line-height: 1.7;
 }
-
+/* 公司简介 底部表单 start */
+.contact-supplier{
+  margin-bottom: 50px;
+}
+.contact-supplier .title{
+  height: 80px;
+  line-height: 80px;
+  padding-top: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.contact-supplier .supplier-form{
+  background-color: #ffffff;
+  padding:55px 200px;
+}
+.contact-supplier .supplier-form .el-form-item__label{
+  color: #232323;
+  text-align: right;
+  font-weight: bold;
+}
+.contact-supplier .supplier-form .name .el-form-item__label,.contact-supplier .supplier-form .request .el-form-item__label{
+  padding: 0 0 0 10px;
+}
+.contact-supplier .supplier-form .flexSt{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+.contact-supplier .supplier-form .company-name{
+ margin: 0 20px 0 10px;
+ font-size: 18px;
+}
+.contact-supplier .supplier-form .company-logo{
+   width: 48px;
+   height: 48px;
+}
+.contact-supplier .supplier-form .company-logo img{
+   width: 100%;
+   height: 100%;
+   object-fit:contain;
+}
+.contact-supplier .supplier-form .upImg .el-upload-list--picture-card .el-upload-list__item-thumbnail{
+  object-fit: contain;
+}
+.contact-supplier .supplier-form .upImg .el-upload-list--picture-card .el-upload-list__item{
+    width: 51px;
+    height: 51px;
+}
+.contact-supplier .supplier-form .el-checkbox+.el-checkbox{
+  margin-left:0;
+}
+.contact-supplier .supplier-form .upImg .el-upload--picture-card{
+  width: 51px;
+  height: 51px;
+  padding-top: 16.5px;
+}
+.contact-supplier .supplier-form .el-button--primary{
+  background-color: #10389c;
+  font-size: 18px;
+}
+.new-style-page .wide{
+  width: 1240px;
+  margin: 0 auto;
+  min-width: 1240px;
+}
+/* 公司简介 底部表单 end */
 .bg-gray {
   padding-bottom: 60px;
   background: #dee6ee;
@@ -700,6 +786,7 @@ body {
 }
 
 .goods-wrap {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -748,7 +835,20 @@ body {
   margin: 0 auto;
   margin-bottom: 5px;
 }
-
+.goods-wrap .goods-item .goods-title .o2o-icon-wrap{
+  display: inline-block;
+  padding: 0 4px;
+  line-height: 18px;
+  font-size: 12px;
+  color: #b0b0b0;
+  border-radius: 50%;
+  background: #f6f7f9;
+}
+.goods-wrap .goods-item .goods-title .o2o-icon-wrap img{
+  width: 13px;
+  height: 11px;
+  margin-bottom: 3px;
+}
 .goods-wrap .goods-item .goods-title a {
   font-size: 13px;
   text-overflow:ellipsis;
@@ -767,6 +867,7 @@ body {
   line-height: 35px;
   padding: 0 18px;
   color: #fff;
+  font-size: 16px;
   border-radius: 18px;
   background: #222222;
 }

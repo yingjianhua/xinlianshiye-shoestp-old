@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+#help {
+  /*width: 1200px;*/
+  /*margin: 0 auto;*/
+}
+#help  .main{
+  width: 1240px;
+  min-width: 1240px;
+  margin: 0 auto;
+  padding-bottom: 50px;
+}
+#help h1 {
+  font-size: 40px;
+  padding: 40px 0 25px;
+}
+
+#help .msg {
+  display: flex;
+  justify-content: space-between;
+  /*border: 1px solid black;*/
+  margin-top: 20px;
+}
+
+#help .msg .nav {
+  flex-basis: 20%;
+  padding-bottom: 150px;
+  /*border-right: 1px solid black;*/
+  border: 1px #e5e5e5 dashed;
+  border-bottom: unset;
+  margin-right: 2%;
+}
+#help .msg .nav h1{
+  flex-basis: 22%;
+  font-size: 18px;
+  padding-bottom: 10px;
+  /*border-right: 1px solid black;*/
+  padding-left: 25px;
+  border-bottom: 1px #e5e5e5 dashed;
+}
+
+#help .msg .nav h3 {
+  font-weight: normal;
+  font-size: 15px;
+  padding: 10px 15px 10px 45px;
+  border-bottom: 1px #e5e5e5 dashed;
+}
+
+#help .msg .nav h3 a {
+  text-decoration: none;
+  color: black;
+}
+
+#help .msg .nav .acitved {
+  font-weight: bold;
+  padding: 15px 15px 15px 45px;
+}
+#help .msg .nav .sanji {
+  padding-left: 70px;
+}
+
+#help .msg .content {
+  flex: 1;
+  padding: 20px 15px 150px 15px;
+  background-color: white;
+  font-size: 15px;
+}
+#help .msg .content h3{
+  margin: 20px 0;
+  height: 20px;
+}
+#help .msg .content p {
+  font-size: 17px;
+}
+
+#help .msg .content h4 {
+  font-size: 16px;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+#help .msg .content h5 {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+#help .msg .content .intend1 {
+  width: 30px;
+  height: 22px;
+  display: inline-block;
+}
+
+#help .msg .content .intend2 {
+  width: 60px;
+  height: 22px;
+  display: inline-block;
+}

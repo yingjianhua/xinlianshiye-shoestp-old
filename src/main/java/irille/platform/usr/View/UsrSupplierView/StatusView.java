@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 public class StatusView implements BaseView {
-    private Byte id;
-    private String name;
+  private Byte id;
+  private String name;
 }

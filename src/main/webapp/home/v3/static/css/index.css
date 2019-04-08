@@ -254,6 +254,7 @@ body {
     transform: translate(-50%);
     width: 163.3px;
     background-color: #1a4091;
+    cursor: pointer;
 }
 
 #xc .section2 .product-list .product-item .inquiry-btn a.inquiry-a:hover {
@@ -642,6 +643,7 @@ a {
 }
 
 #xsq .goods-category-item .right-goods-wrap .goods-info-wrap {
+    width: 180px;
     padding: 4px 20px 6px;
     -webkit-transition: all 0.4s;
     transition: all 0.4s;
@@ -994,6 +996,7 @@ a {
     top: 33px;
     left: 0;
     z-index: 999;
+    min-width: 1240px;
     width: 100%;
     box-shadow: 0 2px 3px #ccc;
     background: #fff;
@@ -1032,6 +1035,7 @@ a {
 }
 
 #o2obottom {
+    min-width: 1240px;
     padding-top: 10px;
     background-color: #424d65;
 }
@@ -1240,7 +1244,7 @@ a {
 }
 
 #o2otop .o2otopcon .topsearch {
-    width: 680px;
+    width: 571px;
     height: 46px;
     border: 2px solid #10389c;
     box-sizing: border-box;
@@ -1302,7 +1306,7 @@ a {
 }
 
 #o2otop .o2otopcon .topsearch > input {
-    width: 530px;
+    width: 400px;
     height: 40px;
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
@@ -1348,6 +1352,10 @@ a {
     align-items: center;
     margin-left: 10px;
     position: relative;
+    cursor: pointer;
+}
+#o2otop .o2otopcon .o2otoplikes .o2otoplikenum{
+   position: relative;
 }
 
 #o2otop .o2otopcon .o2otoplikes:hover dd {
@@ -1371,6 +1379,7 @@ a {
     border: solid 1px #fff;
     background-color: #fff;
     z-index: 999;
+    box-sizing: border-box;
 }
 
 #o2otop .o2otopcon .o2otoplikes dd {
@@ -1391,7 +1400,7 @@ a {
 
 #o2otop .o2otopcon .o2otoplikes dd .other-login-list {
     width: 168px;
-    margin: 0 auto;
+    margin: 0 auto 10px auto;
 }
 
 #o2otop .o2otopcon .o2otoplikes dd .other-login-list .other-login-item {
@@ -1412,6 +1421,7 @@ a {
 #o2otop .o2otopcon .o2otoplikes dd .login-btn {
     background-color: #10389c;
     border-radius: 4px;
+    cursor: pointer;
 }
 
 #o2otop .o2otopcon .o2otoplikes dd .registered-btn a {
@@ -1500,21 +1510,18 @@ a {
 }
 
 #o2otop .o2otopcon .o2otoplikes .o2otoplikenum p:nth-child(1) {
-    width: 16px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 16px;
+    text-align: center;
     height: 16px;
+    line-height: 16px;
+    padding: 0 4.5px;
     background-color: #9fafd7;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    border-radius: 50%;
+    border-radius: 16px;
     color: white;
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 4px;
 }
 
@@ -1523,7 +1530,125 @@ a {
     font-size: 14px;
     color: #7f7f7f;
 }
+/* #o2otop .o2otopcon .o2otopmessage{
 
+
+}
+#o2otop .o2otopcon .o2otopmessage dt{
+
+} */
+#o2otop .o2otopcon .o2otopmessage dd{
+    position: absolute;
+    top: 49px;
+    z-index: 9;
+    right: 0;
+    width: 346px;
+    min-height: 100px;
+	max-height: 584px;
+	box-shadow: 0px 2px 4px 0px
+		rgba(187, 187, 187, 0.25);
+    border: solid 1px #d8d8d8;
+
+    padding: 0;
+    color: #7f7f7f;
+}
+#o2otop .o2otopcon .o2otopmessage dd .message-title{
+    height: 40px;
+    line-height: 40px;
+    padding: 0 15px;
+    border-bottom: 1px solid #dee2ec;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul{
+    border: none;
+    padding: 0;
+    max-height: 534px;
+    overflow: auto;
+    margin-bottom:0;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul .more-btn{
+    color: #10389c;
+    cursor: pointer;
+    text-align: center;
+    line-height: 40px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li{
+    height: auto;
+    line-height: normal;
+    border-top: 1px solid #dee2ec;
+    padding: 20px 15px 12px 15px;
+    font-size: 12px !important;
+    cursor:pointer;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .p_ellipsis{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    max-height: 32px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .message-icon{
+    width: 8px;
+	height: 8px;
+    border-radius: 50%;
+    margin:3px 5px 0 0;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .message-icon-new{
+    background-color: #d90202;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li .message-icon-old{
+    background-color: #d1d9ec;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack:start;
+    -ms-flex-pack:  flex-start;
+    justify-content: flex-start;
+    -webkit-box-align: start!important;
+    -ms-flex-align: start!important;
+        align-items: flex-start !important;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div{
+    width: 290px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div .div-time{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+            margin-top: 10px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div .div-time img{
+    margin-right:5px;
+}
+#o2otop .o2otopcon .o2otopmessage dd ul li a>div .div-content{
+    word-break: break-all;
+    /* min-height: 32px; */
+}
+
+#o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+  }
+  #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar-track{
+      background:#dee2ec;
+  }
+  #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+      min-height: 20px;
+      background:#fff;
+      border:1px solid #dee2ec;
+  }
+  #o2otop .o2otopcon .o2otopmessage ::-webkit-scrollbar-corner {
+    background:#dee2ec;
+  }
 #xc .el-progress-bar__outer {
     background-color: #dee2ec;
 }
@@ -1570,11 +1695,20 @@ a {
     font-size: 14px;
 }
 
+.sanduan .box .boxListWrap {
+    height: 292px;
+    overflow: hidden;
+}
 .sanduan .box .boxList {
-    padding-bottom: 16px;
+    /*padding-bottom: 16px;*/
+    margin-bottom: 16px;
     padding-left: 30px;
 }
-
+/*分类下的子类组*/
+.sanduan .box .boxListWrap .sub-list-wrap{
+    max-height: 40px;
+    overflow: hidden;
+}
 .sanduan .box .boxList-icon1 {
     width: 30px;
 }
@@ -1593,7 +1727,7 @@ a {
 
 .sanduan .box .h2 img {
     float: left;
-    margin-right: 5px;
+    /*margin-right: 5px;*/
     margin-left: -30px;
 }
 
@@ -1603,8 +1737,9 @@ a {
 
 .sanduan .box .boxList ul li {
     float: left;
-    margin-right: 28px;
     line-height: 20px;
+    width: 50%;
+    padding-right: 28px;
 }
 
 .sanduan .box .h3 {

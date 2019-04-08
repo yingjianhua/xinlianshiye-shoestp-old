@@ -1,0 +1,595 @@
+package irille.homeAction.usr;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
+import java.util.UUID;
+
+import javax.inject.Inject;
+
+import com.github.benmanes.caffeine.cache.Cache;
+import com.xinlianshiye.shoestp.common.errcode.MessageBuild;
+
+import irille.Filter.svr.ItpSessionmsg;
+import irille.homeAction.HomeAction;
+import irille.pub.LogMessage;
+import irille.pub.Str;
+import irille.pub.exception.ReturnCode;
+import irille.pub.exception.WebMessageException;
+import irille.pub.util.AppConfig;
+import irille.pub.util.CacheUtils;
+import irille.pub.validate.Regular;
+import irille.pub.validate.ValidRegex;
+import irille.shop.usr.UsrMain;
+import irille.shop.usr.UsrMainDao;
+import irille.view.usr.UserView;
+import lombok.Getter;
+import lombok.Setter;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.Mailer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * 用户Action
+ *
+ * @author chen
+ */
+public class UsrMainAction extends HomeAction<UsrMain> {
+
+  private static LogMessage LOG = new LogMessage(UsrMainAction.class);
+
+  @Inject private UsrMainDao.Ins ins;
+  @Inject private UsrMainDao.updPwd updPwd;
+  @Inject private UsrMainDao usrMainDao;
+
+  @Getter @Setter private String checkCode;
+  @Getter @Setter private String pwd;
+  @Getter @Setter private String pwdA;
+  @Getter @Setter private String email;
+  @Getter @Setter private Integer type;
+  @Getter @Setter private String firstName;
+  @Getter @Setter private String lastName;
+  @Getter @Setter private String telPre;
+  @Getter @Setter private String telMid;
+  @Getter @Setter private String telAft;
+  @Getter @Setter private String loginName;
+  @Setter @Getter private String code;
+
+  @Getter @Setter private String thirdName;
+  @Getter @Setter private String thirdId;
+  @Setter @Getter private String uid;
+  @Setter @Getter private Integer country;
+  @Setter @Getter private String name;
+  @Setter @Getter private String backUrl;
+  @Inject private Mailer mailer;
+  private static Map<String, String> mailTemplate;
+  private static final Logger logger = LoggerFactory.getLogger(UsrMainAction.class);
+
+  static {
+    mailTemplate = new HashMap<>();
+    List<String> list = Arrays.asList("checkEmail", "forgetPassWord");
+    for (String fileName : list) {
+      BufferedReader reader =
+          new BufferedReader(
+              new InputStreamReader(
+                  UsrMainAction.class.getResourceAsStream("/mailPage/" + fileName + ".html")));
+      StringJoiner stringJoiner = new StringJoiner("\r\n");
+      try {
+        while (reader.ready()) {
+          stringJoiner.add(reader.readLine());
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      mailTemplate.put(fileName, stringJoiner.toString());
+    }
+  }
+
+  /**
+   * pc端注册(3.0)
+   *
+   * @author chen
+   */
+  public void regist() throws IOException {
+    String code = verifyCode();
+    logger.debug(String.format("Method:%s\r\nCode:%s,", "regist", code));
+    if (Str.isEmpty(code) || Str.isEmpty(getCheckCode()) || code.equals(getCheckCode()) == false) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.service_verification_code, HomeAction.curLanguage()));
+    }
+    if (Str.isEmpty(getPwd()) || Str.isEmpty(getPwdA()))
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
+    if (uid == null
+        || CacheUtils.mailValid.getIfPresent(uid) == null
+        || !String.valueOf(CacheUtils.mailValid.getIfPresent(uid))
+            .equalsIgnoreCase(getBean().getEmail())) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
+    }
+    insBefore();
+    if (getBean().getEmail() == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+    }
+    // 忽略邮箱大小写
+    getBean().setEmail(getBean().getEmail().toLowerCase());
+    if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getBean().getEmail())) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
+    }
+    if (!ValidRegex.regMarch(Regular.REGULAR_PWD, pwd)) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.password_format, HomeAction.curLanguage()));
+    }
+    if (!pwd.equals(pwdA)) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.dif_password, HomeAction.curLanguage()));
+    }
+    if (getBean().getCompany() != null) {
+      if (!ValidRegex.regMarch(Regular.REGULAR_COMPANY, getBean().getCompany())) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.valid_companyNameRegex, HomeAction.curLanguage()));
+      }
+    }
+    if (getBean().getIdentity() == 1) {
+      if (!Str.isEmpty(getFirstName()) && !Str.isEmpty(getLastName())) {
+        String name = getFirstName() + "," + getLastName();
+        if (!ValidRegex.regMarch(
+            Regular.REGULAR_NAME, getFirstName().replace(" ", "") + getLastName().replace(" ", ""))) {
+          throw new WebMessageException(
+              MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+        }
+        getBean().setContacts(name);
+      } else {
+        getBean().setContacts(null);
+      }
+    } else {
+      if(Str.isEmpty(getBean().getNickname())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_name_notnull, HomeAction.curLanguage()));
+      }else{
+        if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+        }
+      }
+    }
+    if (getBean().getIdentity() == 0) {
+
+      String phone = (getTelPre() == null ? "" : getTelPre()) + "-" + (getTelMid() == null ? "" : getTelMid()) +  (getTelAft() == null ? "" : getTelAft());
+      if(Str.isEmpty(getTelPre())||Str.isEmpty(getTelAft())){
+        getBean().setTelphone("");
+      }else{
+        if(usrMainDao.validOnePhone(phone,getBean().getIdentity())){
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.service_phone_exists, HomeAction.curLanguage()));
+        }
+        if (!ValidRegex.regMarch(Regular.REGULAR_TEL, phone)) {
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
+        }
+        getBean().setTelphone(phone);
+      }
+    } else {
+      if (Str.isEmpty(getBean().getTelphone())) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.valid_phone_notnull, HomeAction.curLanguage()));
+      }
+      if(usrMainDao.validOnePhone(getBean().getTelphone(),getBean().getIdentity())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_phone_exists, HomeAction.curLanguage()));
+      }
+      if (!ValidRegex.regMarch(Regular.REGULAR_CHINATEL, getBean().getTelphone())) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.valid_phoneRegex, HomeAction.curLanguage()));
+      }
+    }
+    if (!Str.isEmpty(getBean().getAddress())) {
+      if (!ValidRegex.regMarch(Regular.REGULAR_ARRRESS, getBean().getAddress())) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.valid_adrRegex, HomeAction.curLanguage()));
+      }
+    }
+    UsrMain main = UsrMain.chkUniqueEmail(false, getBean().getEmail());
+    if (main != null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+    }
+    getBean().setPassword(getPwd());
+    ins.setB(getBean());
+    ins.commit();
+    insAfter();
+    write();
+    CacheUtils.mailValid.invalidate(uid);
+  }
+
+
+  /**
+   * 发送邮件
+   *
+   * @author chen
+   */
+  public void sendEm() throws GeneralSecurityException, IOException, JSONException {
+    if (getEmail() == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+    }
+    //  忽略邮箱大小写
+    setEmail(getEmail().toLowerCase());
+    if (!ValidRegex.regMarch(Regular.REGULAR_EMAIL, getEmail())) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mailRegex, HomeAction.curLanguage()));
+    }
+    UsrMain main = UsrMain.chkUniqueEmail(false, getEmail());
+    String title = "";
+    if (type == 0) {
+      String valide = verifyCode();
+      if (Str.isEmpty(valide)
+          || Str.isEmpty(getCheckCode())
+          || valide.equals(getCheckCode()) == false) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(
+                ReturnCode.service_verification_code, HomeAction.curLanguage()));
+      }
+
+      title = "User registration";
+      if (main != null) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
+    }
+    if (type == 3) {
+      title = "User registration";
+      if (main != null) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
+    }
+    if (type == 1) {
+      String valide = verifyCode();
+      if (Str.isEmpty(valide)
+          || Str.isEmpty(getCheckCode())
+          || valide.equals(getCheckCode()) == false) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(
+                ReturnCode.service_verification_code, HomeAction.curLanguage()));
+      }
+      title = "Forgot password";
+      if (main == null) {
+        throw new WebMessageException(
+            MessageBuild.buildMessage(ReturnCode.service_user_notfound, HomeAction.curLanguage()));
+      }
+      write();
+    }
+    //着陆页注册
+    if(type == 4) {
+      if (main != null) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
+      if (Str.isEmpty(getBean().getPassword())) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
+      }
+      if (!ValidRegex.regMarch(Regular.REGULAR_PWD, getBean().getPassword())) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.password_format, HomeAction.curLanguage()));
+      }
+      if(Str.isEmpty(getBean().getNickname())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_name_notnull, HomeAction.curLanguage()));
+      }
+      if (!ValidRegex.regMarch(Regular.REGULAR_NAME, getBean().getNickname())) {
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_nameRegex, HomeAction.curLanguage()));
+      }
+      if(getBean().getCountry() == null){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_country_notnull, HomeAction.curLanguage()));
+      }
+      if(Str.isEmpty(getBackUrl())){
+        throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.valid_url_notnull, HomeAction.curLanguage()));
+      }
+
+    }
+
+    String uid = UUID.randomUUID().toString();
+
+    // Integer code = (int) ((Math.random() * 9 + 1) * 100000);
+
+    switch (type) {
+      case 0:
+        Cache cache = CacheUtils.sendEm;
+        String value = String.valueOf(cache.getIfPresent(getEmail()));
+        if (value != null && !value.equals("null")) {
+          Long time = Long.parseLong(value);
+          long now = new Date().getTime();
+          int interval = (int) ((now - time) / 1000);
+          if (interval < 60) {
+            throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+          }
+        }
+
+        CacheUtils.mailValid.put(uid, getEmail());
+        CacheUtils.sendEm.put(getEmail(), new Date().getTime());
+        String mesg =
+            AppConfig.domain + "home/usr_UsrMain_completeReg?uid=" + uid + "&email=" + email;
+        mailer.sendMail(
+            EmailBuilder.startingBlank()
+                .withSubject("Shoestp User Registration")
+                .prependTextHTML(mailTemplate.get("checkEmail").replaceAll("\\{\\{url}}", mesg))
+                .from("Shoestp", "notice@service.shoestp.com")
+                .to(getEmail())
+                .buildEmail(),
+            true);
+        write();
+        return;
+      case 2:
+        Cache cachec = CacheUtils.sendEm;
+        String valuec = String.valueOf(cachec.getIfPresent(getEmail()));
+        if (valuec != null && !valuec.equals("null")) {
+          Long time = Long.parseLong(valuec);
+          long now = new Date().getTime();
+          int interval = (int) ((now - time) / 1000);
+          if (interval < 60) {
+            throw new WebMessageException(
+                MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+          }
+        }
+        Integer intCode=(int)((Math.random()*9+1)*100000);
+        String code=intCode.toString();
+        CacheUtils.pwdValid.put(code, getEmail());
+        CacheUtils.sendEm.put(getEmail(), new Date().getTime());
+        mailer.sendMail(
+            EmailBuilder.startingBlank()
+                .withSubject("Shoestp Rest Your Password")
+                .prependTextHTML(
+                    mailTemplate
+                        .get("forgetPassWord")
+                        .replaceAll("\\{\\{CODE}}", String.valueOf(code)))
+                .from("Shoestp", "notice@service.shoestp.com")
+                .to(getEmail())
+                .buildEmail(),
+            true);
+        write();
+        return;
+      case 3:
+        Cache cachea = CacheUtils.sendEm;
+        String valuea = String.valueOf(cachea.getIfPresent(getEmail()));
+        if (valuea != null && !valuea.equals("null")) {
+          Long time = Long.parseLong(valuea);
+          long now = new Date().getTime();
+          int interval = (int) ((now - time) / 1000);
+          if (interval < 60) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+          }
+        }
+        Integer intCodea=(int)((Math.random()*9+1)*100000);
+        String codea=intCodea.toString();
+        CacheUtils.mailValid.put(codea, getEmail());
+        CacheUtils.sendEm.put(getEmail(), new Date().getTime());
+        mailer.sendMail(
+                EmailBuilder.startingBlank()
+                        .withSubject("Shoestp Rest Your Password")
+                        .prependTextHTML(
+                                mailTemplate
+                                        .get("forgetPassWord")
+                                        .replaceAll("\\{\\{CODE}}", String.valueOf(codea)))
+                        .from("Shoestp", "notice@service.shoestp.com")
+                        .to(getEmail())
+                        .buildEmail(),
+                true);
+        write();
+        return;
+      case 4:
+        Cache cachef = CacheUtils.sendEm;
+        String valuef = String.valueOf(cachef.getIfPresent(getEmail()));
+        if (valuef != null && !valuef.equals("null")) {
+          Long time = Long.parseLong(valuef);
+          long now = new Date().getTime();
+          int interval = (int) ((now - time) / 1000);
+          if (interval < 60) {
+            throw new WebMessageException(
+                    MessageBuild.buildMessage(ReturnCode.send_ofen, HomeAction.curLanguage()));
+          }
+        }
+
+        CacheUtils.mailValid.put(uid, getEmail());
+        CacheUtils.sendEm.put(getEmail(), new Date().getTime());
+        String mesgf =
+                AppConfig.domain + "home/usr_UsrMain_simpleCompleteReg?uid=" + uid + "&email=" + getEmail()+ "&pwd=" + getBean().getPassword()+ "&name=" + getBean().getNickname()+ "&country=" + getBean().getCountry()+ "&backUrl=" +getBackUrl();
+        mailer.sendMail(
+                EmailBuilder.startingBlank()
+                        .withSubject("Shoestp User Registration")
+                        .prependTextHTML(mailTemplate.get("checkEmail").replaceAll("\\{\\{url}}", mesgf))
+                        .from("Shoestp", "notice@service.shoestp.com")
+                        .to(getEmail())
+                        .buildEmail(),
+                true);
+        write();
+        return;
+    }
+  }
+
+  /**
+   * 修改密码
+   *
+   * @author chen
+   */
+  public void updPwd() throws Exception {
+    if (code == null || code.length() < 1) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_UID, HomeAction.curLanguage()));
+    }
+    if (CacheUtils.pwdValid.getIfPresent(code) == null
+        || !CacheUtils.pwdValid.getIfPresent(code).equals(getEmail())) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.service_Invalid_email, HomeAction.curLanguage()));
+    }
+    if (getEmail() == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+    }
+    if (pwd == null) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
+    }
+    updPwd.setNewPwd(pwdA);
+    updPwd.setOldPwd(pwd);
+    updPwd.setEmail(getEmail().toLowerCase());
+    updPwd.commit();
+    CacheUtils.pwdValid.invalidate(code);
+    write();
+  }
+
+  /**
+   * 登陆(3.0)
+   *
+   * @author chen
+   */
+  public void login() throws Exception {
+    if (Str.isEmpty(loginName)) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_mail_notnull, HomeAction.curLanguage()));
+    }
+    if (Str.isEmail(pwd)) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_pwd_notnull, HomeAction.curLanguage()));
+    }
+    UserView userView =
+        usrMainDao.loginValid(loginName, pwd, thirdName, thirdId, HomeAction.curLanguage());
+    if (userView != null) {
+      setUser(userView);
+      if (userView.isSupplier()) {
+        ItpSessionmsg.getSessionmsg().setUser(userView);
+      }
+      JSONObject json = new JSONObject();
+      json.put("ret", 1);
+      json.put("sign", true);
+      json.put("jumpUrl", getParams("jumpUrl"));
+      writerOrExport(json);
+    } else {
+      JSONObject json = new JSONObject();
+      json.put("ret", 1);
+      json.put("sign", false);
+      writerOrExport(json);
+    }
+  }
+
+  /**
+   * 完成注册
+   *
+   * @author chen
+   */
+  public String completeReg() {
+    if (code != null && code.equalsIgnoreCase("status")) {
+      setResult("/home/v3/jsp/reg/register-step3.jsp");
+    } else {
+      Cache cache = CacheUtils.mailValid;
+      String value = String.valueOf(cache.getIfPresent(getUid()));
+      if (cache.getIfPresent(getUid()) != null && value.equalsIgnoreCase(getEmail())) {
+        setResult("/home/v3/jsp/reg/register-step2.jsp");
+      } else {
+        setResult("/home/v3/jsp/reg/register-error.jsp");
+      }
+    }
+    return HomeAction.TRENDS;
+  }
+
+  /**
+   * 提交验证码(重置密码)
+   *
+   * @author chen
+   * @throws IOException
+   */
+  public void subValid() throws IOException {
+    if (Str.isEmpty(getCode())) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.service_verification_code, HomeAction.curLanguage()));
+    }
+    if (getCode().trim().length() > 6) {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(ReturnCode.valid_code_overlenth, HomeAction.curLanguage()));
+    }
+    Cache cache = CacheUtils.pwdValid;
+    String value = String.valueOf(cache.getIfPresent(getCode()));
+    if (cache.getIfPresent(getCode()) != null
+        && value.equalsIgnoreCase(getEmail())) {
+      write();
+    } else {
+      throw new WebMessageException(
+          MessageBuild.buildMessage(
+              ReturnCode.service_Invalid_verification_code, HomeAction.curLanguage()));
+    }
+  }
+
+  public String register() {
+    setResult("/home/v3/jsp/reg/register-step1.jsp");
+    return HomeAction.TRENDS;
+  }
+
+  public String forget() {
+    setResult("/home/v3/jsp/forgetPassword/index.jsp");
+    return HomeAction.TRENDS;
+  }
+
+  @Getter @Setter private String id;
+
+  /**
+   * 根据id获取供应商注册信息
+   *
+   * @throws IOException
+   */
+  public void getRegistById() throws IOException {
+    write(UsrMainDao.getRegistById(id));
+  }
+  /**
+   * 完成注册
+   *
+   * @author chen
+   */
+  public String simpleCompleteReg() {
+
+      UsrMain main = UsrMain.chkUniqueEmail(false, getEmail());
+      if (main != null) {
+          throw new WebMessageException(
+                  MessageBuild.buildMessage(ReturnCode.service_user_exists, HomeAction.curLanguage()));
+      }
+      Cache cache = CacheUtils.mailValid;
+      String value = String.valueOf(cache.getIfPresent(getUid()));
+      if (cache.getIfPresent(getUid()) != null && value.equalsIgnoreCase(getEmail())) {
+        UsrMain us=new UsrMain();
+        us.setEmail(getEmail());
+        us.setNickname(getName());
+        us.setCountry(getCountry());
+        us.setIdentity((byte)0);
+        us.setPassword(getPwd());
+        us.setTelphone("");
+        ins.setB(us);
+        ins.commit();
+        setResult(getBackUrl()+"?result=1",false);
+        CacheUtils.mailValid.invalidate(uid);
+      } else {
+        setResult(getBackUrl()+"?result=0",false);
+      }
+
+    return RTRENDS;
+  }
+}

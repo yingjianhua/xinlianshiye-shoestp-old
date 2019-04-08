@@ -28,7 +28,7 @@ var user_obj={
 				return false;
 			}
 			$(this).find('button:submit').attr('disabled', true);
-			
+
 			$.post('/home/usr_UsrPurchase_signIn', $(this).serialize(), function(data){
 				$('#signin_module form[name=signin_form] button:submit').removeAttr('disabled');
 				if(data.ret!=1){
@@ -50,11 +50,11 @@ var user_obj={
 					}
 				}
 			}, 'json');
-			
+
 			return false;
 		});
 	},
-	
+
 	set_form_sign_in:function(type){//生成登录框
 		var Url=(typeof(arguments[1])=='undefined')?'':arguments[1];
 		var Model=(typeof(arguments[2])=='undefined')?0:arguments[2];
@@ -62,12 +62,12 @@ var user_obj={
 			obj=$('body'),
 			w=$(window),
 			regUrl='/home/usr_UsrPurchase_sign';
-			
+
 		if(type=='parent'){//父框架元素
 			obj=$(window.parent.document).find('body');
 			w=$(window.parent.window);
 		}
-		
+
 		if(obj.find('#attr_hide').val()){
 			addStr=obj.find('#attr_hide').serialize()?obj.find('#attr_hide').serialize():obj.find('#attr_hide').val();
 			addStr=Object(addStr);
@@ -82,22 +82,22 @@ var user_obj={
 		signin_html=signin_html+'<div class="row" id="w_login_vcode" style="display:none;"><label for="vcode">'+lang_obj.global.vcode+'</label><div class="clean"><input name="checkCode" class="lib_txt fl" type="text" maxlength="4" style="text-transform:uppercase; width:80px; margin-right:10px;" /><img src="/servlet/verify.img" onclick="this.src=\'/servlet/verify.img?name=login&length=4&charset=en&r=\'+Math.random();" class="fl" style="cursor:pointer;"></div></div>';
 		signin_html=signin_html+'<div class="row">'+lang_obj.signIn.forgot+'</div>';
 		signin_html=signin_html+'<div class="row protect"><input class="ckb" type="checkbox" name="IsStay" value="1" checked="checked" /> '+lang_obj.signIn.stay_note+'</div>';
-		signin_html=signin_html+'<div class="row"><button class="signbtn signin FontBgColor FontBorderColor" type="submit">'+lang_obj.signIn.sign_in+'</button>'+(!obj.find('form.register').length?'<a href="'+($('#addtocart_button').length?'/home/usr_UsrPurchase_sign?AddToCart=1'+(obj.find('#attr_hide').val()?'&'+addStr:''):'/home/usr_UsrPurchase_sign')+'" class="signbtn signup">'+lang_obj.signIn.join_fee+'</a>':'')+'</div>';					
+		signin_html=signin_html+'<div class="row"><button class="signbtn signin FontBgColor FontBorderColor" type="submit">'+lang_obj.signIn.sign_in+'</button>'+(!obj.find('form.register').length?'<a href="'+($('#addtocart_button').length?'/home/usr_UsrPurchase_sign?AddToCart=1'+(obj.find('#attr_hide').val()?'&'+addStr:''):'/home/usr_UsrMain_register')+'" class="signbtn signup">'+lang_obj.signIn.join_fee+'</a>':'')+'</div>';
 		signin_html=signin_html+'<input type="hidden" name="do_action" value="user.login" />';
 		signin_html=signin_html+'<input type="hidden" name="vcodeNum" id="w_vcode_num" value="1" />';
-		if(obj.find('input[name=jumpUrl]').length) 
+		if(obj.find('input[name=jumpUrl]').length)
 			signin_html=signin_html+'<input type="hidden" name="jumpUrl" value="'+$('input[name=jumpUrl]').serialize().replace('jumpUrl=', '')+'" />';
-		if(Url) 
+		if(Url)
 			signin_html=signin_html+'<input type="hidden" name="jumpUrl" value="'+Url+'" />';
 		signin_html=signin_html+'</form></div>';
 		signin_html=signin_html+'</div>';
-		
+
 		obj.find('#signin_module').length && obj.find('#signin_module').remove();
 		obj.prepend(signin_html);
 		obj.find('#signin_module').css({left:w.width()/2-220});
 		global_obj.div_mask();
 	},
-	
+
 	sign_up_init:function(){
 		var frm_register=$('#signup form.register');
 		frm_register.submit(function(){return false;});
@@ -106,7 +106,7 @@ var user_obj={
 			if(global_obj.check_form(frm_register.find('*[notnull]'), frm_register.find('*[format]'), 1)){
 				status+=1;
 			}else status+=0;
-			
+
 			if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test($('#Email').val())==false){
 				$('#Email').next().show();
 				status+=1;
@@ -114,7 +114,7 @@ var user_obj={
 				$('#Email').next().hide();
 				status+=0;
 			}
-			
+
 			if($('#Password').val()!=$('#Password2').val()){
 				$('#Password2').next().show();
 				status+=1;
@@ -124,7 +124,7 @@ var user_obj={
 			}
 			if(status) return false;
 			$(this).attr('disabled', true);
-			
+
 			$.post('/', frm_register.serialize(), function(data){
 				frm_register.find('button:submit').attr('disabled', false);
 				if(data.ret!=1){
@@ -140,7 +140,7 @@ var user_obj={
 				}
 			}, 'json');
 		});
-		
+
 		$('.amount').keydown(function(e){
 			var value=$(this).val();
 			var key=window.event?e.keyCode:e.which;
@@ -154,7 +154,7 @@ var user_obj={
 				return false;
 			}
 		});
-		
+
 		$('#send_email_btn').on('click', function(){
 			$email=$(this).attr('email');
 			$uid=$(this).attr('uid');
@@ -166,15 +166,15 @@ var user_obj={
 				}
 			}, 'json');
 		});
-	}, 
-	
+	},
+
 	user_login_binding:function(){
 		var frm_binding=$('#lib_user_binding form.login');
 		frm_binding.submit(function(){return false;});
 		frm_binding.find('button:submit').click(function(){
 			if(global_obj.check_form(frm_binding.find('*[notnull]'))){return false;};
 			$(this).attr('disabled', true);
-			
+
 			$.post('/', frm_binding.serialize()+'&do_action=user.user_oauth_binding', function(data){
 				frm_binding.find('button:submit').attr('disabled', false);
 				if(data.ret!=1){
@@ -185,7 +185,7 @@ var user_obj={
 			}, 'json');
 		});
 	},
-	
+
 	forgot_init:function (){
 		var frm_register=$('#signup form.register');
 		frm_register.submit(function(){return false;});
@@ -193,7 +193,7 @@ var user_obj={
 			if(global_obj.check_form(frm_register.find('*[notnull]'), frm_register.find('*[format]'), 1)){
 				status=1;
 			}else status=0;
-			
+
 			if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test($('#Email').val())==false){
 				$('#Email').next().show();
 				status=1;
@@ -201,10 +201,10 @@ var user_obj={
 				$('#Email').next().hide();
 				status=0;
 			}
-			
+
 			if(status==1) return false;
 			$(this).attr('disabled', true);
-			
+
 			$.post('/account/', frm_register.serialize(), function(data){
 				frm_register.find('.fotgotbtn').attr('disabled', false);
 				if(data.ret!=1){
@@ -214,12 +214,12 @@ var user_obj={
 				}
 			}, 'json');
 		});
-		
+
 		frm_register.find('.resetbtn').click(function(){//发送忘记密码邮件
 			if(global_obj.check_form(frm_register.find('*[notnull]'), frm_register.find('*[format]'), 1)){
 				status=1;
 			}else status=0;
-			
+
 			if($('#Password').val() && $('#Password2').val()){
 				if($('#Password').val()!=$('#Password2').val()){
 					$('#Password2').next().show();
@@ -231,10 +231,10 @@ var user_obj={
 			}else{
 				status=1;
 			}
-			
+
 			if(status==1) return false;
 			$(this).attr('disabled', true);
-			
+
 			$.post('/account/', frm_register.serialize(), function(data){
 				frm_register.find('.resetbtn').attr('disabled', false);
 				if(data.ret!=1){
@@ -246,13 +246,13 @@ var user_obj={
 		});
 	},
 	/******************* 登录或注册 End *******************/
-	
+
 	/******************* 会员首页 Start *******************/
 	user_index_init:function(){
 		$(".index_boxes.favorites").carousel(
 				{itemsPerMove:1,height:174,width:($(window).width()>=1250?568:470),duration:200,vertical:!1,step:1}
 			);
-		
+
 		$('.remove_newsletter').click(function(){
 			var $email=$(this).attr('email');
 			global_obj.win_alert(lang_obj.global.del_confirm, function(){
@@ -275,7 +275,7 @@ var user_obj={
 		});
 	},
 	/******************* 会员首页 End *******************/
-	
+
 	order_init:function(){
 		//编辑支付方式
 		$('.edit_pay_btn').click(function(){
@@ -304,7 +304,7 @@ var user_obj={
 							pay_content+='<div class="pay_contents_'+c[i].PId+'" '+w+'>'+c[i].Description+'</div>';
 							defaultPId==c[i].PId && (total+=parseFloat(c[i].AdditionalFee));
 						}
-						
+
 						var pay_html='<div id="pay_choose">';
 							pay_html+='<div class="box_bg"></div><a class="noCtrTrack" id="choose_close">×</a>';
 							pay_html+='<div id="choose_content"><form name="pay_edit_form" method="POST" action="">';
@@ -316,18 +316,18 @@ var user_obj={
 								pay_html+='</p>';
 							pay_html+='<input type="hidden" name="TotalPrice" value="'+total+'" /><input type="hidden" name="Symbols" value="'+data.msg.currency_symbols+'" /><input type="hidden" name="OId" value="'+$OId+'" /></form></div>';
 						pay_html+='</div>';
-						
+
 						$('#pay_choose').length && $('#pay_choose').remove();
 						$('body').prepend(pay_html);
 						$('#pay_choose').css({left:$(window).width()/2-220});
 						global_obj.div_mask();
-						
+
 						//提交编辑支付方式
 						$('form[name=pay_edit_form]').submit(function(){ return false; });
 						$('#pay_button').click(function(){
 							var obj=$('form[name=pay_edit_form]');
 							$(this).attr('disabled', 'disabled').blur();
-							
+
 							$.post('/?do_action=cart.orders_payment_update', obj.serialize(), function(data){
 								window.location.reload();
 							});
@@ -339,7 +339,7 @@ var user_obj={
 				}
 			});
 		});
-		
+
 		//关闭编辑支付方式
 		$('body').on('click', '#choose_close, #div_mask, #exback_button', function(){
 			if($('#pay_choose').length){
@@ -348,17 +348,17 @@ var user_obj={
 				$('.edit_pay_btn').removeAttr('disabled');
 			}
 		});
-		
+
 		//选择支付方式
 		$('body').on('change', 'form[name=pay_edit_form] select[name=PId]', function(){
 			var PId=$(this).val(),
 				Fee=parseFloat($(this).children('option:selected').attr('fee')),
 				total_price=parseFloat($('input[name=TotalPrice]').val());
-			
+
 			$('.choose_price>span').text($('input[name=Symbols]').val()+parseFloat(total_price+Fee).toFixed(2));
 			$('.pay_content>div.pay_contents_'+PId).css('display', 'block').siblings().css('display', 'none');
 		});
-		
+
 		$('#cancelForm').submit(function(){
 			if(global_obj.check_form($(this).find('*[notnull]'))){
 				return false;
@@ -372,7 +372,7 @@ var user_obj={
 			}
 			return false;
 		});
-		
+
 		$('.confirm_receiving').click(function(){
 			if(!confirm(lang_obj.user.sure)){
 				return false;
@@ -393,11 +393,11 @@ var user_obj={
 		});
 		*/
 	},
-	
+
 	user_address:function(){
 		$('.chzn-container-single .chzn-search').css('height', $('.chzn-container-single .chzn-search input').height());
 		!address_perfect && user_obj.set_default_address(0);
-		
+
 		$('a.chzn-single').off().on('click', function(){
 //			$.post("/home/plt_PltProvince_getAllProByCtr",function(data){
 //				  var da = JSON.parse(data);
@@ -407,7 +407,7 @@ var user_obj={
 //						$("#sldCountryHiden").val(value.pkey)
 //					} */
 //					 $("#getProvinces").append('<li class="group-option active-result" value='+value.pkey+'>'+value.name+'</li>')
-//		            })  
+//		            })
 //			  })
 			$(this).parent().next('p.errorInfo').text('');
 			if($(this).hasClass('chzn-single-with-drop')){
@@ -417,14 +417,14 @@ var user_obj={
 				if(!$('#country_chzn li.group-result:eq(0)').next('li.group-option').length) $('#country_chzn li.group-result').hide();
 			}
 		});
-		
+
 		$('.chzn-results li.group-option').live('mouseover', function(){
 			$(this).parent().find('li').removeClass('highlighted');
 			$(this).addClass('highlighted');
 		}).live('mouseout', function(){
 			$(this).removeClass('highlighted');
 		});
-		
+
 		$('#country_chzn li.group-option').click(function(){	//Select Country
 			 $("#sldProvince").text("")
 			 $("#getProvinces").text("")
@@ -434,7 +434,7 @@ var user_obj={
 				  var da = JSON.parse(data);
 				$.each(da.provinces, function (index, value) {
 					 $("#getProvinces").append('<li class="group-option active-result" value='+value.pkey+'>'+value.name+'</li>')
-		            })  
+		            })
 			  })
 			var obj=$('#country_chzn li.group-option').removeClass('result-selected').index($(this));
 			var s_cid=$('select[name=country_id]').val();
@@ -443,24 +443,24 @@ var user_obj={
 			var cid=$('select[name=country_id]').val();
 			(s_cid!=cid) && user_obj.get_state_from_country(cid);	//change country
 		});
-		
+
 		$('#zoneId li.group-option').live('click', function(){
 			$("#sldProvinceHiden").val(this.value);
 			var obj=$('#zoneId li.group-option').removeClass('result-selected').index($(this));
 			$(this).addClass('result-selected').parent().parent().css({'left':'-9000px'}).parent().removeClass('chzn-container-active').children('a').removeClass('chzn-single-with-drop').find('span').text($(this).text()).parent().parent().prev().find('option').eq(obj+1).attr('selected', 'selected');
 		});
-			
-		$(document).click(function(e){ 
+
+		$(document).click(function(e){
 			e = window.event || e; // 兼容IE7
 			obj = $(e.srcElement || e.target);
-			if (!$(obj).is("#country_chzn, #country_chzn *")) { 
+			if (!$(obj).is("#country_chzn, #country_chzn *")) {
 				$('#country_chzn').removeClass('chzn-container-active').css('z-index', '0').children('a').blur().removeClass('chzn-single-with-drop').end().children('.chzn-drop').css({'left':'-9000px'}).find('input').val('').parent().next().find('.group-option').addClass('active-result');
-			} 
-			if (!$(obj).is("#zoneId .chzn-container, #zoneId .chzn-container *")) { 
+			}
+			if (!$(obj).is("#zoneId .chzn-container, #zoneId .chzn-container *")) {
 				$('#zoneId .chzn-container').removeClass('chzn-container-active').css('z-index', '0').children('a').blur().removeClass('chzn-single-with-drop').end().children('.chzn-drop').css({'left':'-9000px'}).find('input').val('').parent().next().find('.group-option').addClass('active-result');
-			} 
+			}
 		});
-		
+
 		//JS search result from tagert tags
 		jQuery.expr[':'].Contains = function(a,i,m){
 			return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
@@ -484,7 +484,7 @@ var user_obj={
 		}
 		filterList("#country_chzn .chzn-search input", $("#country_chzn .chzn-results"));
 		filterList("#zoneId .chzn-search input", $("#zoneId .chzn-results"));
-		
+
 
 
 		/*$('button[id=useAddress]').click(function(){	//会员处理地址信息
@@ -507,7 +507,7 @@ var user_obj={
 		});
 
 
-		
+
 		$('input[name=Email], input[name=FirstName], input[name=LastName], input[name=PhoneNumber]').focus(function(){$(this).next().next('p.errorInfo').text('');});
 		$('input[name=AddressLine1], input[name=City], input[name=ZipCode]').focus(function(){$(this).next('p.errorInfo').text('');});
 		/*$('select[name=tax_code_type]').change(function(){
@@ -521,7 +521,7 @@ var user_obj={
 		}
 		$('select[name=tax_code_type]').change(function(){set_tax_code_value($(this), 1);});
 		set_tax_code_value($('select[name=tax_code_type]'));
-		
+
 		$('select[name=country_id]').change(function(){ //使用谷歌浏览器的自动表单填写功能，出现country_id自动选择，相关联效果不能自动实现
 			var name=$('select[name=country_id] option:selected').text(),
 				cid=$('select[name=country_id]').val();
@@ -532,7 +532,7 @@ var user_obj={
 				}
 			});
 		});
-		
+
 		function check_form_address(){
 			typeAddr=$('.editAddr form input[name=typeAddr]').val();
 			firstname=$('.editAddr form input[name=FirstName]');
@@ -546,19 +546,19 @@ var user_obj={
 			zipcode=$('.editAddr form input[name=ZipCode]');
 			phone=$('.editAddr form input[name=PhoneNumber]');
 			firstnameTips=lastnameTips=addressTips=cityTips=stateTips=countryTips=taxTips=tariffTips=zipTips=phoneTips='';
-			
+
 			if(typeAddr==1){
 				email=$('.editAddr form input[name=Email]');
 				emailTips='';
-			
+
 				if(email.val()=='')
 					emailTips=lang_obj.user.address_tips.email;
 				else if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(email.val())===false)
 					emailTips=lang_obj.user.address_tips.email_format;
-					
+
 				email.size() && email.next('p.errorInfo').text(emailTips);
 			}
-			
+
 			if(firstname.val()=='')
 				firstnameTips=lang_obj.user.address_tips.firstname;
 			else if(ueeshop_config.lang!='zh_TW' && ueeshop_config.lang!='jp' && firstname.val().length<2)
@@ -593,7 +593,7 @@ var user_obj={
 				else if(taxcode.val().length<taxlen)
 					taxTips=(lang_obj.user.address_tips.taxcode_length).replace('%str%', str).replace('%taxlen%', taxlen);
 			}
-			
+
 			if(typeof(tariff.attr("disabled"))=="undefined"){
 				str=tariff.prev().val()==3?'Personal ID':'VAT ID';
 				if(tariff.val()=='')
@@ -613,8 +613,8 @@ var user_obj={
 				phoneTips=lang_obj.user.address_tips.phone_format;
 			else if(phone.val().replace('-', '').length<7)
 				phoneTips=lang_obj.user.address_tips.phone_length;
-			
-			
+
+
 			firstname.size() && firstname.next().next('p.errorInfo').text(firstnameTips);
 			lastname.size() && lastname.next().next('p.errorInfo').text(lastnameTips);
 			address.size() && address.next('p.errorInfo').text(addressTips);
@@ -625,7 +625,7 @@ var user_obj={
 			tariff.size() && tariff.next().next().next('p.errorInfo').text(tariffTips);
 			zipcode.size() && zipcode.next('p.errorInfo').text(zipTips);
 			phone.size() && phone.next().next('p.errorInfo').text(phoneTips);
-			
+
 			if(typeAddr==1){if(email.size() && emailTips) return false;}//email 不存在导致js提交错误
 			if(firstnameTips==''&&lastnameTips==''&&addressTips==''&&cityTips==''&&stateTips==''&&countryTips==''&&taxTips==''&&tariffTips==''&&zipTips==''&&phoneTips=='')
 				return true;
@@ -633,7 +633,7 @@ var user_obj={
 				return false;
 		}
 	},
-	
+
 	get_state_from_country:function(cid){
 		$.ajax({
 			url:"/",
@@ -677,7 +677,7 @@ var user_obj={
 			}
 		});
 	},
-	
+
 	set_default_address:function(AId){
 		$.ajax({
 			url:"/",
@@ -692,7 +692,7 @@ var user_obj={
 					$('input[name=AddressLine1]').val(data.msg.address.AddressLine1);
 					$('input[name=AddressLine2]').val(data.msg.address.AddressLine2);
 					$('input[name=City]').val(data.msg.address.City);
-					
+
 					var index=$('select[name=country_id]').find('option[value='+data.msg.address.CId+']').eq(0).attr('selected', 'selected').index();
 					$('#country_chzn a span').text(data.msg.country.Country);
 					$('#country_chzn ul.chzn-results li.group-option').eq(index).addClass('result-selected');
@@ -701,7 +701,7 @@ var user_obj={
 						$('select[name=tax_code_type]').find('option[value='+data.msg.address.CodeOption+']').attr('selected', 'selected');
 						$('input[name=tax_code_value]').attr('maxlength', (data.msg.address.CodeOption==1?11:(data.msg.address.CodeOption==2?14:12))).val(data.msg.address.TaxCode);
 					}
-					
+
 					if(data.msg.country.HasState==1){
 						$('#zoneId div a span').text(data.msg.address.StateName);
 						var sindex=$('select[name=Province]').find('option[value='+data.msg.address.SId+']').attr('selected', 'selected').index();
@@ -709,10 +709,10 @@ var user_obj={
 					}else{
 						$('input[name=State]').val(data.msg.address.State);
 					}
-					
+
 					$('input[name=ZipCode]').val(data.msg.address.ZipCode);
 					$('input[name=CountryCode]').val('+'+data.msg.address.CountryCode).next().find('input[name=PhoneNumber]').val(data.msg.address.PhoneNumber);
-					
+
 				}else if(data.ret==2){
 					$('input[name=edit_address_id]').val('');
 					$('.editAddr input[name=FirstName]').val('').parent().next().find('input[name=LastName]').val('');
@@ -734,7 +734,7 @@ var user_obj={
 			}
 		});
 	},
-	
+
 	address_init:function(){
 		$('#edit_billing_addr').click(function(){
 			var addrId=$(this).attr('addrid');
@@ -748,18 +748,18 @@ var user_obj={
 			});
 			return false;
 		});
-		
+
 		$('#addAddress').click(function(){
-			
-			
+
+
 			$('#addressForm .errorInfo').html('');
 			user_obj.set_default_address(0);
 			$('#addressForm').slideUp('fast', function(){
 				$('.billing_addr, .shipping_addr').slideUp('fast', function(){
 					$('#addressForm').children('.big').text($('.shipping_addr').children('.big').text());
 					$('#addressForm').slideDown('fast');
-					
-					
+
+
 					$("#adname").val("");
 					$("#adsurname").val("");
 					$("#ademailcode").val("");
@@ -770,7 +770,7 @@ var user_obj={
 			});
 			return false;
 		});
-		
+
 		$('.edit_shipping_addr').click(function(){
 			var addrId=$(this).attr('addrid');
 			$('#addressForm').slideUp('fast', function(){
@@ -783,49 +783,49 @@ var user_obj={
 			});
 			return false;
 		});
-		
+
 		$('#cancelAddr').click(function(){
 			$('#addressForm').slideUp('fast', function(){
 				$('.billing_addr, .shipping_addr').slideDown('fast');
 			});
 			return false;
 		});
-		
+
 		$('.del_shipping_addr').click(function() {
 			return window.confirm(lang_obj.user.delete_shipping);
 		});
 	},
-	
+
 	inbox_init:function(){
 		$('.inbox_menu ul a').off().on('click', function(){
 			$('.inbox_menu .menu').eq($(this).parent().index()).removeClass('hide').siblings().addClass('hide');
 			$(this).addClass('current').parent().siblings().children('a').removeClass('current');
 		});
-		
+
 		$('#inbox_form').submit(function(){
 			if(global_obj.check_form($('#inbox_form *[notnull]'))){return false};
 		});
-		
+
 		user_obj.inbox_ajax_list('inbox_list');
 		user_obj.inbox_ajax_list('outbox_list');
 	},
-	
+
 	inbox_click:function(){
 		$('#turn_page').off().on('click', 'a', function(){
 			var name=$(this).attr('data'),
 				obj=$('#'+name),
 				page=$(this).attr('page');
-			
+
 			obj.attr('page', page);
 			user_obj.inbox_ajax_list(name);
 			return false;
 		});
 	},
-	
+
 	inbox_ajax_list:function(name){
 		var obj=$('#'+name),
 			page=obj.attr('page');
-		
+
 		$.post('/', {Name:name, Page:page, do_action:'user.get_inbox_list'}, function(data){
 			data=$.evalJSON(data);
 			if(data.ret==1){
@@ -848,7 +848,7 @@ $(function (){
 				signin_html=signin_html+'<div class="clean popbtn_box"><a class="pop_qxbtn qxclose">Browse other</a><a class="pop_qxbtn" href="/account/setting/">Application</a><div>';
 			signin_html=signin_html+'</div>';//id="lb-wrapper"
 		signin_html=signin_html+'</div>';//signin_module
-		
+
 		obj.find('#signin_module').length && obj.find('#signin_module').remove();
 		obj.prepend(signin_html);
 		obj.find('#signin_module').css({left:w.width()/2-220});

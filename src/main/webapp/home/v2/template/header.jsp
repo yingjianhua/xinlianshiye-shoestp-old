@@ -22,9 +22,8 @@
     <link rel="stylesheet" href="/home/v2/static/css/base/element-ui/element-ui.css"/>
     <link rel="stylesheet" href="/home/v2/static/css/base/foot.css"/>
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-    <script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
-            apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
-
+    <%--????--%>
+    <script src="/home/utils/util.js"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 

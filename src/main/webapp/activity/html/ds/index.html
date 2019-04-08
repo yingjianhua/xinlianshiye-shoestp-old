@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>迪盛</title>
+</head>
+<link rel="stylesheet" href="./css/reset.css"/>
+<link rel="stylesheet" href="./css/disheng.css"/>
+<link rel="stylesheet" href="./css/donghua.css"/>
+<link rel="stylesheet" href="./css/element-ui.css"/>
+<script src='./js/vue.min.js'></script>
+<!-- 引入组件库 -->
+<script src="./js/element-ui.min.js"></script>
+<script src="./js/axios.min.js"></script>
+<script src="./js/qs.js"></script>
+
+<body>
+<div id="dsIndex">
+    <!--顶部banner-->
+    <div class="banner">
+        <div class="box">
+            <img class="h1 ripple slideInUp" src="images/dslogo.png" alt=""/>
+            <div class="h2 ripple slideInUp">
+                Fashion Women Shoes Manufacturer<br/>
+                Leading OEM and ODM Capabilities
+            </div>
+            <div class="h3 ripple slideInUp">Focusing on making shoes over 23 year</div>
+            <img class="hPic1 ripple zoomIn" style="animation-delay:0.2s;" src="images/toppic1.png" alt=""/>
+            <img class="hPic2 ripple zoomIn" style="animation-delay:0.4s;" src="images/toppic2.png" alt=""/>
+            <img class="hPic3 ripple zoomIn" style="animation-delay:0.6s;" src="images/toppic3.png" alt=""/>
+            <div class="hBtn ripple slideInUp2" style="animation-delay:0.8s;" @click="gotowhere">GET OUR OFFER NOW</div>
+        </div>
+    </div>
+    <!--顶部banner end-->
+
+    <div class="hfloor1">
+        <div class="htitle ripple zoomIn">
+            <div>R&D</div>
+            <i></i>
+        </div>
+
+        <div class="box w1240">
+            <div class="ripple slideInUp">
+                DIsheng has independent development departments according to the role performance,
+                <br/>such as buyer dedicated team, sample making team, design team, the new material research team,
+                performance evaluation team, and lab.We organized R&D departments to visit world-class shoe fairs every
+                year to get more inspiration, such as FOOTWEAR SOURCING AT MAGIC, Expo Riva Schuh and TOKYO BIG SIGHT.
+                <br/>Trying our best to meet the demands of the era and to maximize customer satisfaction.
+            </div>
+            <img :class="gaogao>=200?'ripple slideInUp':'opacity0'" src="images/dishengpic1.jpg" alt=""/>
+        </div>
+    </div>
+
+
+    <div class="hfloor2">
+        <div class="htitle" :class="gaogao>=560?'ripple zoomIn':'opacity0'">
+            <div>Cooperation Brand</div>
+            <i></i>
+        </div>
+
+        <div class="box w1240">
+            <div :class="gaogao>=560?'ripple slideInUp':'opacity0'">Receiving compliments from the world's shoe
+                companies
+            </div>
+            <div class="h2">
+                <div class="flexCc">
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.1s;"
+                         src="images/hpic-f31.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.2s;"
+                         src="images/hpic-f32.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.3s;"
+                         src="images/hpic-f33.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.4s;"
+                         src="images/hpic-f34.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.5s;"
+                         src="images/hpic-f35.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.6s;"
+                         src="images/hpic-f36.jpg" alt=""/>
+                </div>
+                <div class="flexCc">
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.7s;"
+                         src="images/hpic-f37.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.8s;"
+                         src="images/hpic-f38.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:0.9s;"
+                         src="images/hpic-f39.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:1s;"
+                         src="images/hpic-f310.jpg" alt=""/>
+                    <img :class="gaogao>=560?'ripple zoomIn':'opacity0'" style="animation-delay:1.1s;"
+                         src="images/hpic-f311.jpg" alt=""/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="hfloor3">
+        <h1>Product Show</h1>
+        <ul>
+            <li :class="gaogao>=1160?'ripple slideInUp':'opacity0'" style="animation-delay:0s;"><img
+                    src="images/hpic-fcp1.jpg" alt=""/></li>
+            <li :class="gaogao>=1160?'ripple slideInUp':'opacity0'" style="animation-delay:0.1s;"><img
+                    src="images/hpic-fcp2.jpg" alt=""/></li>
+            <li class="sele" :class="gaogao>=1160?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;"><img
+                    src="images/hpic-fcp3.jpg" alt=""/></li>
+            <li :class="gaogao>=1160?'ripple slideInUp':'opacity0'" style="animation-delay:0.3s;"><img
+                    src="images/hpic-fcp4.jpg" alt=""/></li>
+            <li :class="gaogao>=1160?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;"><img
+                    src="images/hpic-fcp5.jpg" alt=""/></li>
+        </ul>
+
+        <span :class="gaogao>=1060?'ripple slideInUp':'opacity0'" style="animation-delay:1s;">Simple but fashionable, Lightweight, Abrasion-resistant, Slip-resistant, Free flexible.</span>
+    </div>
+
+
+    <div class="hfloor4">
+        <h1 :class="gaogao>=1800?'ripple slideInLeft':'opacity0'">Four Things You Can Get <br/>Once You Fill The Form
+            Below</h1>
+        <ul class="flexCc">
+            <li :class="gaogao>=1800?'ripple slideInUp':'opacity0'" style="animation-delay:0.1s;">
+                <div class="h1 flexCc"><img class="hpic1" src="images/icon-f41.png" alt=""/><img class="hpic2"
+                                                                                                 src="images/icon-f411.png"
+                                                                                                 alt=""/></div>
+                <div class="h2">Free Product Catalogue</div>
+                <div class="h3">We can provide you our full products catalog online.</div>
+            </li>
+            <li :class="gaogao>=1800?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;">
+                <div class="h1 flexCc"><img class="hpic1" src="images/icon-f42.png" alt=""/><img class="hpic2"
+                                                                                                 src="images/icon-f422.png"
+                                                                                                 alt=""/></div>
+                <div class="h2">Free Quate</div>
+                <div class="h3">A specific quote based on your requirements will be provided.</div>
+            </li>
+            <li :class="gaogao>=1800?'ripple slideInUp':'opacity0'" style="animation-delay:0.3s;">
+                <div class="h1 flexCc"><img class="hpic1" src="images/icon-f43.png" alt=""/><img class="hpic2"
+                                                                                                 src="images/icon-f433.png"
+                                                                                                 alt=""/></div>
+                <div class="h2">Factory-Direct Price</div>
+                <div class="h3">No middleman involved, you are buying from our own factory.</div>
+            </li>
+            <li :class="gaogao>=1800?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;">
+                <div class="h1 flexCc"><img class="hpic1" src="images/icon-f44.png" alt=""/><img class="hpic2"
+                                                                                                 src="images/icon-f444.png"
+                                                                                                 alt=""/></div>
+                <div class="h2">Customized service</div>
+                <div class="h3">We can manufacture OEM for you and customize your shoes to suit your brand. </div>
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="hfloor5" id="zaizheli">
+        <div class="w1240 flexCc">
+            <div class="box1" :class="gaogao>=2260?'ripple slideInLeft':'opacity0'">
+                <div class="h1">Get Your Offers Now</div>
+                <el-form :model="contactForm" :rules="contactRules" ref="contactForm">
+                    <el-form-item label="Name *" prop="name">
+                        <el-input type="text" v-model="contactForm.name"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Email *" prop="email">
+                        <el-input type="text" v-model="contactForm.email"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Phone Number *" prop="phone">
+                        <el-input type="text" v-model="contactForm.phone"></el-input>
+                    </el-form-item>
+                    <el-form-item label="Message" prop="content">
+                        <el-input type="textarea" v-model="contactForm.content"></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="submit" @click="submitForm('contactForm')">GET OUR OFFER NOW</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
+            <div class="box2">
+                <ul>
+                    <li :class="gaogao>=2260?'ripple slideInRight':'opacity0'" style="animation-delay:0.1s;">
+                        <div class="fl h1 flexCc"><img src="images/icon-f51.png" alt=""/></div>
+                        <div class="fl">
+                            <div class="h2">E-mail</div>
+                            <div class="h3">dingweifan88@gmail.com</div>
+                        </div>
+                    </li>
+                    <li :class="gaogao>=2260?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">
+                        <div class="fl h1 flexCc"><img src="images/icon-f52.png" alt=""/></div>
+                        <div class="fl">
+                            <div class="h2">Phone</div>
+                            <div class="h3">0086-18072028588</div>
+                        </div>
+                    </li>
+
+                    <li :class="gaogao>=2260?'ripple slideInRight':'opacity0'" style="animation-delay:0.3s;">
+                        <div class="fl h1 flexCc"><img src="images/icon-f53.png" alt=""/></div>
+                        <div class="fl">
+                            <div class="h2">Address</div>
+                            <div class="h3">Building 5, Hengtang
+                                <br/>Industrial Zone, Panqiao
+                                <br/>ITown, Ouhai District,
+                                <br/>IWenzhou, Zhejiang,
+                                <br/>China
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="hfloor6">
+        <div class="box w1240 flexSb">
+            <div class="h1 flexCc" :class="gaogao>=2860?'ripple slideInLeft':'opacity0'"><img
+                    src="images/dishengpic0.jpg" alt=""/></div>
+            <div class="htxt">
+                <div class="h2" :class="gaogao>=2860?'ripple slideInRight':'opacity0'">About us</div>
+                <div :class="gaogao>=2860?'ripple slideInRight':'opacity0'" style="animation-delay:0.2s;">
+                    　　Disheng Shoes Industry Co., Ltd. was founded in 1996 (formerly known as Aoerkang Shoes Industry
+                    Factory). In the early stage of the development from 1996 to 2000, the company served many
+                    well-known domestic shoe brands, such as Septwolves in Fujian. In 2001, the company valued the
+                    product development of customers in overseas markets and sought the transformation of the company.
+                    Up to now, the company has carried out many years of friendly cooperation with many well-known
+                    foreign brands. In 2008, the company moved to Panqiao Street in Ouhai District and officially
+                    changed its name to Disheng Shoes Industry Co., Ltd. The factory building area is 8856 square meters
+                    where one factory building and one staff quarter were built. The company has advanced production
+                    lines, years of production experience and strong technical capabilities. In the 20 years of
+                    development, the company adheres to the principle of closely cooperating with customers, helping to
+                    solve technical problems, and strictly controlling the quality of products to serve customers.
+                    Received high praise from customers in Europe, America, Japan, and Russia. From the small workshop
+                    operation to the construction of the company system, Disheng Footwear Co., Ltd emphasizes the four
+                    standards of management execution which include product creativity, employee cooperation and
+                    production standardization.
+                    <br/>　　Disheng Shoes Industry Co., Ltd. adheres to the principles of tolerance, fairness, and
+                    justice, persisting in encouraging its workers to be creative and hardworking.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hfloor7">
+        <div class="w1240">
+            <h1 :class="gaogao>=3300?'ripple zoomIn':'opacity0'">About The Advantage</h1>
+            <ul class="flexSb">
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f71.png" alt=""/></div>
+                    <div class="fl">
+                        <div class="h2">TRACK PRODUCTION<br/>
+                            PROGRESS
+                        </div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f72.png" alt=""/></div>
+                    <div class="fl">
+                        <div class="h2">MANUFACTURING PLANT</div>
+                        <div class="fc265c42">{{shuzi?shuzi:'0'}}㎡</div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f73.png" alt=""/></div>
+                    <div class="fl">
+                        <div class="h2">DELIVERY TIME</div>
+                        <div class="fc265c42">＜{{shuzi2?shuzi2:'0'}} DAYS</div>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="flexSb">
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f74.png" alt=""/></div>
+                    <div class="fl htxt">
+                        <div class="h2">CUSTOMER SERVICE</div>
+                        <div class="fc265c42">{{shuzi3?shuzi3:'0'}}Hour</div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f75.png" alt=""/></div>
+                    <div class="fl htxt">
+                        <div class="h2">MONTHLY PRODUCTION</div>
+                        <div class="fc265c42">{{shuzi4?shuzi4:'0'}},000 PAIRS</div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f76.png" alt=""/></div>
+                    <div class="fl htxt">
+                        <div class="h2">PRICE RANGE PER PAIR</div>
+                        <div class="fc265c42">${{shuzi6?shuzi6:'0'}}～${{shuzi7?shuzi7:'0'}}</div>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="flexSb">
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f77.png" alt=""/></div>
+                    <div class="fl htxt">
+                        <div class="h2">INTERNATIONAL PRODUCTION</div>
+                        <div class="fc265c42">TWO LINES</div>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <div class="h1 flexCc fl"><img src="images/icon-f78.png" alt=""/></div>
+                    <div class="fl htxt">
+                        <div class="h2">NEW STYLES PER YEAR</div>
+                        <div class="fc265c42">{{shuzi5?shuzi5:'0'}}+</div>
+                    </div>
+                </li>
+                <li></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="hfloor8">
+        <div class="h1" :class="gaogao>=4200?'ripple zoomIn':'opacity0'">
+            <div>Get Your Project</div>
+            <div>Started <span class="fc265c42">FASTER</span> With Disheng</div>
+        </div>
+        <div class="w1240">
+            <div class="box flexSb">
+                <img class="h2" src="images/dishengpic2.jpg"/>
+                <div class="hcom">
+                    <div class="h3" :class="gaogao>=4400?'ripple slideInRight':'opacity0'">Consultation</div>
+                    <div class="h4" :class="gaogao>=4400?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.1s;"><i></i>Based on customers' requirements, Disheng designs and
+                        formulates the production process for customers according to the style and requirements of the
+                        products to ensure reasonable prices for the common interests of customers and the company.
+                    </div>
+                    <div class="h4" :class="gaogao>=4400?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.2s;"><i></i>Repeated communication and professional advice help make
+                        the full use of the service provided by Disheng to solve the problems encountered by customers.
+                    </div>
+                </div>
+            </div>
+            <div class="box flexSb">
+                <div class="hcom">
+                    <div class="h3" :class="gaogao>=4760?'ripple slideInLeft':'opacity0'">Design</div>
+                    <div class="h4" :class="gaogao>=4760?'ripple slideInLeft':'opacity0'" style="animation-delay:0.1s;">
+                        <i></i>With more than 20 years of development, Disheng has accumulated a lot of practical
+                        experience to ensure the feasibility of production.
+                    </div>
+                    <div class="h4" :class="gaogao>=4760?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;">
+                        <i></i>The design team has visited various countries and is able to provide customers with the
+                        newest style samples for customers to choose by carefully analyzing fashion trend in the market
+                        over years.
+                    </div>
+                    <div class="h4" :class="gaogao>=4760?'ripple slideInLeft':'opacity0'" style="animation-delay:0.2s;">
+                        <i></i>All experienced designers in Disheng guarantee to meet the demands of different
+                        customers.
+                    </div>
+                </div>
+                <img class="h2" src="images/dishengpic3.jpg"/>
+            </div>
+            <div class="box flexSb">
+                <img class="h2" src="images/dishengpic4.jpg"/>
+                <div class="hcom">
+                    <div class="h3" :class="gaogao>=5060?'ripple slideInRight':'opacity0'">Manufacturing</div>
+                    <div class="h4" :class="gaogao>=5060?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.1s;"><i></i>Disheng has two international standard production lines to
+                        meet the various requirements of customers. The daily tasks are arranged accurately, the weekly
+                        tasks are formulated in advance, and the monthly tasks are prepared in advance to ensure that
+                        the products go online smoothly.
+                    </div>
+                    <div class="h4" :class="gaogao>=5060?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.2s;"><i></i>Prenatal trial production of online products, pay
+                        attention to the possible risks of products in advance. Through reports, seminars to solve
+                        production problems.
+                    </div>
+                    <div class="h4" :class="gaogao>=5060?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.3s;"><i></i>The single-line single-day production of 2,500 pairs of
+                        shoes ensures the digestion of a large number of orders.
+                    </div>
+                </div>
+            </div>
+            <div class="box flexSb">
+                <div class="hcom">
+                    <div class="h3" :class="gaogao>=5420?'ripple slideInLeft':'opacity0'">Quality Control</div>
+                    <div class="h4" :class="gaogao>=5420?'ripple slideInLeft':'opacity0'" style="animation-delay:0.1s;">
+                        <i></i>Quality is fundamental to the survival of the factory. The quality of products is assured
+                        by repetitive supervision in all aspects.
+                    </div>
+                    <div class="h4" :class="gaogao>=5420?'ripple slideInLeft':'opacity0'" style="animation-delay:0.1s;">
+                        <i></i>Disheng implements the concept of forwarding supervision and management, equips all
+                        levels of management to supervise, practical guidance, timely solution, rapid adjustment, and
+                        reduce product defect rate.
+                    </div>
+                    <div class="h4" :class="gaogao>=5420?'ripple slideInLeft':'opacity0'" style="animation-delay:0.1s;">
+                        <i></i>Disheng promise on sampling on the next day, making detailed reports and meeting in time
+                        to resolve problems. A number of inspectors check and make sure all the products are qualified.
+                    </div>
+                </div>
+                <img class="h2" src="images/dishengpic5.jpg"/>
+            </div>
+            <div class="box flexSb">
+                <img class="h2" src="images/dishengpic6.jpg"/>
+                <div class="hcom">
+                    <div class="h3" :class="gaogao>=5720?'ripple slideInRight':'opacity0'">Delivery</div>
+                    <div class="h4" :class="gaogao>=5720?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.1s;"><i></i>Disheng shall communicate with customers and make
+                        reasonable delivery time.
+                    </div>
+                    <div class="h4" :class="gaogao>=5720?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.2s;"><i></i>‘Would rather schedule a day earlier without delaying one
+                        second‘
+                    </div>
+                    <div class="h4" :class="gaogao>=5720?'ripple slideInRight':'opacity0'"
+                         style="animation-delay:0.3s;"><i></i>The goal of the work is to provide customers with a
+                        satisfactory delivery deadline.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="hfloor9">
+        <h1>Testimonials</h1>
+        <div class="w1240 flexSb">
+            <div class="box" :class="gaogao>=6400?'ripple slideInUp':'opacity0'">
+                <img class="h1" src="images/pic-f91.jpg" alt=""/>
+                <div class="h2">MICHAEL RUFFLE</div>
+                <div class="h3">I was really lucky when I found your company online. Your products are doing very well
+                    in my business and I can easily resell them in my country. I will definitely call you again!
+                </div>
+            </div>
+            <div class="box" :class="gaogao>=6400?'ripple slideInUp':'opacity0'" style="animation-delay:0.2s;">
+                <img class="h1" src="images/pic-f92.jpg" alt=""/>
+                <div class="h2">JOLLY MILLS</div>
+                <div class="h3">They are truly committed to providing our customers with the highest quality and most
+                    reliable service.
+                </div>
+            </div>
+            <div class="box" :class="gaogao>=6400?'ripple slideInUp':'opacity0'" style="animation-delay:0.4s;">
+                <img class="h1" src="images/pic-f93.jpg" alt=""/>
+                <div class="h2">MICHAEL RUFFLE</div>
+                <div class="h3">I was really lucky when I found your company online. Your products are doing very well
+                    in my business and I can easily resell them in my country. I will definitely call you again!
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="hfoot">
+        <div class="box1">
+            <div class="h1">Don't Hesitate To Contact Us</div>
+            <div class="hBtn" @click="gotowhere">GET OUR OFFER NOW</div>
+        </div>
+        <div class="box2">
+            <div class="w1240 flexSb">
+                <div class="flexSt">
+                    <img class="h1" src="images/hfoot1.png" alt=""/>
+                    <div class="">
+                        <img class="h2" src="images/hfoot2.png" alt=""/>
+                        <div>0086-18072028588</div>
+                    </div>
+                </div>
+                <div class="flexSt">
+                    <div class="">
+                        <img class="h2" src="images/hfoot3.png" alt=""/>
+                        <div>dingweifan88@gmail.com</div>
+                    </div>
+                </div>
+                <div class="flexSt">
+                    <img class="h1" src="images/hfoot4.png" alt=""/>
+                    <div class="">
+                        <div>Building 5, Hengtang Industrial Zone,
+                            <br/>Panqiao Town, Ouhai District, Wenzhou,
+                            <br/>Zhejiang, China
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+
+<script>
+    var interval = null;
+    new Vue({
+        el: '#dsIndex',
+        data: function () {
+            var ruleName = function (rule, value, callback) {
+                if (!value) {
+                    return callback(new Error("The name cannot be empty"));
+                } else {
+                    callback();
+                }
+            };
+
+            var ruleEmail = function (rule, value, callback) {
+                var regular = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                if (!value) {
+                    return callback(new Error("The mailbox cannot be empty"));
+                } else if (!regular.test(value)) {
+                    return callback(new Error("Please enter the correct email address"));
+                } else {
+                    callback();
+                }
+            };
+
+            var rulePhone = function (rule, value, callback) {
+                if (!value) {
+                    return callback(new Error("Can not be empty"));
+                } else if (!(/^1[34578]\d{9}$/.test(value))) {
+                    return callback(new Error("Please fill in the correct cell phone number."));
+                } else {
+                    callback();
+                }
+            };
+
+
+            var ruleContent = function (rule, value, callback) {
+                if (!value) {
+                    return callback(new Error("Can not be empty"));
+                } else {
+                    callback();
+                }
+            };
+            return {
+                contactForm: {
+                    name: "",
+                    email: "",
+                    phone: "",
+                    content: ""
+                },
+                contactRules: {
+                    name: [{validator: ruleName, trigger: ["blur", "change"]}],
+                    email: [{validator: ruleEmail, trigger: ["blur", "change"]}],
+                    phone: [{validator: rulePhone, trigger: ["blur", "change"]}],
+                    content: [{validator: ruleContent, trigger: ["blur", "change"]}]
+                },
+                gaogao: 0,
+                shuzi: 0,
+                shuzi2: 0,
+                shuzi3: 0,
+                shuzi4: 0,
+                shuzi5: 0,
+                shuzi6: 0,
+                shuzi7: 0,
+                jishicolse: 1,
+            };
+
+        },
+        mounted: function () {
+            window.addEventListener('scroll', this.handleScroll);
+        },
+        methods: {
+            // 表单提交
+            submitForm: function (formName) {
+                var that = this;
+                that.$refs[formName].validate(function (valid) {
+                    console.log(valid)
+                    if (valid) {
+                        axios.get('/home/Activity_Romania_inquiry', {
+                            params: {
+                                supId: 298,
+                                name: that.contactForm.name,
+                                email: that.contactForm.email,
+                                phone: that.contactForm.phone,
+                                detail: that.contactForm.content
+                            }
+                        }).then(function (res) {
+                            if (res.data.ret == 1) {
+                                that.$message({
+                                    message: 'Submit Success',
+                                    type: 'success'
+                                });
+                            }
+                        }).catch(function (err) {
+                            console.log(err)
+                            that.$message.error('Submission failed, please check the network');
+                        })
+                    } else {
+                        console.log("error submit!!")
+                        return false
+                    }
+                });
+            },
+            handleScroll: function () {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+                if (scrollTop > this.gaogao) {
+                    this.gaogao = scrollTop;
+                }
+                if (this.gaogao >= 3300 && this.jishicolse == 1) {
+                    this.jishi();
+                    this.jishicolse = 0;
+                }
+            },
+            gotowhere: function () {
+                if (document.documentElement.scrollTop <= 2800) {
+                    timer = setInterval(function () {
+                        var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+                        document.documentElement.scrollTop = document.body.scrollTop = osTop + 120;
+                        if (osTop >= 2800) {
+                            clearInterval(timer);
+                        }
+                    }, 30);
+                } else {
+                    timer = setInterval(function () {
+                        var osTop = document.documentElement.scrollTop || document.body.scrollTop;
+                        var ispeed = Math.floor(-osTop / 30);
+                        document.documentElement.scrollTop = document.body.scrollTop = osTop + ispeed;
+                        if (osTop <= 2900) {
+                            clearInterval(timer);
+                        }
+                    }, 30);
+                }
+            },
+            jishi: function () {
+                var that = this;
+                var currentTime = 0;
+                interval = setInterval(function () {
+                    currentTime++;
+                    that.shuzi = that.shuzi + 142;
+                    that.shuzi2 = that.shuzi2 + 1;
+                    that.shuzi3 = (that.shuzi3 * 10 + 0.4 * 10) / 10;
+                    that.shuzi4 = that.shuzi4 + 2;
+                    that.shuzi5 = that.shuzi5 + 32;
+                    that.shuzi6 = (that.shuzi6 * 10 + 0.1 * 10) / 10;
+                    that.shuzi7 = (that.shuzi7 * 10 + 0.2 * 10) / 10;
+                    if (currentTime >= 60) {
+                        clearInterval(interval);
+                        that.shuzi = 8856;
+                        that.shuzi2 = 60;
+                        that.shuzi3 = 24;
+                        that.shuzi4 = 120;
+                        that.shuzi5 = 2000;
+                        that.shuzi6 = 8;
+                        that.shuzi7 = 13;
+                    }
+                }, 60);
+            },
+        }
+    })
+</script>
+
+<!--Globalsitetag(gtag.js)-GoogleAds:783435725-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', newDate());
+    gtag('config', 'AW-783435725');
+</script>
+<!--Globalsitetag(gtag.js)-GoogleAnalytics-->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', newDate());
+    gtag('config', 'UA-127715615-6');
+</script>
+</html>

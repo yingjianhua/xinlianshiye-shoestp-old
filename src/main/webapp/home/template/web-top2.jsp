@@ -12,8 +12,6 @@
 <script type="text/javascript" src="/home/static/js/user.js"></script>
 <script type="text/javascript" src="/home/static/js/moment-with-locales.min.js"></script>
 <script src='/home/v2/static/js/base/axios.min.js'></script>
-<script src="https://js.fundebug.cn/fundebug.1.5.1.min.js"
-        apikey="afbc9f957e7689049c3282fe7696d30e7cb260e0ce11c148c0cf9e31d4e802f5"></script>
 
 
 <link rel="stylesheet" href="/home/v2/static/css/nav/new-top-nav-style.css"/>

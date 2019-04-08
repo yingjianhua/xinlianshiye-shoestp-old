@@ -1,0 +1,360 @@
+.flex-layout-column-wrap{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-direction: normal;
+  -webkit-box-orient: vertical;
+  -moz-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+#login {
+  background-color: whitesmoke;
+  /*padding-bottom: 150px;*/
+}
+
+#login .statecon {
+  width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+}
+
+#login .statecon .states {
+  width: 680px;
+  height: 177px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 0 50px;
+  position: relative;
+}
+
+#login .statecon .states .hen {
+  position: absolute;
+  top: 82px;
+  width: 213px;
+  height: 1px;
+  background-color: #dee2ec;
+}
+
+#login .statecon .states .left {
+  width: 240px;
+  left: 90px;
+}
+
+#login .statecon .states .right {
+  right: 70px;
+}
+
+#login .statecon .states .state {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+#login .statecon .states .state img {
+  width: auto;
+  height: 35px;
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  margin-bottom: 15px;
+}
+
+#login .statecon .states .state h3 {
+  font-family: MicrosoftYaHei;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 20px;
+  color: #b6b0b0;
+}
+
+#login .statecon .states .state .showimg {
+  filter: unset;
+  -webkit-filter: unset;
+}
+
+#login .statecon .states .state .showh3 {
+  color: #10389c;
+}
+
+#login .passwordcon {
+  width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  padding-bottom: 150px;
+}
+
+#login .passwordcon .formcon .input {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#login .passwordcon .formcon .input .label {
+  width: 420px;
+  height: 36px;
+  font-family: ArialMT;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 36px;
+  color: #232323;
+  text-align: right;
+  padding-right: 15px;
+}
+
+#login .passwordcon .formcon .input .fb {
+  font-weight: bold;
+}
+
+#login .passwordcon .formcon .input .email {
+  width: 780px;
+  font-family: Arial-BoldMT;
+  text-align: left;
+}
+
+#login .passwordcon .formcon .input input {
+  width: 320px;
+  height: 36px;
+  font-family: ArialMT;
+  font-size: 12px;
+  text-indent: 2em;
+  border: solid 1px #dee2ec;
+}
+
+#login .passwordcon .formcon .input input:focus {
+  outline: none;
+  box-shadow: inset 0px 1px 4px 0px rgba(0, 1, 1, 0.15);
+}
+
+#login .passwordcon .formcon .input .showmsg {
+  width: 460px;
+  height: 36px;
+  padding-left: 15px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#login .passwordcon .formcon .input .showmsg img {
+  margin-right: 5px;
+}
+
+#login .passwordcon .formcon .input .showmsg h4 {
+  white-space: pre;
+}
+
+#login .passwordcon .confirm {
+  width: 193px;
+  height: 36px;
+  margin: 0 auto;
+  background-color: #10389c;
+  border-radius: 3px;
+  text-align: center;
+  font-family: ArialMT;
+  font-size: 16px;
+  line-height: 36px;
+  color: #ffffff;
+  cursor: pointer;
+  margin-left: 420px;
+}
+
+#login .checksuccess {
+  width: 1200px;
+  margin: 0 auto;
+  background-color: white;
+  height: 200px;
+  text-align: center;
+  line-height: 50px;
+  font-size: 26px;
+  font-weight: bold;
+  padding-bottom: 150px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+.judge-email {
+  width: 1200px;
+  margin: 0 auto;
+  padding-top: 70px;
+  background-color: white;
+  padding-bottom: 50px;
+}
+
+.judge-email .hint {
+  width: 500px;
+  font-size: 14px;
+  color: #7f7f7f;
+  line-height: 20px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.judge-email .hint img[name="gantana"] {
+  width: 16px;
+  vertical-align: sub;
+}
+
+.judge-email .form {
+  width: 680px;
+  margin: 0 auto;
+  margin-top: 40px;
+}
+
+.judge-email .form-item {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.judge-email .form-item_label {
+  width: 135px;
+  font-size: 14px;
+  display: inline-block;
+  line-height: 36px;
+  color: #232323;
+  vertical-align: top;
+  text-align: right;
+  margin-right: 10px;
+}
+
+.judge-email .form-item_input {
+  width: 315px;
+  height: 36px;
+  font-size: 16px;
+}
+
+.judge-email .form-item_hint {
+  font-size: 12px;
+  display: inline-block;
+  line-height: 36px;
+  color: #e54544;
+  vertical-align: top;
+  margin-left: 10px;
+  position: absolute;
+  width: 300px;
+}
+
+.judge-email .form-item .register-hint {
+  display: inline-block;
+  font-size: 12px;
+  line-height: 30px;
+  color: #7f7f7f;
+}
+
+.judge-email .form-item .register-hint-btn {
+  color: #9fafd7;
+}
+
+.judge-email .form-item_code {
+  width: 170px;
+  margin-right: 8px;
+}
+
+.judge-email .form-item_codePass {
+  width: 100px;
+  margin-right: 10px;
+}
+
+.judge-email .form-item_error {
+  display: inline-block;
+  font-size: 12px;
+  color: #b0b0b0;
+  line-height: 36px;
+  position: absolute;
+  top: 0;
+}
+
+.judge-email .form-item_error img[name="cuo"] {
+  width: 16px;
+  vertical-align: sub;
+}
+
+.judge-email .form-item .code-image {
+  display: inline-block;
+  width: 137px;
+  height: 36px;
+  vertical-align: top;
+}
+
+.judge-email .form-item .code-image img {
+  display: inline-block;
+  /*height: 100%;*/
+  height: 28px;
+  margin-top: 4px;
+  width: 100%;
+  object-fit: contain;
+}
+
+.judge-email .form-item .send-button {
+  display: inline-block;
+  vertical-align: top;
+  height: 36px;
+  background-color: #dee2ec;
+  border-radius: 3px;
+  border: 1px solid #9fafd7;
+  font-size: 12px;
+  color: #7b8cb8;
+  text-align: center;
+  line-height: 25px;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.judge-email .form-item .button {
+  display: inline-block;
+  width: 193px;
+  height: 36px;
+  line-height: 36px;
+  text-align: center;
+  background-color: #10389c;
+  color: #fff;
+  margin-top: 60px;
+  font-size: 16px;
+  border-radius: 3px;
+}
+
+.judge-email .email {
+  font-size: 14px;
+  line-height: 36px;
+  vertical-align: top;
+}
+
+.boldface {
+  font-weight: bold;
+}
+
+.announcements {
+  width: 1081px;
+  margin: 0 auto;
+  margin-top: 60px;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  border: solid 1px #dcdcdc;
+  padding: 50px;
+}
+
+.announcements .announcements-h2 {
+  font-size: 18px;
+  color: #000;
+  line-height: 24px;
+  margin-bottom: 20px;
+}
+
+.announcements .announcements-p {
+  font-size: 12px;
+  color: #7f7f7f;
+  line-height: 24px;
+}

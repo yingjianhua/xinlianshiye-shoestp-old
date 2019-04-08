@@ -14,7 +14,7 @@
 			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
 			<interceptor name="ItpSessionmsg" class="irille.Filter.svr.ItpSessionmsg" />
 			<interceptor name="ItpCheckPurchaseLogin" class="irille.Filter.svr.ItpCheckPurchaseLogin" />
-			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
+			<interceptor name="ItpFileUpload" class="irille.Filter.svr.ItpFileUpload"/>
 
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
 			<interceptor-stack name="irilleStack">
@@ -37,10 +37,10 @@
 			<result name="rtrends" type="redirect">${result}</result>
 			<result name="tact" type="chain">${result}</result>
 		</global-results>
-		<action name="">
-			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result type="redirect">/home/usr_UsrPurchase</result>
-		</action>
+		<!--<action name="">-->
+			<!--<interceptor-ref name="defaultStack"></interceptor-ref>-->
+			<!--<result type="redirect">/home/usr_UsrPurchase</result>-->
+		<!--</action>-->
 		<action name="*_*_*" class="irille.homeAction.{1}.{2}Action" method="{3}"></action>
 	</package>
 	<package name="supplier" namespace="/seller" extends="struts-default">
@@ -50,7 +50,7 @@
 			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
 			<interceptor name="ItpSessionmsg" class="irille.Filter.svr.ItpSessionmsg" />
 			<interceptor name="ItpCheckSupplierLogin" class="irille.Filter.svr.ItpCheckSupplierLogin" />
-			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
+			<interceptor name="ItpFileUpload" class="irille.Filter.svr.ItpFileUpload"/>
 
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
 			<interceptor-stack name="irilleStack">
@@ -91,7 +91,7 @@
 			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
 			<interceptor name="ItpSessionmsg" class="irille.Filter.svr.ItpSessionmsg" />
 			<interceptor name="ItpCheckSupplierLogin" class="irille.Filter.svr.ItpCheckSupplierLogin" />
-			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
+			<interceptor name="ItpFileUpload" class="irille.Filter.svr.ItpFileUpload"/>
 
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
 			<interceptor-stack name="irilleStack">
@@ -129,7 +129,7 @@
 				<param name="ignoreActions">plt_PltConfig_enabledLanguage,plt_PltConfig_manageLanguage</param>
 			</interceptor>
 			<interceptor name="ItpDb" class="irille.pub.svr.ItpDb" />
-			<interceptor name="ItpFileUpload" class="irille.pub.svr.ItpFileUpload"/>
+			<interceptor name="ItpFileUpload" class="irille.Filter.svr.ItpFileUpload"/>
 
 			<!-- 拦截器栈配置,拦截栈可以包含拦截器栈 -->
 			<interceptor-stack name="irilleStack">

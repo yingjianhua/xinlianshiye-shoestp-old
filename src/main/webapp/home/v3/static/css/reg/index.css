@@ -1,0 +1,580 @@
+
+.page-register_1 .el-form-item__label, .page-register_2 .el-form-item__label {
+    white-space: nowrap;
+}
+
+.page-register_1 .el-input__inner, .page-register_2 .el-input__inner {
+    border-radius: 0;
+}
+
+.page-register_1 .el-button--primary, .page-register_2 .el-button--primary {
+    border-radius: 3px;
+    border-color: #10389c;
+    background-color: #10389c;
+}
+
+.page-register_1 .el-button--primary:hover, .page-register_2 .el-button--primary:hover {
+    border-color: #35c;
+    background-color: #35c;
+}
+
+.page-register_1 .my-validate-form .incase-autocomplete-input, .page-register_2 .my-validate-form .incase-autocomplete-input {
+    position: absolute;
+    z-index: -1;
+    left: 9999px;
+}
+
+.page-register_1 .my-validate-form .el-form-item, .page-register_2 .my-validate-form .el-form-item {
+    position: relative;
+}
+
+.page-register_1 .my-validate-form .el-form-item__error, .page-register_2 .my-validate-form .el-form-item__error {
+    top: 1px;
+    left: 109%;
+    line-height: inherit;
+    padding-top: 0;
+    white-space: nowrap;
+}
+
+.page-register_1 .my-validate-form .is-success .el-form-item__content:before, .page-register_1 .my-validate-form .el-form-item .el-form-item:last-child.is-success .el-form-item__content:before, .page-register_2 .my-validate-form .is-success .el-form-item__content:before, .page-register_2 .my-validate-form .el-form-item .el-form-item:last-child.is-success .el-form-item__content:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: auto;
+    right: -28px;
+    top: 12px;
+    width: 16px;
+    height: 15px;
+    background: url("/home/v3/static/images/login/icon_righta.png") no-repeat center/contain;
+}
+
+.page-register_1 .my-validate-form .is-error .el-form-item__content:before, .page-register_1 .my-validate-form .el-form-item .el-form-item:last-child.is-error .el-form-item__content:before, .page-register_1 .my-validate-form .el-form-item .el-form-item.is-error ~ .el-form-item:last-child .el-form-item__content:before, .page-register_2 .my-validate-form .is-error .el-form-item__content:before, .page-register_2 .my-validate-form .el-form-item .el-form-item:last-child.is-error .el-form-item__content:before, .page-register_2 .my-validate-form .el-form-item .el-form-item.is-error ~ .el-form-item:last-child .el-form-item__content:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: auto;
+    right: -28px;
+    top: 12px;
+    z-index: 9;
+    width: 16px;
+    height: 15px;
+    background: url("/home/v3/static/images/login/icon_cuo.png") no-repeat center/contain;
+}
+
+.page-register_1 .my-validate-form .el-form-item .el-form-item .el-form-item__content:before, .page-register_2 .my-validate-form .el-form-item .el-form-item .el-form-item__content:before {
+    background: none;
+}
+
+.page-register_1 .my-validate-form .el-form-item .el-form-item.is-error ~ .el-form-item .el-form-item__error, .page-register_2 .my-validate-form .el-form-item .el-form-item.is-error ~ .el-form-item .el-form-item__error {
+    display: none;
+}
+
+.page-register_1 .my-validate-form .el-form-item.is-required .el-form-item__label:before, .page-register_2 .my-validate-form .el-form-item.is-required .el-form-item__label:before {
+    content: "";
+}
+
+.page-register_1 .main, .page-register_2 .main {
+    padding: 60px 80px;
+    overflow: hidden;
+    font-size: 14px;
+    background: #fff;
+    box-sizing: border-box;
+}
+
+.page-register_1 .step-overview, .page-register_2 .step-overview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 720px;
+    margin: 0 auto;
+    margin-bottom: 80px;
+}
+
+.page-register_1 .step-overview:after, .page-register_2 .step-overview:after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 620px;
+    height: 1px;
+    transform: translate(-50%);
+    background: #b6b0b0;
+}
+
+.page-register_1 .step-overview .step-item, .page-register_2 .step-overview .step-item {
+    position: relative;
+    z-index: 1;
+    width: 66px;
+    height: 40px;
+    line-height: 40px;
+    flex: none;
+    text-align: center;
+    color: #fff;
+    cursor: default;
+    background: #fff;
+}
+
+.page-register_1 .step-overview .step-item .title, .page-register_2 .step-overview .step-item .title {
+    position: absolute;
+    top: 35px;
+    left: 50%;
+    transform: translate(-50%);
+    white-space: nowrap;
+    color: #b6b0b0;
+}
+
+.page-register_1 .step-overview .step-item:after, .page-register_2 .step-overview .step-item:after {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: 50%;
+    width: 24px;
+    height: 24px;
+    transform: translate(-50%, -50%) rotateZ(45deg);
+    border-radius: 4px;
+    background: #d8d8d8;
+}
+
+.page-register_1 .step-overview .step-item.active .title, .page-register_2 .step-overview .step-item.active .title {
+    color: #10389c;
+}
+
+.page-register_1 .step-overview .step-item.active:after, .page-register_2 .step-overview .step-item.active:after {
+    background: #10389c;
+}
+
+.page-register_1 .verification-code-wrap, .page-register_2 .verification-code-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.page-register_1 .verification-code-wrap .el-input, .page-register_2 .verification-code-wrap .el-input {
+    font: auto;
+}
+
+.page-register_1 .verification-code-wrap .pic-code, .page-register_2 .verification-code-wrap .pic-code {
+    flex: none;
+    width: 120px;
+    height: 24px;
+    margin-left: 15px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.page-register_1 .verification-code-wrap .icon-recycle, .page-register_2 .verification-code-wrap .icon-recycle {
+    position: absolute;
+    right: -28px;
+    top: 12px;
+    z-index: 9;
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.page-register_1 .verification-code-wrap01 .el-form-item__content:before, .page-register_2 .verification-code-wrap01 .el-form-item__content:before {
+    display: none !important;
+}
+
+.page-register_1 .step-one-wrap, .page-register_2 .step-one-wrap {
+    width: 500px;
+    margin: 0 auto;
+}
+
+.page-register_1 .step-two-wrap, .page-register_2 .step-two-wrap {
+    color: #232323;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box, .page-register_2 .step-two-wrap .operate-info-box {
+    width: 500px;
+    margin: 0 auto;
+    padding-bottom: 90px;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box .title, .page-register_2 .step-two-wrap .operate-info-box .title {
+    line-height: 24px;
+    margin-bottom: 30px;
+    font-weight: bold;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box .email, .page-register_2 .step-two-wrap .operate-info-box .email {
+    color: #e54544;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box .tips, .page-register_2 .step-two-wrap .operate-info-box .tips {
+    color: #7f7f7f;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box .btn-wrap, .page-register_2 .step-two-wrap .operate-info-box .btn-wrap {
+    margin-top: 36px;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box .btn-wrap .btn, .page-register_2 .step-two-wrap .operate-info-box .btn-wrap .btn {
+    min-width: 193px;
+}
+
+.page-register_1 .step-two-wrap .operate-info-box .btn-wrap .tips, .page-register_2 .step-two-wrap .operate-info-box .btn-wrap .tips {
+    display: inline-block;
+    margin-left: 6px;
+    cursor: pointer;
+    color: #9fafd7;
+}
+
+.page-register_1 .step-two-wrap .no-receive-tips, .page-register_2 .step-two-wrap .no-receive-tips {
+    padding: 50px;
+    border: solid 1px #dcdcdc;
+    border-radius: 3px;
+    background-color: #f5f5f5;
+}
+
+.page-register_1 .step-two-wrap .no-receive-tips .title, .page-register_2 .step-two-wrap .no-receive-tips .title {
+    margin-bottom: 25px;
+    font-size: 18px;
+    color: #232323;
+}
+
+.page-register_1 .step-two-wrap .no-receive-tips .tips-content, .page-register_2 .step-two-wrap .no-receive-tips .tips-content {
+    font-size: 12px;
+    color: #7f7f7f;
+}
+
+.page-register_1 .step-two-wrap .no-receive-tips .tips-content p, .page-register_2 .step-two-wrap .no-receive-tips .tips-content p {
+    margin-bottom: 12px;
+}
+
+.page-register_1 .my-popover-tips, .page-register_2 .my-popover-tips {
+    padding: 20px 28px;
+    text-align: left;
+    color: #232323;
+    border-radius: 0;
+}
+
+.page-register_1 .my-popover-tips .tips-list .tip-item, .page-register_2 .my-popover-tips .tips-list .tip-item {
+    position: relative;
+    line-height: 1.5;
+    color: #7f7f7f;
+    cursor: pointer;
+    margin-bottom: 8px;
+}
+
+.page-register_1 .my-popover-tips .tips-list .tip-item:after, .page-register_2 .my-popover-tips .tips-list .tip-item:after {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -10px;
+    top: 10px;
+    width: 3px;
+    height: 3px;
+    background: #4c4c4c;
+}
+
+.page-register_1 .my-popover-tips .tips-list .tip-item:last-child, .page-register_2 .my-popover-tips .tips-list .tip-item:last-child {
+    margin-bottom: 0;
+}
+
+.page-register_1 .my-popover-tips .tips-list .btn-resend, .page-register_2 .my-popover-tips .tips-list .btn-resend {
+    display: inline-block;
+    height: 26px;
+    line-height: 25px;
+    margin-top: 4px;
+    padding: 0 10px;
+    text-align: center;
+    color: #10389c;
+    border-radius: 3px;
+    border: solid 1px #9fafd7;
+    background-color: #ced6ea;
+}
+
+.page-register_1 .my-popover-tips .tips-list .btn-resend:hover, .page-register_2 .my-popover-tips .tips-list .btn-resend:hover {
+    color: #fff;
+    border-color: #9fafd7;
+    background-color: #10389c;
+}
+
+.page-register_1 .my-popover-tips .tips-list .go-back, .page-register_2 .my-popover-tips .tips-list .go-back {
+    color: #1a88cb;
+}
+
+.page-register_2 .my-popover-tips-psd {
+    padding: 22px 20px;
+    text-align: left;
+    color: #7f7f7f;
+    font-size: 12px;
+    border-radius: 0;
+    border-color: #ddd;
+    box-shadow: none;
+}
+
+.page-register_2 .my-popover-tips-psd .popper__arrow {
+    border-right-color: #ddd;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength {
+    display: flex;
+    align-items: center;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength .title {
+    flex: none;
+    margin-right: 24px;
+    font-weight: bold;
+    color: #000;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength .strength-bar {
+    display: flex;
+    flex: none;
+    width: 100px;
+    margin-right: 8px;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength .strength-bar .bar {
+    width: 32px;
+    height: 11px;
+    margin-right: 1px;
+    border-radius: 2px;
+    background-color: #d8d8d8;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength .strength-bar .bar.active {
+    background-color: #10389c;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength .strength {
+    color: #10389c;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list {
+    padding-left: 27px;
+    padding-top: 15px;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .tip-item {
+    position: relative;
+    line-height: 1.5;
+    line-height: 20px;
+    color: #7f7f7f;
+    margin-bottom: 6px;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .tip-item .isRight {
+    position: absolute;
+    left: -25px;
+    top: 4px;
+    width: 13px;
+    height: 11px;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .tip-item .isError {
+    position: absolute;
+    left: -24px;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .tip-item:last-child {
+    margin-bottom: 0;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .btn-resend {
+    display: inline-block;
+    height: 26px;
+    line-height: 25px;
+    margin-top: 4px;
+    padding: 0 10px;
+    text-align: center;
+    color: #10389c;
+    border-radius: 3px;
+    border: solid 1px #9fafd7;
+    background-color: #ced6ea;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .btn-resend:hover {
+    color: #fff;
+    border-color: #9fafd7;
+    background-color: #10389c;
+}
+
+.page-register_2 .my-popover-tips-psd .psd-strength-tips-list .go-back {
+    color: #1a88cb;
+}
+
+.page-register_2 .count-info-form {
+    position: relative;
+    width: 500px;
+    margin-left: 250px;
+}
+
+.page-register_2 .count-info-form .text-form-item {
+    margin-top: -12px;
+    margin-bottom: 10px;
+}
+
+.page-register_2 .count-info-form .text-form-item:first-child {
+    margin-top: 0;
+}
+
+.page-register_2 .count-info-form .have-info .el-form-item__label {
+    font-weight: bold;
+    color: #000;
+}
+
+.page-register_2 .count-info-form .el-form-item__label {
+    color: #7f7f7f;
+}
+
+.page-register_2 .count-info-form .two-division .half:first-child .el-form-item__error {
+    left: 229%;
+}
+
+.page-register_2 .count-info-form .two-division .half:nth-child(2) .el-form-item__error {
+    left: 120%;
+}
+
+.page-register_2 .count-info-form .two-division {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-register_2 .count-info-form .two-division .half {
+    width: 48%;
+}
+
+.page-register_2 .count-info-form .three-division {
+    display: flex;
+    justify-content: space-between;
+}
+
+.page-register_2 .count-info-form .three-division .one-third {
+    width: 32%;
+}
+
+.page-register_2 .count-info-form .three-division .one-third:first-child .el-form-item__error {
+    left: 343%;
+}
+
+.page-register_2 .count-info-form .three-division .one-third:nth-child(2) .el-form-item__error {
+    left: 235%;
+}
+
+.page-register_2 .count-info-form .three-division .one-third:nth-child(3) .el-form-item__error {
+    left: 129%;
+}
+
+.page-register_2 .count-info-form .pas-wrap {
+    position: relative;
+}
+
+.page-register_2 .count-info-form .pas-wrap .isPsdRight {
+    position: absolute;
+    left: 109%;
+    top: 1px;
+    white-space: nowrap;
+}
+
+.page-register_2 .count-info-form .pas-wrap .isPsdRight .red {
+    color: #e54544;
+}
+
+.page-register_2 .count-info-form .native-label {
+    margin-right: 20px;
+    cursor: pointer;
+    color: #7f7f7f;
+}
+
+.page-register_2 .count-info-form .native-label input[type="radio"] {
+    margin: -1px 1px 0 0;
+}
+
+.page-register_2 .count-info-form .tel-wrap .tel-inner {
+    display: flex;
+}
+
+.page-register_2 .count-info-form .tel-wrap .tel-inner span {
+    margin: 0 3px;
+    color: #656565;
+}
+
+.page-register_2 .count-info-form .tel-wrap .tel-inner1 {
+    width: 70px;
+    flex: none;
+}
+.page-register_2 .count-info-form .tel-wrap .tel-inner1.isRight .el-input__inner{
+    border-color: #67c23a;
+}
+.page-register_2 .count-info-form .tel-wrap .tel-inner1 .el-form-item__error {
+    left: 398px;
+}
+
+.page-register_2 .count-info-form .tel-wrap .tel-inner2 {
+    width: 70px;
+    flex: none;
+}
+.page-register_2 .count-info-form .tel-wrap .tel-inner2.isRight .el-input__inner{
+    border-color: #67c23a;
+}
+
+.page-register_2 .count-info-form .tel-wrap .tel-inner2 .el-form-item__error {
+    left: 319px;
+}
+
+.page-register_2 .count-info-form .tel-wrap .tel-inner3 .el-form-item__error {
+    left: 237px;
+}
+
+.page-register_2 .count-info-form .tel-wrap .el-form-item__error {
+    left: 237px;
+}
+
+.page-register_2 .count-info-form .detail-addr-input {
+    margin-top: -10px;
+}
+
+.page-register_2 .count-info-form .detail-addr-input .el-textarea__inner {
+    height: 124px;
+    border-radius: 0;
+}
+
+.page-register_2 .count-info-form .verification-code-wrap .icon-recycle {
+    position: static;
+    width: 15px;
+    height: 15px;
+    margin: 0 2px 0 12px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.page-register_2 .count-info-form .agreement {
+    display: flex;
+    line-height: 18px;
+    margin-bottom: 26px;
+    color: #7f7f7f;
+}
+
+.page-register_2 .count-info-form .agreement .label {
+    flex: none;
+    width: 135px;
+    padding-right: 6px;
+    text-align: right;
+}
+
+.page-register_2 .count-info-form .agreement .agreement-list p {
+    margin-bottom: 6px;
+    white-space: nowrap;
+}
+
+.page-register_2 .count-info-form .agreement .agreement-list p .link {
+    color: #9fafd7;
+    cursor: pointer;
+}
+
+.page-register_2 .count-info-form .agreement .agreement-list p:last-child {
+    margin-bottom: 0;
+}
+
+/*# sourceMappingURL=index.css.map */

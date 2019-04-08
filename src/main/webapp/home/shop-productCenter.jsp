@@ -37,6 +37,8 @@
 </head>
 <jsp:include page="v3/header.jsp"/>
 <jsp:include page="v3/nav.jsp"/>
+
+
 <body class="lang_en w_1200">
 <%@ include file="/home/template/web-top.jsp" %>
 <div id="main">
@@ -58,7 +60,6 @@
         <div class="wide">
             <div class="enterprise-info-wrap">
                 <h3 class="enterprise-info-title clearfix">
-                <%--<h3 class="enterprise-info-title clearfix" style="margin-bottom: 5px">--%>
                     <s:text name="hottestItems"/>
                     <div class="fr">
                         <ul class="tool-group">
@@ -66,33 +67,33 @@
                                 <span class="tool-name"><s:text name="sort_by"/></span>
                                 <div class="tool-content tool-drop-down-wrap">
                                     <div class="tool-drop-down-btn">
-                    <span class="select-text" id="sort">
-                    		<s:text name="most_popular"/>
-                    </span>
+                                        <span class="select-text" id="sort">
+                                                <s:text name="most_popular"/>
+                                        </span>
                                         <i class="icon icon-arrow-down"></i>
                                     </div>
 
                                     <div class="tool-drop-down-content">
                                         <ul>
                                             <li>
-                                                <a href="javascript:chooseThisSort(0);"><s:text
+                                                <a @click="chooseThisSort(0);"><s:text
                                                         name="most_popular"/></a>
                                             </li>
                                             <li>
-                                                <a href="javascript:chooseThisSort(1);"><s:text
+                                                <a @click="chooseThisSort(1)"><s:text
                                                         name="sales"/></a>
                                             </li>
                                             <li>
-                                                <a href="javascript:chooseThisSort(2);"><s:text
+                                                <a @click="chooseThisSort(2)"><s:text
                                                         name="fav"/></a>
                                             </li>
                                             <li>
-                                                <a href="javascript:chooseThisSort(3);"><s:text
+                                                <a @click="chooseThisSort(3)"><s:text
                                                         name="new"/></a>
 
                                             </li>
                                             <li>
-                                                <a href="javascript:chooseThisSort(4);"><s:text
+                                                <a @click="chooseThisSort(4)"><s:text
                                                         name="price"/></a>
                                             </li>
                                         </ul>
@@ -104,19 +105,26 @@
                                 <span class="tool-name"><s:text name="attr.category"/></span>
                                 <div class="tool-content tool-drop-down-wrap">
                                     <div class="tool-drop-down-btn">
-                    <span class="select-text" id="category">
-						<s:text name="allCategories"/>
-					</span>
+                                        <span class="select-text" id="category">
+                                            <s:text name="allCategories"/>
+                                        </span>
                                         <i class="icon icon-arrow-down"></i>
                                     </div>
 
                                     <div class="tool-drop-down-content">
                                         <ul class="category">
-                                            <li><a onclick="chooseThisCat('')"><s:text
-                                                    name="allCategories"/></a></li>
+                                            <li>
+                                                <a @click="chooseThisCat"
+                                                   data-cat-pkey=""
+                                                   data-cat-name="<s:text name='allCategories'/>"><s:text name="allCategories"/></a>
+                                            </li>
                                             <c:forEach items="${topDiyCat}" var="cat">
                                                 <li>
-                                                    <a onclick="chooseThisCat(${cat.pkey},'${cat.name}')">${cat.name}</a>
+                                                    <a @click="chooseThisCat"
+                                                        data-cat-pkey="${cat.pkey}"
+                                                        data-cat-name="${cat.name}"
+                                                    >${cat.name}</a>
+                                                    <%--<a @click="chooseThisCat(${cat.pkey},'${cat.name}')">${cat.name}</a>--%>
                                                 </li>
                                             </c:forEach>
                                         </ul>
@@ -126,49 +134,76 @@
                         </ul>
                     </div>
                 </h3>
-                <div  style="clear:both;"></div>
+                <div style="clear:both;"></div>
 
                 <!-- 商品展示 -->
-                <%--  <c:if test="${pageAll != 0}"> --%>
-                <div class="goods-wrap" id="products">
-                </div>
-                <!-- 页面跳转 - 按钮组 -->
-                <ul id="turn_page">
-                </ul>
-                <%--  </c:if> --%>
-                <%--  <c:if test="${pageAll == 0}">
 
-                 </c:if> --%>
+                <div class="goods-wrap">
+                    <div class="goods-box" v-for="item,index in products" style="width: 284px">
+                        <div class="goods-item">
+                            <div class="goods-pic pic_box">
+                                <a :href="'/' + item.rewrite" title="item.name" target="_blank">
+                                    <img :src="getFirstPic(item.pdt.picture)">
+                                </a>
+                                <span></span>
+                            </div>
+                            <h5 class="goods-title">
+                                <a :href="'/' + item.rewrite" title="" target="_blank"><%--
+                                    O2O图标--%><span class="o2o-icon-wrap" v-if="item.pdt.productType==4"><img src="/home/v3/static/images/ico/icon_o2o.png" alt=""/>
+                                                    O2O
+                                                </span>
+                                    {{item.pdt.name}}
+                                </a>
+                            </h5>
+                            <div class="goods-price">${env.currency.symbols} {{item.pdt.curPrice}}</div>
+                            <div class="btn btn-enter">
+                                <a @click="addRFQ" :data-proid="item.pdt.pkey"
+                                    href="javascript: void(0);" class="btn btn-enter" target="_blank">
+                                    <%--<s:text name="show_now"/>--%>
+                                    Inquiry
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <!-- 没有商品时显示 -->
-                <div style="border-top: 1px dotted #ccc;text-align: center;display: none;" id="noGoods">
+                <div style="border-top: 1px dotted #ccc;text-align: center;" v-show="products.length==0">
                     <p style="padding: 215px 0;text-align: center;display:  inline-block;">
                         <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
                         未发布此类产品
                         <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
                     </p>
                 </div>
+
+                <!-- 页面跳转 - 按钮组 -->
+                <div class="page-box" style="text-align: center;">
+                    <el-pagination
+                            v-if="totalCount>0"
+                            background
+                            @current-change="handleCurrentChange"
+                            prev-text="< Previous"
+                            next-text="Next >"
+                            :current-page="currentPage"
+                            layout="prev, pager, next"
+                            :page-count="totalCount">
+                    </el-pagination>
+                </div>
+
                 <div class="blank25"></div>
             </div>
         </div>
-            <index-bottom></index-bottom>
+        <index-bottom></index-bottom>
     </div>
 
-    <%--<%@ include file="/home/template/new-foot.jsp" %>--%>
 
     <div align="center">
     </div>
 </div>
 
-<script type="text/javascript">
-    var pkey = '${supView.pkey}';
-    var page = 1;
-    var cated = -1;
-    var rankingBasis = -1;
-    var type = 1;
-    var allPage = 0;
-    window.onload = function () {
-        getData();
-    }
+<!-- <script type="text/javascript">
+
 
     function getData() {
         var param = {
@@ -365,32 +400,143 @@
         $(".tool-group .tool-drop-down-btn").removeClass("active");
         // e.stopPropagation();
     });
-</script>
+</script> -->
 
 ${supView.traceCode}
 <script src="/home/v3/static/js/index-top.js"></script>
 <script src="/home/v3/static/js/index-bottom.js"></script>
 <script>
     new Vue({
-        el:"#main"
+        el: "#main",
+        data: {
+            pkey: '',
+            totalCount: 0,
+            currentPage: 1,
+            cated: -1,
+            rankingBasis: -1,
+            type: 1,
+            products: [],
+        },
+        mounted() {
+            this.pkey = this.GetQueryString("pkey")
+            this.getProducts();
+        },
+        methods: {
+            // 读取链接带参
+            GetQueryString(name) {
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                var r = window.location.search.substr(1).match(reg);
+                if (r != null) return unescape(decodeURIComponent(r[2]));
+                return null;
+            },
+
+            getProducts() {
+                var that = this;
+                axios.get('/home/pdt_PdtProduct_getProductBySup', {
+                    params: {
+                        "pkey": that.pkey,
+                        "page": that.currentPage,
+                        "limit": 16,
+                        "cated": that.cated,
+                        "rankingBasis": that.rankingBasis,
+                        "basis": that.type
+                    }
+                })
+                    .then(function (res) {
+                        console.log(res);
+                        if (res.data.page) {
+                            that.products = res.data.items;
+                            that.totalCount = res.data.pageAll;
+                        } else {
+                            that.$message.error(res.data.msg || "Network exception, please try again later");
+                        }
+                    })
+                    .catch(function (error) {
+                        that.$message.error(res.data.msg || "Network exception, please try again later");
+                    });
+            },
+            getFirstPic: function (str) {
+                console.log(str)
+                if (str == '') {
+                    return '/home/static/images/noImage.png';
+                } else {
+
+                    if (str.indexOf(",") != -1) {
+                        return '${envConfig.imageBaseUrl}' + str.split(",")[0]
+                            + '?x-oss-process=image/resize,m_pad,h_256,w_256';
+                    } else {
+                        return '${envConfig.imageBaseUrl}' + str + '?x-oss-process=image/resize,m_pad,h_256,w_256';
+                    }
+                }
+            },
+            handleCurrentChange(val) {  // 点击页数 跳转
+                this.currentPage = val
+                // this.start = (this.currentPage - 1) * this.limit;
+                this.getProducts();
+            },
+            chooseThisCat: function (e) {
+                let cat = e.currentTarget.dataset.catPkey || "";
+                let catName = e.currentTarget.dataset.catName;
+                this.cated = cat;
+                $("#category").text(catName);
+                this.page = 1;
+                this.getProducts();
+
+                // 将显示出来的下拉内容隐藏掉
+                $(".tool-group .tool-drop-down-content").hide();
+                $(".tool-group .tool-drop-down-btn").removeClass("active");
+            },
+            chooseThisSort: function (sort) {
+
+                this.rankingBasis = sort;
+                var sortName = '<s:text name="most_popular"/>';
+                switch (sort) {
+                    case 1:
+                        sortName = '<s:text name="sales"/>';
+                        break;
+                    case 2:
+                        sortName = '<s:text name="fav"/>';
+                        break;
+                    case 3:
+                        sortName = '<s:text name="new"/>';
+                        break;
+                    case 4:
+                        sortName = '<s:text name="price"/>';
+                        break;
+                    default:
+                        sortName = '<s:text name="most_popular"/>';
+                }
+                $("#sort").text(sortName);
+                console.log("66666666666666666666")
+                this.getProducts();
+
+                // 将显示出来的下拉内容隐藏掉
+                $(".tool-group .tool-drop-down-content").hide();
+                $(".tool-group .tool-drop-down-btn").removeClass("active");
+            },
+            addRFQ(e){
+                var jumpUrl = '/home/usr_UsrConsult_productPublishView?product_id=' + e.currentTarget.dataset.proid + '&backUrl=' + window.location.href;
+                util_function_obj.supplierCantEnter(this, jumpUrl,"Please register or login your buyer account if you want making enquiries.");
+            }
+        },
     })
     // 点击选择下拉框按钮，显示下拉内容
-$(".tool-group .tool-drop-down-btn").click(function(){
-	$(".tool-group .tool-drop-down-content").hide();
-	$(".tool-group .tool-drop-down-btn").removeClass("active");
-	$(this).toggleClass("active")
-				 .siblings(".tool-drop-down-content").toggle();
-})
+    $(".tool-group .tool-drop-down-btn").click(function () {
+        $(".tool-group .tool-drop-down-content").hide();
+        $(".tool-group .tool-drop-down-btn").removeClass("active");
+        $(this).toggleClass("active")
+            .siblings(".tool-drop-down-content").toggle();
+    })
 
-// 获得点击事件
-$(document).click(function(e){
-	var target = $(e.target);
-	// 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
-	if( target.closest(".tool-drop-down-wrap").length !== 0 ) return;
-	$(".tool-group .tool-drop-down-content").hide();
-	$(".tool-group .tool-drop-down-btn").removeClass("active");
-	// e.stopPropagation();
-})
+    // 获得点击事件
+    $(document).click(function (e) {
+        var target = $(e.target);
+        // 如果点击的是 选择下拉框中，则不干什么；如果点击的是其余地方，则将显示出来的下拉内容隐藏掉
+        if (target.closest(".tool-drop-down-wrap").length !== 0) return;
+        $(".tool-group .tool-drop-down-content").hide();
+        $(".tool-group .tool-drop-down-btn").removeClass("active");
+        // e.stopPropagation();
+    })
 
 </script>
 </body>
