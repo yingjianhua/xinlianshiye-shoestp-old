@@ -838,6 +838,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
           {
             SELECT(RFQConsult.T.PRODUCT, "pkey")
                 .SELECT(PdtProduct.T.NAME, "name")
+                .SELECT(PdtProduct.T.PICTURE, "picture")
                 .SELECT("COUNT(*) as inqcount")
                 .FROM(RFQConsult.class)
                 .LEFT_JOIN(PdtProduct.class, PdtProduct.T.PKEY, RFQConsult.T.PRODUCT)
@@ -858,6 +859,7 @@ public class RFQConsultDaoImpl implements RFQConsultDao {
                         setPdtcount((Long) o.get("inqcount"));
                         setPruductpkey((Integer) o.get("pkey"));
                         setName((String) o.get("name"));
+                        setCoverPic(GetValue.getFirstImage(String.valueOf(o.get("picture"))));
                       }
                     })
             .collect(Collectors.toList());
