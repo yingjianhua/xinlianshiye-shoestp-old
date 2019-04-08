@@ -23,6 +23,13 @@
     </rule>
     <rule>
         <note>
+            商品页面的伪静态
+        </note>
+        <from>^/(.*_pp)([1234567890]{1,}).html</from>
+        <to type="forward">/home/pdt_PdtProduct_gtProductsInfo1?id=$2</to>
+    </rule>
+    <rule>
+        <note>
             资源文件
         </note>
         <from>^/static/*</from>
