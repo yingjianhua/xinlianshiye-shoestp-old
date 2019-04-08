@@ -1,5 +1,6 @@
 package irille.Dao.RFQ;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.inject.ImplementedBy;
@@ -31,4 +32,14 @@ public interface RFQConsultMessageDao {
    * @author Jianhua Ying
    */
   RFQConsultMessage findByUuid(String uuid);
+
+  /**
+   * 统一修改uuid相同的消息的content和validDate字段
+   *
+   * @param uuid uuid字段
+   * @param validDate 过期时间
+   * @param content 消息内容
+   * @author Jianhua Ying
+   */
+  void updateValidDateAndContentByUuid(String uuid, Date validDate, String content);
 }

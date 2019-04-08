@@ -172,9 +172,8 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
       if (content.getValidDate() == null) {
         content.setValidDate(
             Date.from(LocalDateTime.now().plusDays(3).atZone(ZoneId.systemDefault()).toInstant()));
-        message.setPrivateProductUrlMessageValidDate(content.getValidDate());
-        message.setContent(om.writeValueAsString(content));
-        rFQConsultMessageDao.save(message);
+        rFQConsultMessageDao.updateValidDateAndContentByUuid(
+            expoKey, content.getValidDate(), om.writeValueAsString(content));
         return content.getProductId();
       } else if (content.getValidDate().after(new Date())) {
         return content.getProductId();

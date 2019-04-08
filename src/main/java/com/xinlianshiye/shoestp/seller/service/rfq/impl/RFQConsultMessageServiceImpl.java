@@ -122,6 +122,8 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     bean.stRelation(relation);
     bean.stP2s(false);
     bean.stHadRead(false);
+    // 回调
+    if (callback != null) callback.accept(bean);
     rFQConsultMessageDao.save(bean);
 
     // 商家发送消息后 设置消息状态为-采购商未读, 并记录最后一条聊天消息
@@ -134,8 +136,6 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
     RFQConsult consult = relation.gtConsult();
     consult.setLastMessageSendTime(new Date());
 
-    // 回调
-    if (callback != null) callback.accept(bean);
     rFQConsultDao.save(consult);
 
     messageService.send(
@@ -189,20 +189,30 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
             .WHERE(RFQConsult.T.PKEY, "=?", consultPkey)
             .WHERE(RFQConsultRelation.T.SUPPLIER_ID, "=?", supplier.getPkey())
             .WHERE(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_PRODUCT_ID, "=?", productPkey)
+            .AND()
+            //消息未过期或者未开始计时
             .WHERE(
                 RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_VALID_DATE,
                 ">?",
                 LocalDateTime.now())
+            .or()
+            .WHERE(RFQConsultMessage.T.PRIVATE_PRODUCT_URL_MESSAGE_VALID_DATE, "is null")
             .query();
     RFQConsultPrivateProductUrlMessage message = null;
-    String uuid = createUuid();
+    String uuid = null;
+    Date validDate = null;
+
+    //假如发送过这样的消息, 复制该消息的内容
     if (sendBefore != null) {
       try {
         message = om.readValue(sendBefore.getContent(), RFQConsultPrivateProductUrlMessage.class);
+        uuid = sendBefore.getPrivateProductUrlMessageUuid();
+        validDate = sendBefore.getPrivateProductUrlMessageValidDate();
       } catch (IOException e) {
       }
     }
     if (message == null) {
+      uuid = createUuid();
       message = new RFQConsultPrivateProductUrlMessage();
       message.setProductId(productPkey);
       message.setAlertMsg("该链接被打开后72小时内有效，72小时后该链接失效，买家将无法查看该产品");
@@ -215,13 +225,18 @@ public class RFQConsultMessageServiceImpl implements RFQConsultMessageService {
               + uuid);
     }
 
+    final String final_uuid = uuid;
+    final Date final_validDate = validDate;
+    final Integer final_productPkey = productPkey;
+    
     return sendMessage(
         supplier,
         consultPkey,
         message,
         (bean) -> {
-          bean.setPrivateProductUrlMessageUuid(uuid);
-          bean.setPrivateProductUrlMessageProductId(productPkey);
+          bean.setPrivateProductUrlMessageUuid(final_uuid);
+          bean.setPrivateProductUrlMessageValidDate(final_validDate);
+          bean.setPrivateProductUrlMessageProductId(final_productPkey);
         });
   }
 
