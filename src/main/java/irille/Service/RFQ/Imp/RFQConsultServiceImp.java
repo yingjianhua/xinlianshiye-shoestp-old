@@ -168,7 +168,8 @@ public class RFQConsultServiceImp implements IRFQConsultService {
         rfqConsultRelation.gtSupplierId(),
         null,
         rfqConsult,
-        rfqConsultRelation);
+        rfqConsultRelation,
+        rfqConsultRelation.gtPurchaseId());
     //        messageService.send(OTempType.INQUIRY_NOTICE_SUPPLIER,
     // rfqConsultRelation.gtSupplierId(),null, rfqConsult,rfqConsultRelation.gtPurchaseId());
   }
