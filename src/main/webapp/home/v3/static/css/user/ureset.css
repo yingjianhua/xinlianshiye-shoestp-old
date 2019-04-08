@@ -847,6 +847,10 @@
       #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-inquiry-btn,#personalCenter .favorite-main .bottom-btn-list .bottom-inquiry-btn{
         background-color: #1a4091;
       }
+      #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-inquiry-btn:hover,
+      #personalCenter .favorite-main .bottom-btn-list .bottom-inquiry-btn:hover{
+        background-color: #35c;
+      }
       #personalCenter .favorite-main .favorite-list .favorite-item .porduct-btn-list .porduct-remove-btn a,#personalCenter .favorite-main .bottom-btn-list .bottom-remove-btn a{
         color: #232323;
       }

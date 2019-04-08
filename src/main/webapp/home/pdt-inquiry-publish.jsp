@@ -160,32 +160,14 @@ ul{
         max-width: 500px; }
         .xpMain .xp-form .detail-box .detail a:hover {
           color: #409EFF; }
-         
-    .el-button--primary {
-        height: 36px;
-        background-color: #10389c;
-        border-radius: 4px;
-        color: #ffffff;
-        border-color: #10389c;
-    }
-   
-    .el-button--primary:hover {
-        color: #ffffff;
-        border-color: #10389c;
-        background-color: #10389c;
-    }
-    .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
-        color: #ffffff;
-        border-color: #10389c;
-        background-color: #10389c;
-    }
+
 /*# sourceMappingURL=index.css.map */
     </style>
 
 <body class="xpMain">
 <jsp:include page="v3/nav.jsp"></jsp:include>
 
-    <main id="xpApp" class="w_1200">
+    <main id="xpApp" class="w_1200" v-cloak>
         <el-form :model="form" :rules="rules" ref="form" label-width="100px" class="xp-form">
             <!-- 第一行 -->
             <div class="info">
@@ -275,7 +257,7 @@ ul{
             <el-row type="flex" justify="end">
                 <div style="padding:30px;">
                     <el-form-item>
-                        <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                        <el-button class="my-primary-btn" :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                     </el-form-item>
                 </div>
             </el-row>
@@ -290,7 +272,7 @@ ul{
             el: "#xpApp",
             data(){
                 return{
-                    flag : false, 
+                    flag : false,
                      imgsToUpload: [], // 需要upload的img - 显示在页面上
                 options: [{
                         value: "1",
@@ -312,7 +294,7 @@ ul{
                     descriotion: '',
                     title: '',
                     images: ''
-                }, 
+                },
                 rules: {
                     quantity: [
                             {required: true,message: 'Please enter the quantity',trigger: 'blur'},
@@ -449,7 +431,7 @@ ul{
                                                 // 提示信息
                                                 this.$message({
                                                     showClose: true,
-                                                    message: 'my-inquiry-publish.Successfully_Released',
+                                                    message: 'Successfully released',
                                                     type: 'success'
                                                 });
                                                 setTimeout(function () {

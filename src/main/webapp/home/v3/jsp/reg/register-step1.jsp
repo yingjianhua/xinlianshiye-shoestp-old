@@ -55,10 +55,11 @@
                                   v-model.trim="registerForm.code">
                         </el-input>
                         <img :src="codeUrl" alt="Verification code"
+                             @click="codechange"
                              class="pic-code">
                         <img src="/home/v3/static/images/login/icon_re.png" alt="icon recycle"
                              class="icon-recycle"
-                             @click="codeUrl = codeUrl + '?r=' + Math.random()">
+                             @click="codechange">
                     </div>
                 </el-form-item>
                 <el-form-item>
@@ -242,6 +243,10 @@
                 this.registerForm.email = val.toLowerCase();
                 this.emailErrorMsg = "";
             },
+            //本地验证码变化
+            codechange: function () {
+                this.codeUrl = '/servlet/verify.img?r=' + Math.random();
+            },
 
             // 发送验证码至邮箱
             sendCodeToEmail() {
@@ -322,7 +327,7 @@
                 this.step = 1;
                 // this.registerForm.email = "";
                 // this.registerForm.code = "";
-                this.codeUrl = this.codeUrl + '?r=' + Math.random();
+                this.codechange();
                 this.isReceiveTipsShow = false;
                 this.$refs.registerForm.resetFields();
             },

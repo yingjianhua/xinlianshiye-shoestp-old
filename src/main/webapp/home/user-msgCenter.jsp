@@ -133,8 +133,11 @@
 											Product Inquires
 											<el-badge v-if="inquiresOptionUnreadInfo.t2" :value="inquiresOptionUnreadInfo.t2"></el-badge>
 										</li>
-										<li class="inquires-item sub" @click="chooesInquiryType(3)">
-											O2O Inquires
+										<li class="inquires-item sub" @click="chooesInquiryType(3)"
+											title="test">
+											<el-tooltip content="New Design" placement="right">
+												<div>O2O Inquires</div>
+											</el-tooltip>
 											<el-badge v-if="inquiresOptionUnreadInfo.t3" :value="inquiresOptionUnreadInfo.t3"></el-badge>
 										</li>
 										<li class="inquires-item sub" @click="chooesInquiryType(4)">
@@ -931,8 +934,11 @@
 								<h3 class="content-header">Product detailed specifications:</h3>
 								<div class="content">
 									{{inquiryDetail.detail}}
-                                    <br>
-                                    {{inquiryDetail.moreInformation?inquiryDetail.moreInformation:""}}
+                                    <template v-if="inquiryDetail.moreInformation">
+										<div v-for="moreInfo in inquiryDetail.moreInformation">
+											{{moreInfo}}
+										</div>
+									</template>
 								</div>
 							</div>
 

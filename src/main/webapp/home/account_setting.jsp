@@ -51,7 +51,8 @@
                 <el-row>
                     <el-col :span="12" :offset="6">
                         <el-form-item label="Gender" prop="gender">
-                            <el-select v-model="form1.gender" placeholder="Please select gender">
+                            <el-select v-model="form1.gender" style="width: 100%;"
+                                       placeholder="Please select gender">
                                 <el-option label="secrecy" value="0"></el-option>
                                 <el-option label="men" value="1"></el-option>
                                 <el-option label="women" value="2"></el-option>

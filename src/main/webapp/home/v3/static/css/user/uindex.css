@@ -910,6 +910,7 @@
         border: 1px solid #c9c9c9;
         border-radius: 2px;
         outline: none;
+        cursor: pointer;
       }
       #personalCenter .favorite-main  input[type=checkbox]:checked{
         background: url("/home/v3/static/images/user/icon-true.png")no-repeat center;
@@ -1048,5 +1049,6 @@
         text-align: center;
         border-radius: 3px;
         margin-left: 20px;
+        cursor: pointer;
       }
 /*# sourceMappingURL=index.css.map */
