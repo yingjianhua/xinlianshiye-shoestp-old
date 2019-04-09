@@ -50,6 +50,7 @@ import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
 import irille.view.v3.usr.UsrSupplierBackgddSeoDTO;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.struts2.ServletActionContext;
@@ -58,7 +59,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static irille.pub.validate.Regular.REGULAR_NAME;
-
+@Data
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
   @Inject UsrMainService usrMainService;
