@@ -46,7 +46,8 @@ public class O2OProductDao {
         .FROM(O2O_PrivateExpoPdt.class)
         .LEFT_JOIN(PdtProduct.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
         .WHERE(O2O_PrivateExpoPdt.T.STATUS, "=?", O2O_PrivateExpoPdtStatus.ON)
-        .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS);
+        .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS)
+        .ORDER_BY(O2O_PrivateExpoPdt.T.CREATE_TIME, " DESC ");
     return Query.sql(sql).queryMaps();
   }
 
