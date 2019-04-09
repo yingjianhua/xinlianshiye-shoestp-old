@@ -727,4 +727,40 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     usi.setSellerIndexConsultViewList(rfqConsultDao.getIndexInqlist(pkey));
     write(usi);
   }
+  
+  private String signBackgd;
+  private UsrSupplierBackgddSeoDTO backgddSeoview;
+  /**
+   * 获取供应商的店招背景和SEO
+   *
+   * @date 2019/03/28 19:01
+   * @anthor zjl
+   * @throws IOException
+   */
+  public void getSupplierSignBackgdSeo() throws IOException {
+    write(dao.getSupplierSignBackgdSeo(getSupplier().getPkey()));
+  }
+
+  /**
+   * 修改供应商店招背景
+   *
+   * @date 2019/03/28 18:52
+   * @anthor zjl
+   * @throws IOException
+   */
+  public void updSignBackgd() throws IOException {
+    dao.updSignBackgd(getSupplier().getPkey(), signBackgd);
+    write();
+  }
+  /**
+   * 修改供应商SEO信息
+   *
+   * @date 2019/03/28 20:11
+   * @anthor zjl
+   * @throws IOException
+   */
+  public void updSupplierSeo() throws IOException {
+    dao.updSupplierSeo(getSupplier().getPkey(), backgddSeoview);
+    write();
+  }
 }

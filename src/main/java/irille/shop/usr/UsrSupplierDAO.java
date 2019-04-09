@@ -96,6 +96,8 @@ import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
+import irille.view.v3.usr.UsrSupplierBackgddSeoDTO;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -2648,6 +2650,29 @@ public class UsrSupplierDAO {
     Map<String, Object> map = irille.pub.bean.Query.sql(sql).queryMap();
     return map;
   }
+ public UsrSupplierBackgddSeoDTO getSupplierSignBackgdSeo(Integer pkey) {
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    UsrSupplierBackgddSeoDTO view = new UsrSupplierBackgddSeoDTO();
+    view.setPkey(usrSupplier.getPkey());
+    view.setBackground(usrSupplier.getSignBackgd());
+    view.setSeoTitle(usrSupplier.getSeoTitle());
+    view.setSeoKeyWord(usrSupplier.getSeoKeyword());
+    view.setSeoContent(usrSupplier.getSeoContent());
+    return view;
+  }
 
+  public void updSignBackgd(Integer pkey, String singBackgd) {
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    usrSupplier.setSignBackgd(singBackgd != null ? singBackgd : null);
+    usrSupplier.upd();
+  }
+
+  public void updSupplierSeo(Integer pkey, UsrSupplierBackgddSeoDTO view) {
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    usrSupplier.setSeoTitle(view.getSeoTitle());
+    usrSupplier.setSeoKeyword(view.getSeoKeyWord());
+    usrSupplier.setSeoContent(view.getSeoContent());
+    usrSupplier.upd();
+  }
   /** ———————————————————分割线(3.1.1END)————————————————————————— */
 }
