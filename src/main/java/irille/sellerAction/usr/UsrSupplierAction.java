@@ -1,7 +1,5 @@
 package irille.sellerAction.usr;
 
-import static irille.pub.validate.Regular.REGULAR_NAME;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -9,11 +7,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.struts2.ServletActionContext;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.xinlianshiye.shoestp.common.service.UsrMainService;
 
@@ -56,8 +49,15 @@ import irille.shop.usr.UsrUserDAO;
 import irille.view.usr.AccountSettingsView;
 import irille.view.usr.UserView;
 import irille.view.usr.UsrshopSettingView;
+import irille.view.v3.usr.UsrSupplierBackgddSeoDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static irille.pub.validate.Regular.REGULAR_NAME;
 
 public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsrSupplierAction {
 
@@ -144,7 +144,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
       json.put("msg", "用户尚未开通店铺,是否前往开通店铺");
       writerOrExport(json);
       return;
-    }else if (supplier.getStoreStatus() == 0){
+    } else if (supplier.getStoreStatus() == 0) {
       JSONObject json = new JSONObject();
       json.put("ret", -2);
       json.put("msg", "用户店铺已关闭,请重新开通店铺");
@@ -153,7 +153,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     }
     if (supplier.gtStatus() == Usr.OStatus.INIT) {
       throw LOG.err("wait for appr", "审核中不能登录");
-    } else if(supplier.gtStatus() == Usr.OStatus.FAIL) {
+    } else if (supplier.gtStatus() == Usr.OStatus.FAIL) {
       throw LOG.err("wait for appr", "审核失败，请前往开通店铺页面");
     }
     user = UsrUserDAO.supplierSignIn(supplier, main);
@@ -727,7 +727,7 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     usi.setSellerIndexConsultViewList(rfqConsultDao.getIndexInqlist(pkey));
     write(usi);
   }
-  
+
   private String signBackgd;
   private UsrSupplierBackgddSeoDTO backgddSeoview;
   /**
