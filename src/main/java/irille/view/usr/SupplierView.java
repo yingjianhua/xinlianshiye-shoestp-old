@@ -203,6 +203,9 @@ public class SupplierView implements BaseView {
   @Getter @Setter private String yearsOfForeignTradeExperience; // 外贸经验
   @Getter @Setter private Integer statusAuth; // SVS认证状态;未认证:0,认证成功:1
   @Getter @Setter private Byte grade; // SVS等级,0:暂无等级,1:银牌,2:金牌,3:钻石
+  @Getter @Setter private String seoTitle;//seo标题
+  @Getter @Setter private String seoKeyword;//seo店铺关键字
+  @Getter @Setter private String seoContent;//seo搜索引擎说明
 
   public List<UsrSupIm> getImList() {
     return imList;
