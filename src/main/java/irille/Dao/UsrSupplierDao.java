@@ -259,6 +259,7 @@ public class UsrSupplierDao {
         .FROM(UsrSupplier.class)
         .LEFT_JOIN(PdtProduct.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
+        .WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN)
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
         .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
     if (targetMarket != null) {
