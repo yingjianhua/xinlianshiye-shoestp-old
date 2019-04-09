@@ -59,6 +59,7 @@ import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
 import irille.view.usr.SupplierView;
+import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -346,15 +347,24 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
             MessageBuild.buildMessage(ReturnCode.product_wrong_data, curLanguage()));
         //        throw LOG.err("not exists", "产品id[{0}]不存在", getId());
       }
+      UserView user = getUser();
+      boolean flag = false;
+      if (user != null && null != user.getSupplierId()) {
+        if (infoView.getSupId() == (long) user.getSupplierId()) {
+          flag = true;
+        }
+      }
       if (infoView.getType() != null
           && infoView.getType().equals(Pdt.OProductType.PrivateExpo.getLine().getKey())) {
         // 若产品类型为私人展厅产品, 需要判断链接密钥有效期 只有正确的密钥能获取进入页面,否则返回404页面
-        Integer expoProductPkey;
-        if (expoKey == null
-            || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
-            || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
-          setResult("404.jsp");
-          return HomeAction.TRENDS;
+        if (!flag) {
+          Integer expoProductPkey;
+          if (expoKey == null
+              || (expoProductPkey = rFQConsultMessageService.checkPrivateExpoKey(expoKey)) == null
+              || !Long.valueOf(expoProductPkey.toString()).equals(infoView.getPdtId())) {
+            setResult("404.jsp");
+            return HomeAction.TRENDS;
+          }
         }
       }
 
