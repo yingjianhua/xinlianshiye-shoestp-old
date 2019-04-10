@@ -39,6 +39,7 @@ public class UsrSupplierDao {
     SQL sql = new SQL();
     return Query.sql(
             sql.SELECT(UsrSupplier.T.PKEY, UsrSupplier.T.NAME, UsrSupplier.T.LOGO)
+                .SELECT(UsrSupplier.T.TARGETED_MARKET, "targetedMarket")
                 .SELECT(
                     UsrSupplierRole.T.NAME.getFld().getTb().getCode()
                         + "."
