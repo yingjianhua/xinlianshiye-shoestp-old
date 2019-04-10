@@ -321,7 +321,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.RFQ)
                 .WHERE(RFQConsult.T.STATUS, "=?", RFQConsultStatus.runing)
                 .WHERE(RFQConsult.T.VERIFY_STATUS, "=?", RFQConsultVerifyStatus.PASS)
-                .WHERE(RFQConsult.T.CREATE_TIME, ">?", LocalDateTime.now())
+                .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
                 .WHERE(RFQConsult.T.RECOMMEND, "=?", RFQConsultRecommend.RECOMMENDED)
                 .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY)
                 .ORDER_BY(RFQConsult.T.CREATE_TIME, "desc")
