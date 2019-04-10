@@ -118,6 +118,7 @@ Vue.component('login-box', {
 
             // 提交账号信息
             submit() {
+                gtag_report_signIn();
                 this.$refs.loginForm.validate((valid, errObj) => {
                     // 验证全部正确时
                     if (valid) {

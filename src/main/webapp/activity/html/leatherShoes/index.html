@@ -17,6 +17,65 @@
 	<script src="./js/register-box.js"></script>
 	<script src="./js/login-box.js"></script>
 	<link rel="stylesheet" href="./css/login.css"/>
+    <script>
+        //RFQ,inquery,from
+        function gtag_report_inquery(url) {
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/UXRYCNuQkZgBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Sign In
+        function gtag_report_signIn(url) {
+            console.log('调取成功Sign In')
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/-DYJCP3Cv5gBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Join Free
+        function gtag_report_joinFree(url) {
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/w6bxCO6ftpgBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Join US
+        function gtag_report_joinUs(url) {
+            console.log('调取成功Join US')
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/mCwkCOm9q5gBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+    </script>
 </head>
 <body>
 <div id="leather">
