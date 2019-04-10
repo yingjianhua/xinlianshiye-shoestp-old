@@ -577,8 +577,7 @@
     top: 100%;
     left: 0;
     width: 100%;
-    max-height: 400px;
-    overflow: auto;
+    max-height: 415px;
     padding: 0px 4px 20px;
     color: #7f7f7f;
     border-bottom: solid 1px #ddd;
@@ -611,6 +610,8 @@
     color: #232323; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap {
     width: 260px;
+    height: 400px;
+    overflow: auto;
     -ms-flex-negative: 1;
     flex-shrink: 1; }
 .page-personal-center .chat-wrap .chater-more-info .basic-info-wrap .box-title {
@@ -642,6 +643,8 @@
     object-fit: contain; }
 .page-personal-center .chat-wrap .chater-more-info .basic-details-wrap {
     width: 250px;
+    height: 400px;
+    overflow: auto;
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
@@ -708,11 +711,12 @@
     display: -ms-flexbox;
     display: flex;
     line-height: 18px;
-    margin-bottom: 2px; }
-.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .info-item.first-row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex; }
+    margin-bottom: 4px; }
+.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .info-item.upDown {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column; }
 .page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .label {
     margin-right: 6px; }
 .page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .content {
@@ -722,6 +726,37 @@
     -ms-flex-negative: 1;
     flex-shrink: 1;
     color: #b0b0b0; }
+.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .company-book-item {
+    height: 44px;
+    max-width: 80px;
+    -o-object-fit: cover;
+    object-fit: cover;
+    margin-right: 10px;
+    margin-top: 6px; }
+.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .book-link {
+    margin-right: 10px; }
+.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .book-link:hover {
+    color: #c9f;
+    text-decoration: underline; }
+.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .roundCheck {
+    position: relative;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ddd; }
+.page-personal-center .chat-wrap .chater-more-info .basic-details-wrap .price-info-wrap .roundCheck.checked:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    left: 50%;
+    top: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: #b0b0b0; }
 .page-personal-center .chat-wrap .chater-more-info .normal-inquiry-drop-down-wrap .row-item {
     display: -webkit-box;
     display: -ms-flexbox;

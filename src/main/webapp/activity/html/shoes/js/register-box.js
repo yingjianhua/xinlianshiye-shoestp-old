@@ -246,6 +246,7 @@ Vue.component('register-box', {
 
       // 第一步 - 提交注册信息
       submit() {
+          gtag_report_joinUs();
           // 邮箱已注册时（自定义错误），不可进行点击
           if (this.emailErrorMsg) return false;
 

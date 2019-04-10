@@ -1,204 +1,281 @@
 <!DOCTYPE html>
 <html lang="en" style="scroll-behavior: smooth;">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-	<title>shoestp</title>
-	<script src="js/vue.js"></script>
-	<link rel="stylesheet" href="element/element-ui.css">
+<meta charset="UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<title>shoestp</title>
+<script src="js/vue.js"></script>
+<link rel="stylesheet" href="element/element-ui.css">
 <!--	<script src="element/element-ui.js"></script>-->
-	<script src="js/axios.js"></script>
-	<script src='./js/vue.min.js'></script>
-	<script src="./js/element-ui.min.js"></script>
-	<script src="./js/qs.js"></script>
-	<link rel="stylesheet" href="css/index.css">
+<script src="js/axios.js"></script>
+<script src='./js/vue.min.js'></script>
+<script src="./js/element-ui.min.js"></script>
+<script src="./js/qs.js"></script>
+<link rel="stylesheet" href="css/index.css">
 
-	<script src="./js/util.js"></script>
-	<script src="./js/register-box.js"></script>
-	<script src="./js/login-box.js"></script>
-	<link rel="stylesheet" href="./css/login.css"/>
+<script src="./js/util.js"></script>
+<script src="./js/register-box.js"></script>
+<script src="./js/login-box.js"></script>
+<link rel="stylesheet" href="./css/login.css" />
+<script>
+        //RFQ,inquery,from
+        function gtag_report_inquery(url) {
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/UXRYCNuQkZgBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Sign In
+        function gtag_report_signIn(url) {
+            console.log('调取成功Sign In')
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/-DYJCP3Cv5gBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Join Free
+        function gtag_report_joinFree(url) {
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/w6bxCO6ftpgBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Join US
+        function gtag_report_joinUs(url) {
+            console.log('调取成功Join US')
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/mCwkCOm9q5gBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+    </script>
 </head>
 <body>
-<div id="leather">
+	<div id="leather">
 
-	<register-box :props-reg="propsReg" @registersuccess="testFormSubmit"></register-box>
-	<login-box :props-login="propsLogin" @toregister="toRegister" @loginsuccess="loginSuccess"></login-box>
+		<register-box :props-reg="propsReg" @registersuccess="testFormSubmit"></register-box>
+		<login-box :props-login="propsLogin" @toregister="toRegister"
+			@loginsuccess="loginSuccess"></login-box>
 
-	<!-- 头部 -->
-	<div class="leather-banner">
-		<div class="box bb">
-			<div class="leather-banner-head">
-				<span>
-					<a href="/home/usr_UsrPurchase">
-						<img src="./images/logo.png" name="logo" alt="">
+		<!-- 头部 -->
+		<div class="leather-banner">
+			<div class="box bb">
+				<div class="leather-banner-head">
+					<span> <a href="/home/usr_UsrPurchase"> <img
+							src="./images/logo.png" name="logo" alt="">
 					</a>
-				</span>
-				<span class="head-text">
-					 <a href="/home/pdt_PdtProduct" class="p_16 c_w">PRODUCTS</a>
-				</span>
-				<span class="head-text">
-					 <a href="#productGoods" class="p_16 c_w">POPULAR GOODS</a>
-				</span>
-				<span class="fg_r">
-					<span class="mw_300 c_w" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
-					<a href="javascript:void(0);" v-else class="button" @click="testFormSubmit">SIGN UP</a>
-				</span>
-				<span class="head-search">
-					<input type="text" v-model ="search">
-					<img src="./images/serach.png" name="search" @click="changeSearch" alt="">
-				</span>
-				<span class="separate"></span>
-				<span class="head-share">
-					<a href="https://www.facebook.com/ShoestpCN/">
-						<img src="./images/f1.png" name="share" alt="">
+					</span> <span class="head-text"> <a href="/home/pdt_PdtProduct"
+						class="p_16 c_w">PRODUCTS</a>
+					</span> <span class="head-text"> <a href="#productGoods"
+						class="p_16 c_w">POPULAR GOODS</a>
+					</span> <span class="fg_r"> <span class="mw_300 c_w"
+						v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
+						<a href="javascript:void(0);" v-else class="button"
+						@click="testFormSubmit">SIGN UP</a>
+					</span> <span class="head-search"> <input type="text"
+						v-model="search"> <img src="./images/serach.png"
+						name="search" @click="changeSearch" alt="">
+					</span> <span class="separate"></span> <span class="head-share"> <a
+						href="https://www.facebook.com/ShoestpCN/"> <img
+							src="./images/f1.png" name="share" alt="">
+					</a> <a href="https://twitter.com/shoes_logo"> <img
+							src="./images/f2.png" name="share" alt="">
+					</a> <a href="https://www.instagram.com/shoestpcn/"> <img
+							src="./images/f3.png" name="share" alt="">
+					</a> <a
+						href="https://www.linkedin.com/company/shoestp/?viewAsMember=true">
+							<img src="./images/f4.png" name="share" alt="">
+					</a> <a
+						href="https://www.youtube.com/channel/UCUHObFxGQ_FaHCKolyZ9k0w/featured?view_as=subscriber">
+							<img src="./images/f5.png" name="share" alt="">
 					</a>
-					<a href="https://twitter.com/shoes_logo">
-						<img src="./images/f2.png" name="share" alt="">
-					</a>
-					<a href="https://www.instagram.com/shoestpcn/">
-						<img src="./images/f3.png" name="share" alt="">
-					</a>
-					<a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true">
-						<img src="./images/f4.png" name="share" alt="">
-					</a>
-					<a href="https://www.youtube.com/channel/UCUHObFxGQ_FaHCKolyZ9k0w/featured?view_as=subscriber">
-						<img src="./images/f5.png" name="share" alt="">
-					</a>
-				</span>
-			</div>
-		</div>
-		<div class="box">
-			<div class="leather-banner-rfq w_1240">
-				<div class="rfq-button">
-					<a href="javascript:;" class="button" @click="skipRFQ">RFQ</a>
-				</div>
-				<div class="rfq-module">
-					<div class="rfq-module-item">
-						<span class="rfq-module-item__image">
-							<img src="./images/icon-js_01.png" name="bannerIcon" alt="">
-						</span>
-						<span class="rfq-module-item__text">
-							<h2>Variety Of Suppliers</h2>
-							<p>More than 1000 items</p>
-							<p>Different type of shoes</p>
-							<p>Well-made shoes for every occasion </p>
-						</span>
-					</div>
-					<div class="rfq-module-item m_l30_r30">
-						<span class="rfq-module-item__image">
-							<img src="./images/icon-js_02.png" name="bannerIcon" alt="">
-						</span>
-						<span class="rfq-module-item__text">
-							<h2>The Lowest Price In The Market</h2>
-							<p>Low price in O2O </p>
-							<p>High quality but low price</p>
-						</span>
-					</div>
-					<div class="rfq-module-item">
-						<span class="rfq-module-item__image">
-							<img src="./images/icon-js_03.png" name="bannerIcon" alt="">
-						</span>
-						<span class="rfq-module-item__text">
-							<h2>SVS Suppliers Standard</h2>
-							<p>Including factors that buyers are much concerned about</p>
-							<p>Showing the performance of manufacturers objectively</p>
-						</span>
-					</div>
+					</span>
 				</div>
 			</div>
-		</div>
-		<div class="w_1240 ta_r">
-			<a href="/html/SVS/svsSuplies.jsp" class="view ban-view">View</a>
-		</div>
-	</div>
-	<!--product-->
-	<div class="leather-product box" id="productGoods">
-		<div class="leather-product-dress w_1240">
-			<h2 class="ta_c dress-h2">Dress Shoes</h2>
-			<div class="dress-list" v-if="dressShoes.length > 0">
-				<div class="dress-list-item" v-for="(item,index) in dressShoes" v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
-					<div class="item-image-box">
-						<div class="item-image">
-							<img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
+			<div class="box">
+				<div class="leather-banner-rfq w_1240">
+					<div class="rfq-button">
+						<a href="javascript:;" class="button" @click="skipRFQ">RFQ</a>
+					</div>
+					<div class="rfq-module">
+						<div class="rfq-module-item">
+							<span class="rfq-module-item__image"> <img
+								src="./images/icon-js_01.png" name="bannerIcon" alt="">
+							</span> <span class="rfq-module-item__text">
+								<h2>Variety Of Suppliers</h2>
+								<p>More than 1000 items</p>
+								<p>Different type of shoes</p>
+								<p>Well-made shoes for every occasion</p>
+							</span>
 						</div>
-					</div>
-					<div class="item-intro">
-						<a :href="'/' + item.rewrite">
-							<p class="item-intro-title fz_24">{{item.title}}</p>
-						</a>
-						<h2 class="item-intro-price">${{item.price}}</h2>
-						<p class="fz_24 item-intro-text">Min.Order:{{item.min_order}} pairs</p>
-						<div class="item-intro-button">
-							<a href="javascript:void(0);" class="button" @click="skipInquiry(item.id)">Get a Free Sample</a>
+						<div class="rfq-module-item m_l30_r30">
+							<span class="rfq-module-item__image"> <img
+								src="./images/icon-js_02.png" name="bannerIcon" alt="">
+							</span> <span class="rfq-module-item__text">
+								<h2>The Lowest Price In The Market</h2>
+								<p>Low price in O2O</p>
+								<p>High quality but low price</p>
+							</span>
+						</div>
+						<div class="rfq-module-item">
+							<span class="rfq-module-item__image"> <img
+								src="./images/icon-js_03.png" name="bannerIcon" alt="">
+							</span> <span class="rfq-module-item__text">
+								<h2>SVS Suppliers Standard</h2>
+								<p>Including factors that buyers are much concerned about</p>
+								<p>Showing the performance of manufacturers objectively</p>
+							</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="dress-list" v-else>
-				<h2 style="text-align: center">NO RESULT</h2>
-				<p style="text-align: center;color: #999999;">There is no relevant content for the time being.</p>
+			<div class="w_1240 ta_r">
+				<a href="/html/SVS/svsSuplies.jsp" class="view ban-view">View</a>
 			</div>
 		</div>
-
-		<div class="leather-product-dress w_1240 mt_120">
-			<h2 class="ta_c dress-h2">Causal Leather Shoes</h2>
-			<div class="dress-list" v-if="leatherShoes.length > 0">
-				<div class="dress-list-item" v-for="(item,index) in leatherShoes" v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
-					<div class="item-image-box">
-						<div class="item-image">
-							<img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" name="productShoes" alt="">
+		<!--product-->
+		<div class="leather-product box" id="productGoods">
+			<div class="leather-product-dress w_1240">
+				<h2 class="ta_c dress-h2">Dress Shoes</h2>
+				<div class="dress-list" v-if="dressShoes.length > 0">
+					<div class="dress-list-item" v-for="(item,index) in dressShoes"
+						v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
+						<div class="item-image-box">
+							<div class="item-image">
+								<img v-if="item.image"
+									:src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'"
+									name="productShoes" alt="">
+							</div>
 						</div>
-					</div>
-					<div class="item-intro">
-						<a :href="'/' + item.rewrite">
-							<p class="item-intro-title fz_24">{{item.title}}</p>
-						</a>
-						<h2 class="item-intro-price">${{item.price}}</h2>
-						<p class="fz_24 item-intro-text">Min.Order:{{item.min_order}} pairs</p>
-						<div class="item-intro-button">
-							<a href="javascript:void(0);" class="button" @click="skipInquiry(item.id)">Get a Free Sample</a>
+						<div class="item-intro">
+							<a :href="'/' + item.rewrite">
+								<p class="item-intro-title fz_24">{{item.title}}</p>
+							</a>
+							<h2 class="item-intro-price">${{item.price}}</h2>
+							<p class="fz_24 item-intro-text">Min.Order:{{item.min_order}}
+								pairs</p>
+							<div class="item-intro-button">
+								<a href="javascript:void(0);" class="button"
+									@click="skipInquiry(item.id)">Get a Free Sample</a>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="dress-list" v-else>
+					<h2 style="text-align: center">NO RESULT</h2>
+					<p style="text-align: center; color: #999999;">There is no
+						relevant content for the time being.</p>
+				</div>
 			</div>
-			<div class="dress-list" v-else>
-				<h2 style="text-align: center">NO RESULT</h2>
-				<p style="text-align: center; color: #999999;">There is no relevant content for the time being.</p>
-			</div>
-		</div>
 
-		<div class="w_1240 ta_r mt_40">
-			<a href="/home/pdt_PdtProduct" class="view">View</a>
-		</div>
-	</div>
-	<!--about us-->
-	<div class="leather-about box">
-		<div class="w_1240 leather-about-box">
-			<div class="leather-about-intro">
-				<h2 class="intro-h2">About</h2>
-				<h2 class="intro-h2">Shoestp</h2>
-				<p class="intro-p">Shoestp is the biggest platform of shoe industries in china. All kinds of well-made shoes which are more than 1000 items for every occasion are available with high quality but low price. Manufacturers direct marketing promises you the most reasonable price and our own SVS Certification System ensures you the quality of shoes. It warmly expects to establish cooperative relationships with companies and manufacturers at home and abroad to obtain common development.</p>
+			<div class="leather-product-dress w_1240 mt_120">
+				<h2 class="ta_c dress-h2">Causal Leather Shoes</h2>
+				<div class="dress-list" v-if="leatherShoes.length > 0">
+					<div class="dress-list-item" v-for="(item,index) in leatherShoes"
+						v-if="index < 3" :class="index == 1 ? 'm_l35_r35' : ''">
+						<div class="item-image-box">
+							<div class="item-image">
+								<img v-if="item.image"
+									:src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'"
+									name="productShoes" alt="">
+							</div>
+						</div>
+						<div class="item-intro">
+							<a :href="'/' + item.rewrite">
+								<p class="item-intro-title fz_24">{{item.title}}</p>
+							</a>
+							<h2 class="item-intro-price">${{item.price}}</h2>
+							<p class="fz_24 item-intro-text">Min.Order:{{item.min_order}}
+								pairs</p>
+							<div class="item-intro-button">
+								<a href="javascript:void(0);" class="button"
+									@click="skipInquiry(item.id)">Get a Free Sample</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="dress-list" v-else>
+					<h2 style="text-align: center">NO RESULT</h2>
+					<p style="text-align: center; color: #999999;">There is no
+						relevant content for the time being.</p>
+				</div>
 			</div>
-			<div class="leather-about-image">
-				<img src="./images/lhl-about-company.png" name="company" alt="">
+
+			<div class="w_1240 ta_r mt_40">
+				<a href="/home/pdt_PdtProduct" class="view">View</a>
 			</div>
 		</div>
-	</div>
-	<!--尾部-->
-	<div class="leather-footer box">
-		<div class="w_1240 leather-footer-box">
-			<div class="leather-footer-svs">
-				<h2 class="leather-footer-svs__title">What is SVS?</h2>
-				<p class="leather-footer-svs__p">SVS is a certification system for the factory, which is based on the key aspects such as actual manufacturers , production capacity, product quality, R&D capacity, trade capacity, trade show, etc. And it helps buyer find their target Supplier more faster, accurate and time-saving than any other way.  <a href="/html/SVS/svs.jsp" class="view">View More＋</a></p>
-				<div class="leather-footer-svs__button">
-					<a href="/html/SVS/svsSuplies.jsp" class="button">SVS Suppliers</a>
+		<!--about us-->
+		<div class="leather-about box">
+			<div class="w_1240 leather-about-box">
+				<div class="leather-about-intro">
+					<h2 class="intro-h2">About</h2>
+					<h2 class="intro-h2">Shoestp</h2>
+					<p class="intro-p">Shoestp is the biggest platform of shoe
+						industries in china. All kinds of well-made shoes which are more
+						than 1000 items for every occasion are available with high quality
+						but low price. Manufacturers direct marketing promises you the
+						most reasonable price and our own SVS Certification System ensures
+						you the quality of shoes. It warmly expects to establish
+						cooperative relationships with companies and manufacturers at home
+						and abroad to obtain common development.</p>
+				</div>
+				<div class="leather-about-image">
+					<img src="./images/lhl-about-company.png" name="company" alt="">
+				</div>
+			</div>
+		</div>
+		<!--尾部-->
+		<div class="leather-footer box">
+			<div class="w_1240 leather-footer-box">
+				<div class="leather-footer-svs">
+					<h2 class="leather-footer-svs__title">What is SVS?</h2>
+					<p class="leather-footer-svs__p">
+						SVS is a certification system for the factory, which is based
+						on the key aspects such as actual manufacturers , production
+						capacity, product quality, R&D capacity, trade capacity, trade
+						show, etc. And it helps buyer find their target Supplier more
+						faster, accurate and time-saving than any other way. <a
+							href="/html/SVS/svs.jsp" class="view">View More＋</a>
+					</p>
+					<div class="leather-footer-svs__button">
+						<a href="/html/SVS/svsSuplies.jsp" class="button">SVS
+							Suppliers</a>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<script>
+	<script>
 	var sysConfig;
 	new Vue({
 	    el: '#leather',
@@ -288,6 +365,8 @@
 		    },
 	        // 跳转RFQ
             skipRFQ() {
+		    	console.log("============")
+		    	this.hits('pc/leatherShoes/rfq')
                 if( !sysConfig || !sysConfig.user ){
                     this.propsLogin.showLogin=true
                     return;
@@ -297,6 +376,7 @@
             },
 		    // 跳转inquiry
             skipInquiry(pdtId) {
+            	this.hits('pc/leatherShoes/inquiry')
                 if( !sysConfig || !sysConfig.user ){
                     this.propsLogin.showLogin=true
                     return;
@@ -306,6 +386,7 @@
             },
             // 判断登录
             testFormSubmit(){
+            		this.hits('pc/leatherShoes/signIn')
                 // 未登录时操作 - 显示登录框
                 if( !sysConfig || !sysConfig.user ){
                     this.propsLogin.showLogin=true
@@ -313,6 +394,19 @@
                 }
                 console.log("已登陆 - 在次进行操作")
             },
+            hits(element) {
+            	var param = Qs.stringify({
+                    pageName: 'pc/leatherShoes',
+                    element: element
+                  })
+                axios({
+                  url: '/home/temporary/PageHits_click',
+                  method: 'post',
+                  data: param
+                }).then(function(res) {
+                  console.log(res)
+                })
+              },
             // 判断是否已经登录
             getLoginInfo(){
                 var self = this
@@ -367,18 +461,20 @@
 </script>
 
 
-<!-- Global site tag (gtag.js) - Google Ads: 783435725 -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
-<script>
+	<!-- Global site tag (gtag.js) - Google Ads: 783435725 -->
+	<script async
+		src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+	<script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
 
     gtag('config', 'AW-783435725');
 </script>
-<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
-<script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async
+		src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+	<script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());

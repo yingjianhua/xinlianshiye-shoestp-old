@@ -549,24 +549,24 @@
 											<li class="info-item">
 												<div class="label">Product Name:</div>
 												<div class="content">
-													{{inquiryDetail.title}}
+													{{quotationDetail.title}}
 												</div>
 											</li>
 											<li class="info-item product-pic-wrap"
-												v-if="inquiryDetail.images && inquiryDetail.images.length">
+												v-if="quotationDetail.images && quotationDetail.images.length">
 												<div class="label">Product Photos:</div>
 												<div class="content">
 													<img class="product-pic"  alt=""
 														 :src="util_function_obj.image(imgUrl, 50, 50)"
 														 v-if="imgUrl"
-														 v-for="imgUrl in inquiryDetail.images"
+														 v-for="imgUrl in quotationDetail.images"
 														 :key="imgUrl">
 												</div>
 											</li>
-											<li class="info-item">
+											<li class="info-item" v-if="quotationDetail.description">
 												<div class="label">Product Detail:</div>
 												<div class="content">
-													{{inquiryDetail.detail}}
+													{{quotationDetail.description}}
 												</div>
 											</li>
 										</ul>
@@ -578,31 +578,67 @@
 											<li class="info-item first-row">
 												<div class="label">Quantity:</div>
 												<div class="content">
-													<span class="c10389c">{{inquiryDetail.quantity}}</span>
-													{{inquiryDetail.unit}}
+													<span class="c10389c">{{quotationDetail.quantity}}</span> pairs
+													<%--{{quotationDetail.currency && quotationDetail.currency.shortName || "pairs"}}--%>
 												</div>
-												<div class="label" v-if="inquiryDetail.price">Price:</div>
-												<div class="content" v-if="inquiryDetail.price">
-													{{inquiryDetail.price}}
+												<div class="label">Price:</div>
+												<div class="content">
+													{{quotationDetail.minPrice}}-{{quotationDetail.maxPrice}}
 												</div>
 											</li>
-											<li class="info-item" v-if="inquiryDetail.unit">
+											<li class="info-item"
+												v-if="quotationDetail.currency && quotationDetail.currency.shortName">
 												<div class="label">Currency Unit:</div>
-												<div class="content">{{inquiryDetail.unit}}</div>
+												<div class="content">{{quotationDetail.currency.shortName}}</div>
 											</li>
-											<li class="info-item" v-if="inquiryDetail.valieDate">
+											<li class="info-item" v-if="quotationDetail.validDate">
 												<div class="label">Quote Validity Period:</div>
 												<div class="content">
-													{{inquiryDetail.valieDate | dataFormat('yyyy-MM-dd')}}
+													{{quotationDetail.validDate | dataFormat('yyyy-MM-dd')}}
 												</div>
 											</li>
-											<li class="info-item" v-if="inquiryDetail.paymentTerms">
+											<li class="info-item" v-if="quotationDetail.paymentTerms">
 												<div class="label">Payment Terms:</div>
-												<div class="content">{{inquiryDetail.paymentTerms}}</div>
+												<div class="content">{{quotationDetail.paymentTerms}}</div>
 											</li>
-											<li class="info-item" v-if="inquiryDetail.shippingTerms">
+											<li class="info-item" v-if="quotationDetail.shippingTerms">
 												<div class="label">Shipping terms:</div>
-												<div class="content">{{inquiryDetail.shippingTerms}}</div>
+												<div class="content">{{quotationDetail.shippingTerms}}</div>
+											</li>
+										</ul>
+
+
+
+										<div class="box-title" style="margin-bottom: 4px;margin-top: 12px;">
+											Quotation Supplemental Information
+										</div>
+										<ul class="price-info-wrap">
+											<li class="info-item first-row">
+												<div class="label">Whether to provide samples: </div>
+												<div class="content">
+													<span class="roundCheck checked" v-if="quotationDetail.sample"></span>
+													{{quotationDetail.sample?"Yes":"No"}}
+												</div>
+											</li>
+
+											<li class="info-item upDown" v-if="quotationDetail.companyProfile">
+												<div class="label">Company Profile:</div>
+												<div class="content">{{quotationDetail.companyProfile}}</div>
+											</li>
+											<li class="info-item upDown"
+												v-if="quotationDetail.throwaways && quotationDetail.throwaways.length">
+												<div class="label">Company Product Book:</div>
+												<div class="content">
+													<template
+															v-for="productBook in quotationDetail.throwaways">
+														<img class="company-book-item"  alt="product's book"
+															 v-if="isImg(productBook.url)"
+															 :src="util_function_obj.image(productBook.url, 200, 110)">
+														<div v-else>
+															<a :href="util_function_obj.image(productBook.url)" class="book-link">《{{productBook.name}}》</a>
+														</div>
+													</template>
+												</div>
 											</li>
 										</ul>
 									</div>
@@ -977,7 +1013,7 @@
                                             <span class="title">Product details:</span>
                                             <span class="text">{{quotationDetail.description}}</span>
                                         </li>
-                                        <li class="item" v-if="quotationDetail.images.length">
+                                        <li class="item" v-if="quotationDetail.images && quotationDetail.images.length">
                                             <span class="title">Product image or file:</span>
                                             <div class="text">
                                                 <img class="pic-item" alt="goods' pic"
@@ -1269,6 +1305,7 @@
 			supplierDetail: {},  //当前 view 显示供应商信息详情
 			quotationDetailList: [],  //当前 view 显示询盘信息页面下的 报价详情
 			quotationDetailListIndex: 0,  //view 的报价详情 已加载的下标数 - view more
+			quotationDetail: {}, //show more时直显示1个的对象
 
 			// edit => 添加信息 的弹窗form
 			isEditAddInformationDialogShow: false, //是否显示修改弹窗
@@ -1754,13 +1791,13 @@
 			});
 			},
 
-			//获取报价详情
-			getQuotationDetail(){
-				console.log("getQuotationDetail")
+			//获取报价详情 - 显示在show more中时，直接显示聊天对象的报价信息
+			getQuotationDetail(showMoreQuotationPkey){
+				this.quotationDetail = {};
 				var nowInquiry = this.inquiryList[this.nowInquiryIndex];
 				if( !nowInquiry.relations || !nowInquiry.relations.length ) return;
 
-				var quotationPkey = nowInquiry.relations[this.quotationDetailListIndex].quotation.pkey;
+				var quotationPkey = showMoreQuotationPkey || nowInquiry.relations[this.quotationDetailListIndex].quotation.pkey;
 				axios.get('/home/rfq_RFQConsult_quotationDetail', {
 					params:{
 						quotationPkey: quotationPkey,
@@ -1777,7 +1814,14 @@
 					return
 				};
 
-				this.quotationDetailList.push(res.data.result);
+				// view more时有多个是push进数组，show more时直显示1个，所以赋值给对象
+				if(showMoreQuotationPkey){
+					this.quotationDetail=res.data.result;
+				}else{
+					this.quotationDetailList.push(res.data.result);
+				}
+				console.log("this.quotationDetail")
+				console.log(this.quotationDetail)
 			})
 			.catch((error) => {
 					this.btnLoading = false;
@@ -2003,8 +2047,14 @@
 				this.$set(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex], "unread",false)
 				//获取chat列表
 				this.getChatInfo();
-				//获取询盘详情
-				this.getInquiryDetail();
+				// 如果是RFQ，show more显示报价详情、其余显示询盘详情
+				if(this.inquiryList[inquiryIndex].type==1){
+					// RFQ时获取报价详情
+					this.getQuotationDetail(this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey);
+				}else{
+					//获取询盘详情
+					this.getInquiryDetail();
+				}
 				//获取功能供应商详情
 				this.getSupplierDetail();
 			},

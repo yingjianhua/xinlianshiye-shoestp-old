@@ -2,7 +2,9 @@
 <%@ taglib uri="/struts-tags" prefix="s" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- 商家-头部 -->
-<div class="enterprise-header">
+<div class="enterprise-header"
+     style="background-image: url(${envConfig.imageBaseUrl}${(not empty supView.signBackgd?(supView.signBackgd):'/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg')})">
+
     <div class="wide flexible">
         <c:if test='${not empty supView.logo}'>
             <div class="enterprise-logo pic_box">
