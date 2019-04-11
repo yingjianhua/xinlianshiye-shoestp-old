@@ -334,7 +334,7 @@ a{
 }
 /* ---------------- elementUI 分页样式修改 - end ---------------- */
 
-/* ---------------- elementUI 按钮样式自定义---------------- */
+/* ---------------- elementUI 按钮样式自定义 及其他---------------- */
 .el-button--primary.my-primary-btn{
   border-radius: 3px;
   border-color: #10389c;
@@ -343,6 +343,10 @@ a{
 .el-button--primary.my-primary-btn:hover {
   border-color: #35c;
   background-color: #35c;
+}
+/*与input的placeholder样式统一*/
+.el-textarea .el-textarea__inner{
+  font-family: Arial;
 }
 /* ---------------- elementUI 按钮样式自定义 - end ---------------- */
 
