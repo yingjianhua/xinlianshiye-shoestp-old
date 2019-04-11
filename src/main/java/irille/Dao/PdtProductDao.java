@@ -1,8 +1,5 @@
 package irille.Dao;
 
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
-
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -23,17 +20,12 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import org.apache.logging.log4j.util.Strings;
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import irille.Aops.Caches;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
@@ -50,9 +42,9 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.svr.DbPool;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.pdt.view.PrivatePdtView;
@@ -77,6 +69,13 @@ import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
+import org.apache.logging.log4j.util.Strings;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 14:47 */
 public class PdtProductDao {
@@ -898,18 +897,38 @@ public class PdtProductDao {
           .WHERE(UsrFavorites.T.PRODUCT, "=", PdtProduct.T.PKEY);
       sql.SELECT(childrenQuery, "isFavorite");
     }
-    sql.SELECT(
+
+//    子查询  查询o2o表的状态
+    SQL childrensql = new SQL();
+    childrensql
+        .SELECT("count(1)")
+        .FROM(O2O_Product.class)
+        .WHERE(PdtProduct.T.PKEY, "=", O2O_Product.T.PRODUCT_ID)
+        .WHERE(O2O_Product.T.VERIFY_STATUS, "=?", O2O_ProductStatus.PASS)
+        .WHERE(
+            O2O_Product.T.STATUS,
+            "in(?,?,?)",
+            O2O_ProductStatus._DEFAULT,
+            O2O_ProductStatus.ON,
+            O2O_ProductStatus.Failed);
+    sql.SELECT(childrensql, "o2o")
+        .SELECT(
             PdtProduct.T.PKEY,
             PdtProduct.T.NAME,
             PdtProduct.T.CUR_PRICE,
             PdtProduct.T.PICTURE,
+            PdtProduct.T.PRODUCT_TYPE,
             PdtProduct.T.MIN_OQ)
         .FROM(PdtProduct.class);
     if (cat > 0) {
       String pkeys = getYouMayLikeProd(cat);
       sql.WHERE(PdtProduct.T.PKEY, " in(" + pkeys + ") ");
     }
-    productRules(sql).LIMIT(start, limit);
+
+    noProductTypeRules(sql)
+        .LIMIT(start, limit)
+        .WHERE(
+            PdtProduct.T.PRODUCT_TYPE, "in (?,?)", Pdt.OProductType.O2O, Pdt.OProductType.GENERAL);
     return irille.pub.bean.Query.sql(sql).queryMaps();
   }
 
@@ -979,12 +998,17 @@ public class PdtProductDao {
    * @author lijie@shoestp.cn
    */
   private SQL productRules(SQL query) {
+    return noProductTypeRules(query)
+        .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL);
+  }
+
+  private SQL noProductTypeRules(SQL query) {
     return query
         .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
         .WHERE(PdtProduct.T.IS_VERIFY, "=?", YES)
         .WHERE(PdtProduct.T.STATE, "=?", Pdt.OState.ON)
-        .WHERE(PdtProduct.T.PRODUCT_TYPE, "=?", Pdt.OProductType.GENERAL)
         .WHERE(UsrSupplier.T.STATUS, "=?", Usr.OStatus.APPR)
+        .WHERE(UsrSupplier.T.STORE_STATUS, "=?", Usr.SStatus.OPEN)
         .LEFT_JOIN(UsrSupplier.class, PdtProduct.T.SUPPLIER, UsrSupplier.T.PKEY);
   }
 
@@ -1592,13 +1616,6 @@ public class PdtProductDao {
         .WHERE(PdtProduct.T.SUPPLIER, "=?", supplier)
         .limit(0, 4);
     return query.queryMaps();
-  }
-
-  public static void main(String[] args) {
-    String ss = "66>>>>6744444";
-    System.out.println(ss.length());
-    System.out.println(ss.length() - 1);
-    System.out.println(ss.substring(11, 13));
   }
 
   public void upd(List<PdtProduct> prods) {

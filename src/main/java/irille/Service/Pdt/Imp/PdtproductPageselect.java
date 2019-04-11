@@ -1,7 +1,5 @@
 package irille.Service.Pdt.Imp;
 
-import static irille.core.sys.Sys.OYn.YES;
-
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,8 +17,6 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
-import org.json.JSONException;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.util.Maps;
@@ -29,10 +25,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import irille.Dao.PdtProductDao;
-import irille.Entity.O2O.O2O_PrivateExpoPdt;
-import irille.Entity.O2O.O2O_Product;
 import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
+import irille.Entity.O2O.O2O_PrivateExpoPdt;
+import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OMapServer;
 import irille.Service.Pdt.IPdtProductService;
 import irille.core.sys.Sys;
@@ -44,8 +40,8 @@ import irille.pub.bean.BeanBase;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.idu.IduPage;
 import irille.pub.util.AppConfig;
-import irille.pub.util.SEOUtils;
 import irille.pub.util.FormaterSql.FormaterSql;
+import irille.pub.util.SEOUtils;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
@@ -67,6 +63,9 @@ import irille.view.pdt.PdtProductSaveView;
 import irille.view.pdt.PdtProductSpecSaveView;
 import irille.view.pdt.PdtTieredPricingView;
 import irille.view.pdt.PdtYouMayLikeView;
+import org.json.JSONException;
+
+import static irille.core.sys.Sys.OYn.YES;
 
 /**
  * l临时拉出来..带整合入Service Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 16:33
@@ -357,6 +356,7 @@ public class PdtproductPageselect {
 
       List<O2O_Product> o2O_products = o2oQuery.queryList();
       boolean flag = false;
+      /** * O2O商品 根据O2O表,然后 上架状态:上架 审核通过, 申请下架但未通过状态为: 待审核 审核通过;申请失败: 审核失败 审核通过 */
       for (O2O_Product op : o2O_products) {
         if ((op.gtVerifyStatus().equals(O2O_ProductStatus.PASS)
             && (op.gtStatus().equals(O2O_ProductStatus.Failed)
@@ -368,22 +368,9 @@ public class PdtproductPageselect {
       if (!flag) {
         return null;
       }
-
-      //      O2O_Product o2O_product = o2oQuery.query();
-      /** * O2O商品 根据O2O表,然后 上架状态:上架 审核通过, 申请下架但未通过状态为: 待审核 审核通过;申请失败: 审核失败 审核通过 */
-      //      if (!(o2O_product.gtVerifyStatus().equals(O2O_ProductStatus.PASS)
-      //          && (o2O_product.gtStatus().equals(O2O_ProductStatus.Failed)
-      //              || o2O_product.gtStatus().equals(O2O_ProductStatus.WAITOFF)
-      //              || o2O_product.gtStatus().equals(O2O_ProductStatus.ON)))) {
-      //        return null;
-      //      }
     }
     //    判断私人展厅
     if (pdtProduct.gtProductType().equals(Pdt.OProductType.PrivateExpo)) {
-      //      if (pdtProduct.gtIsVerify() != Pdt.OAppr.PASS || pdtProduct.gtState() !=
-      // Pdt.OState.ON) {
-      //        return null;
-      //      }
       BeanQuery<O2O_PrivateExpoPdt> o2oQuery = new BeanQuery();
       o2oQuery
           .SELECT(O2O_PrivateExpoPdt.class)

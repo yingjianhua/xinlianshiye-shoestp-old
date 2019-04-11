@@ -8,9 +8,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -52,9 +49,9 @@ import irille.shop.pdt.PdtSize;
 import irille.shop.usr.UsrPurchase;
 import irille.shop.usr.UsrSupplier;
 import irille.shop.usr.UsrSupplierDAO;
+import irille.view.O2O.O2OMapView;
 import irille.view.Page;
 import irille.view.ResultView;
-import irille.view.O2O.O2OMapView;
 import irille.view.pdt.CommentView;
 import irille.view.pdt.PdtCommentSatisFactionView;
 import irille.view.pdt.PdtCommentViewPageView;
@@ -62,6 +59,8 @@ import irille.view.usr.SupplierView;
 import irille.view.usr.UserView;
 import lombok.Getter;
 import lombok.Setter;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 @Setter
 @Getter
@@ -382,6 +381,10 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
     return HomeAction.TRENDS;
   }
 
+  /***
+   * 新的商品详情接口  返回json信息
+   * @throws Exception
+   */
   public void getProductsInfo() throws Exception {
     if (Long.valueOf(getId().toString()) < 1) {
       throw new WebMessageException(
@@ -431,25 +434,6 @@ public class PdtProductAction extends HomeAction<PdtProduct> {
   private O2OMapView map;
 
   /** ===============O2O INFO END===============* */
-
-  /**
-   * @Description: 商品详情页 ajax 返回json
-   *
-   * @author lijie@shoestp.cn
-   * @date 2018/7/27 11:03
-   */
-  public void gtProductsInfoAjax() throws Exception {
-    if (Long.valueOf(getId().toString()) < 1) {
-      return;
-    }
-    write(
-        pdtpageSelect.getProductsById(
-            Integer.valueOf(getId().toString()),
-            Sys.OYn.YES,
-            Pdt.OState.ON,
-            getPurchase() != null ? getPurchase().getPkey() : -1,
-            HomeAction.curCurrency()));
-  }
 
   /**
    * @Description:你可能喜欢

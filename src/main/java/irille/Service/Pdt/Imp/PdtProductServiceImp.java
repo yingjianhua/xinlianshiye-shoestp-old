@@ -9,23 +9,19 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-import com.google.protobuf.StringValue;
-
 import irille.Aops.Caches;
-import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OProductDao;
+import irille.Dao.PdtProductDao;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ExhibitionSupplierView;
 import irille.homeAction.pdt.dto.PdtExhibitionView;
 import irille.homeAction.pdt.dto.PdtProductView;
-import irille.pub.Obj;
 import irille.pub.idu.IduPage;
 import irille.pub.tb.FldLanguage;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
-import irille.pub.util.SetBeans.Customs.MapGetMethod;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.shop.pdt.Pdt;
@@ -153,7 +149,14 @@ public class PdtProductServiceImp implements IPdtProductService {
             100,
             cat,
             purchase == null ? null : purchase.getPkey())) {
+
       PdtNewPdtInfo info = new PdtNewPdtInfo();
+      info.setProduct_type(GetValue.get(map, PdtProduct.T.PRODUCT_TYPE, Integer.class, 0));
+      if (info.getProduct_type() == 4) {
+        if (GetValue.get(map, "020", Integer.class, 0) == 0) {
+          continue;
+        }
+      }
       info.setId(Long.valueOf(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0)));
       info.setTitle(GetValue.get(map, PdtProduct.T.NAME, String.class, ""));
       info.setImage(
