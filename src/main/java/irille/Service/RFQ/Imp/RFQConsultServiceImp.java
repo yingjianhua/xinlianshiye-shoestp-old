@@ -164,7 +164,12 @@ public class RFQConsultServiceImp implements IRFQConsultService {
     rfqConsultRelation.ins();
     // TODO 询盘发送站内信
     messageService.send(
-        OTempType.INQUIRY_NOTICE_PURCHASE, null, purchase, rfqConsult, rfqConsultRelation);
+        OTempType.INQUIRY_NOTICE_SUPPLIER,
+        rfqConsultRelation.gtSupplierId(),
+        null,
+        rfqConsult,
+        rfqConsultRelation,
+        rfqConsultRelation.gtPurchaseId());
     //        messageService.send(OTempType.INQUIRY_NOTICE_SUPPLIER,
     // rfqConsultRelation.gtSupplierId(),null, rfqConsult,rfqConsultRelation.gtPurchaseId());
   }

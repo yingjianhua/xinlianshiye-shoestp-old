@@ -183,7 +183,7 @@
 
 	</package>
 
-	<package name="temporary" namespace="/temporary" extends="struts-default">
+	<package name="temporary" namespace="/home/temporary" extends="struts-default">
 		<interceptors>
 			<interceptor name="ItpDbTransaction" class="irille.Filter.svr.ItpDbTransaction" />
 			<interceptor name="ItpExceptionHandler" class="irille.Filter.svr.ItpExceptionHandler" />

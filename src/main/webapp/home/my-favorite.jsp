@@ -58,26 +58,26 @@
                             <div class="porduct-inquiry-btn porduct-btn">
                                 <a href="javascript:void(0)" @click="restore(item.id)" v-if="catPkey == -1">Restore</a>
                                 <!-- <a :href="'/home/usr_UsrFavorites_myfavorite?product_id='+item.pdtPkey" target="_blank" v-else>Inquiry</a> -->
-                                <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey+'&backUrl='+window.location.href" target="_blank" v-else>Inquiry</a>
+                                <a :href="'/home/usr_UsrConsult_productPublishView?product_id='+item.pdtPkey+'&backUrl='+window.location.href"
+                                   target="_blank" v-else>Inquiry</a>
                             </div>
                         </div>
                     </div>
                     </template>
                       <template v-else>
-                        <div style="height:566px;text-align:center;line-height:566px;font-size:32px;font-weight:bold;">
+                        <div style="height:566px;text-align:center;line-height:566px;font-size:32px;font-weight:bold;color:#999;">
                             No valid information
                         </div>
                     </template>
                 </div>
 
 
-            <template v-if="favoriteList.length > 0">
-            <div class="page-box">
+            <template v-if="favoriteList && favoriteList.length > 0">
+            <div class="my-el-pagination-wrap">
                 <el-pagination
-                        background
                         @current-change="handleCurrentChange"
-                        prev-text="< Previous"
-                        next-text="Next >"
+                        prev-text="Previous"
+                        next-text="Next"
                         :current-page="currentPage"
                         layout="prev, pager, next"
                         page-size="8"
@@ -88,7 +88,7 @@
             <div class="bottom-btn-list flexSe">
                 <input type="checkbox" v-model='isAllChecked' @change='chooseAll'>
                 <div class="bottom-btn bottom-remove-btn" @click="removeAll">
-                    <a href="javascript:void(0)">{{catPkey == -1?'Empty recycle bin':'Clear'}}</a>
+                        {{catPkey == -1?'Empty recycle bin':'Clear'}}
                 </div>
             </div>
         </template>

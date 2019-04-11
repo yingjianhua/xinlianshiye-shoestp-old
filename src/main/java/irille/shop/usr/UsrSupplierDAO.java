@@ -96,6 +96,8 @@ import irille.view.usr.AccountSettingsView;
 import irille.view.usr.SupplierDetailsDTO;
 import irille.view.usr.SupplierView;
 import irille.view.usr.shopSettingView;
+import irille.view.v3.usr.UsrSupplierBackgddSeoDTO;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -935,20 +937,20 @@ public class UsrSupplierDAO {
 
   /**
    * 获取店铺状态
-   * @author: lingjian
-   * @Date: 2019/4/2 13:50
+   *
+   * @author: lingjian @Date: 2019/4/2 13:50
    * @param pkey
    * @return
    */
   public static UsrSupplier getStoreStatus(Integer pkey) {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     SQL sql =
-            new SQL() {
-              {
-                SELECT(T.PKEY, T.STORE_STATUS);
-                FROM(UsrSupplier.class);
-              }
-            };
+        new SQL() {
+          {
+            SELECT(T.PKEY, T.STORE_STATUS);
+            FROM(UsrSupplier.class);
+          }
+        };
     SqlQuery query = irille.pub.bean.Query.sql(sql);
     supplier.stStoreStatus(supplier.gtStoreStatus());
     return supplier;
@@ -963,7 +965,8 @@ public class UsrSupplierDAO {
    * @return
    * @author: lingjian @Date: 2019/3/11 10:49
    */
-  public static UsrSupplier reviewStatus(String pkey, Integer status, String reason, Date storeopenTime) throws JSONException {
+  public static UsrSupplier reviewStatus(
+      String pkey, Integer status, String reason, Date storeopenTime) throws JSONException {
     UsrSupplier supplier = BeanBase.load(UsrSupplier.class, pkey);
     IPMMessageService messageService = new PMMessageServiceImp();
     String SING_BACKGED = "/public/upload/usr/supplier/a65e5c6ff166514aa1266bc62d920668.jpg";
@@ -990,9 +993,10 @@ public class UsrSupplierDAO {
       }
     }
     translateUtil.autoTranslate(supplier, false);
-    supplier.setShowName(new JSONObject(
-            translateUtil.toSaveJson(supplier.getName(), FldLanguage.Language.zh_CN))
-            .put("en",supplier.getEnglishName()).toString());
+    supplier.setShowName(
+        new JSONObject(translateUtil.toSaveJson(supplier.getName(), FldLanguage.Language.zh_CN))
+            .put("en", supplier.getEnglishName())
+            .toString());
     supplier.upd();
     return supplier;
   }
@@ -1163,15 +1167,16 @@ public class UsrSupplierDAO {
     bean.setName(view.getName()); // 公司名称-必填
     bean.setEnglishName(view.getEnglishName()); // 公司英文名称
     if (view.getName() != null) {
-      bean.setShowName(new JSONObject(
-              translateUtil.toSaveJson(view.getName(), lang))
-              .put("en",view.getEnglishName()).toString());
+      bean.setShowName(
+          new JSONObject(translateUtil.toSaveJson(view.getName(), lang))
+              .put("en", view.getEnglishName())
+              .toString());
     }
     if (view.getCompanyType() != null) {
       bean.setCompanyType(translateUtil.toSaveJson(view.getCompanyType(), lang)); // 企业类型
     }
 
-    if (view.getCompanyNature() != null){
+    if (view.getCompanyNature() != null) {
       bean.setCompanyNature(translateUtil.toSaveJson(view.getCompanyNature(), lang)); // 企业性质
     }
 
@@ -1275,7 +1280,10 @@ public class UsrSupplierDAO {
         T.STORE_STATUS,
         T.CLOSE_REASON);
     if (supplier.getName() != null) {
-      model.setShowName(new JSONObject(translateUtil.toSaveJson(supplier.getName(), lang)).put("en",supplier.getEnglishName()).toString());
+      model.setShowName(
+          new JSONObject(translateUtil.toSaveJson(supplier.getName(), lang))
+              .put("en", supplier.getEnglishName())
+              .toString());
     }
     if (supplier.getCompanyType() != null) {
       model.setCompanyType(translateUtil.toSaveJson(supplier.getCompanyType(), lang));
@@ -1482,7 +1490,10 @@ public class UsrSupplierDAO {
     model.setContacts(s.getContacts());
     model.setDepartment(s.getDepartment());
     model.setJobTitle(s.getJobTitle());
-    model.setShowName(new JSONObject(translateUtil.toSaveJson(supplier.getName(), Language.zh_CN)).put("en",supplier.getEnglishName()).toString());
+    model.setShowName(
+        new JSONObject(translateUtil.toSaveJson(supplier.getName(), Language.zh_CN))
+            .put("en", supplier.getEnglishName())
+            .toString());
     //    if(supplier.getTargetedMarket() != null){
     //      List<Integer> integers = new ArrayList<>();
     //      String[] split = supplier.getTargetedMarket().split(",");
@@ -1689,7 +1700,10 @@ public class UsrSupplierDAO {
       view.setImList(UsrSupImDAO.getEnabledImSetting(supplier.getPkey())); // 店铺内聊天插件
       view.setTraceCode(supplier.getTraceCode()); // 跟踪代码 STR(100)<null>
       view.setWebSizeTitle(supplier.getWebSizeTitle()); // 跟踪代码 STR(100)<null>
-
+      view.setSignBackgd(supplier.getSignBackgd()); // 店招背景
+      view.setSeoTitle(supplier.getSeoTitle());//seo标题
+      view.setSeoKeyword(supplier.getSeoKeyword());//seo店铺关键字
+      view.setSeoContent(supplier.getSeoContent());//seo搜索引擎说明
       switch (type) {
         case 1: // 首页
           view.setHomePageOn(supplier.getHomePageOn()); // 公司是否启用首页个性化装修
@@ -2649,5 +2663,29 @@ public class UsrSupplierDAO {
     return map;
   }
 
+  public UsrSupplierBackgddSeoDTO getSupplierSignBackgdSeo(Integer pkey) {
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    UsrSupplierBackgddSeoDTO view = new UsrSupplierBackgddSeoDTO();
+    view.setPkey(usrSupplier.getPkey());
+    view.setBackground(usrSupplier.getSignBackgd());
+    view.setSeoTitle(usrSupplier.getSeoTitle());
+    view.setSeoKeyWord(usrSupplier.getSeoKeyword());
+    view.setSeoContent(usrSupplier.getSeoContent());
+    return view;
+  }
+
+  public void updSignBackgd(Integer pkey, String singBackgd) {
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    usrSupplier.setSignBackgd(singBackgd != null ? singBackgd : null);
+    usrSupplier.upd();
+  }
+
+  public void updSupplierSeo(Integer pkey, UsrSupplierBackgddSeoDTO view) {
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    usrSupplier.setSeoTitle(view.getSeoTitle());
+    usrSupplier.setSeoKeyword(view.getSeoKeyWord());
+    usrSupplier.setSeoContent(view.getSeoContent());
+    usrSupplier.upd();
+  }
   /** ———————————————————分割线(3.1.1END)————————————————————————— */
 }

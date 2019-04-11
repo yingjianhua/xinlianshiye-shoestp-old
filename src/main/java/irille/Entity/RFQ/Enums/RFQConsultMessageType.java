@@ -8,7 +8,7 @@ public enum RFQConsultMessageType implements IEnumOpt {
   TEXT(1, "文本信息"),
   IMAGE(2, "图片信息"),
   URL(3, "链接类型"),
-  ALERT_URL(4, "有消息提示的_链接类型"),
+  PRIVATE_PRODUCT_URL(4, "私人展厅产品链接消息"),
   ;
 
   public static final String NAME = "消息体类型";

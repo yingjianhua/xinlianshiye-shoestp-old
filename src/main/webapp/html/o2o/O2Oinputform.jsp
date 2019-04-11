@@ -8,7 +8,8 @@
 <link rel="stylesheet" href="./css/element-ui/element-ui.css"/>
 <link rel="stylesheet" href="./css/index.css"/>
 <style>
-    #o2otop .o2otopcon a:nth-of-type(3) .smallspan {
+    /*彩色显示new design按钮*/
+    #o2otop .o2otopcon a:nth-of-type(2) .smallspan {
         color: white;
         background: linear-gradient(to right, rgb(113, 139, 223), rgb(159, 87, 254));
         display: inline-block;
@@ -20,6 +21,7 @@
         cursor: pointer;
         text-align: center;
     }
+    /*底部bottom样式与其他地方不一样*/
     #o2obottom .o2obottomlinks ul{
         color: black;
     }

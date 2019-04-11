@@ -37,6 +37,7 @@ import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OEnabled;
 import irille.core.sys.Sys.OYn;
 import irille.homeAction.pdt.dto.PdtProductView;
 import irille.pub.bean.BeanBase;
@@ -496,7 +497,12 @@ public class PdtProductDao {
       return null;
     }
     BeanQuery query = new BeanQuery();
-    query.SELECT(PdtCat.T.PKEY).FROM(PdtCat.class).WHERE(PdtCat.T.CATEGORY_UP, "=?", id);
+    query
+        .SELECT(PdtCat.T.PKEY)
+        .FROM(PdtCat.class)
+        .WHERE(PdtCat.T.CATEGORY_UP, "=?", id)
+        .WHERE(PdtCat.T.ENABLED, " =? ", OEnabled.TRUE)
+        .WHERE(PdtCat.T.DELETED, " =? ", OYn.NO);
     List<PdtCat> l = new ArrayList();
     List<PdtCat> tList = query.queryList();
     List ttList = new ArrayList();
@@ -511,6 +517,8 @@ public class PdtProductDao {
                 .SELECT(PdtCat.T.PKEY)
                 .FROM(PdtCat.class)
                 .WHERE(PdtCat.T.CATEGORY_UP, "=?", objects.getPkey())
+                .WHERE(PdtCat.T.ENABLED, " =? ", OEnabled.TRUE)
+                .WHERE(PdtCat.T.DELETED, " =? ", OYn.NO)
                 .queryList());
       }
       l.addAll(ttList);
@@ -1049,7 +1057,7 @@ public class PdtProductDao {
    * @date 2018/8/22 21:59
    */
   public List<PdtProductCatView> getCatChildNodesByCatIdRemoveDisplay(
-          Integer integer, FldLanguage.Language language) {
+      Integer integer, FldLanguage.Language language) {
     FormaterSql sql = FormaterSql.build();
     if (integer == null || integer == 0) {
       sql.isNull(PdtCat.T.CATEGORY_UP);
@@ -1057,21 +1065,21 @@ public class PdtProductDao {
       sql.eqAutoAnd(PdtCat.T.CATEGORY_UP, integer);
     }
     List<PdtProductCatView> result =
-            PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
-                    .filter(s -> !s.gtDeleted())
-                    .map(
-                            s -> {
-                              PdtProductCatView pdtProductVueView = new PdtProductCatView();
-                              translateUtil.getAutoTranslate(s, language);
-                              pdtProductVueView.setValue(s.getPkey());
-                              pdtProductVueView.setLabel(s.getName());
-                              List l = getCatChildNodesByCatId(s.getPkey(), language);
-                              if (l.size() > 0) {
-                                pdtProductVueView.setChildren(l);
-                              }
-                              return pdtProductVueView;
-                            })
-                    .collect(Collectors.toList());
+        PdtCat.list(PdtCat.class, sql.toWhereString(), false, sql.getParms()).stream()
+            .filter(s -> !s.gtDeleted())
+            .map(
+                s -> {
+                  PdtProductCatView pdtProductVueView = new PdtProductCatView();
+                  translateUtil.getAutoTranslate(s, language);
+                  pdtProductVueView.setValue(s.getPkey());
+                  pdtProductVueView.setLabel(s.getName());
+                  List l = getCatChildNodesByCatId(s.getPkey(), language);
+                  if (l.size() > 0) {
+                    pdtProductVueView.setChildren(l);
+                  }
+                  return pdtProductVueView;
+                })
+            .collect(Collectors.toList());
     return result;
   }
 
@@ -1094,7 +1102,7 @@ public class PdtProductDao {
             UsrSupplier.T.ROLE,
             UsrSupplier.T.LOGO)
         .SELECT(UsrSupplier.T.PKEY, "supId")
-        .SELECT(UsrSupplier.T.NAME, "supName")
+        .SELECT(UsrSupplier.T.SHOW_NAME, "supName")
         .FROM(PdtProduct.class)
         .LEFT_JOIN(UsrSupplier.class, UsrSupplier.T.PKEY, PdtProduct.T.SUPPLIER)
         .WHERE(PdtProduct.T.PKEY, "=?", id);

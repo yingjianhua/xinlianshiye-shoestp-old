@@ -40,7 +40,7 @@
 
 
 
-<div id="main">
+<div id="main" v-cloak>
     <div class="clean">
     </div>
     <index-top></index-top>
@@ -56,7 +56,7 @@
                         <p class="company-name">
                             {{companyInfo.companyName}}
                         </p>
-                        <div v-if="companyInfo.svsgrade" style="color:#7f7f7f">
+                        <div v-if="companyInfo && companyInfo.svsgrade != 0" style="color:#7f7f7f">
                             <img v-if="companyInfo.svsgrade == 1" src="/home/static/images/ico/icon-svs-yp.png" alt="">
                             <img v-if="companyInfo.svsgrade == 2" src="/home/static/images/ico/icon-svs-jp.png" alt="">
                             <img v-if="companyInfo.svsgrade == 3" src="/home/static/images/ico/icon-svs-zs.png" alt="">
@@ -125,7 +125,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
+                            <el-button class="my-primary-btn" :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -145,13 +145,13 @@
                 sessionStorage.setItem("type", "");
                 window.scrollTo(0, 840)
             }
-        }) 
+        })
 
     </script>
     ${supView.traceCode}
     <script src="/home/v3/static/js/index-top.js"></script>
     <script src="/home/v3/static/js/index-bottom.js"></script>
-    <script>    
+    <script>
          new Vue({
             el:"#bottom",
         })
@@ -161,7 +161,7 @@
             el:"#main",
             data() {
                 return {
-                    flag : false, 
+                    flag : false,
                     companyInfo:[], // 供应商信息
                     imgsToUpload: [], // 需要upload的img - 显示在页面上
                     options: [{
@@ -349,7 +349,7 @@
                         });
                         }
                     }
-                    
+
                 },
                 getQueryString: (name) => {
                     let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");

@@ -339,7 +339,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                         setCountryLogo(
                             (String) o.get(PltCountry.T.NATIONAL_FLAG.getFld().getCodeSqlField()));
                         setTitle((String) o.get(RFQConsult.T.TITLE.getFld().getCodeSqlField()));
-                        setTime((Date) o.get(RFQConsult.T.VALID_DATE.getFld().getCodeSqlField()));
+                        setTime((Date) o.get(RFQConsult.T.CREATE_TIME.getFld().getCodeSqlField()));
                         setQuantity(
                             (Integer) o.get(RFQConsult.T.QUANTITY.getFld().getCodeSqlField()));
                         for (RFQConsultUnit value : RFQConsultUnit.values()) {

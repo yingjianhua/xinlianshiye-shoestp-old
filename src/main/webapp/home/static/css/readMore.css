@@ -121,6 +121,9 @@
             font-size: 18px;
             color: #fff;
             text-decoration: none; }
+#readMore .content-box .section2 .section2-content .section2-ul2 a:hover{
+  background-color: #35c;
+}
         #readMore .content-box .section2 .section2-content ul li {
           color: #777777;
           line-height: 40px;
@@ -163,7 +166,6 @@
         width: 173px;
         height: 40px;
         font-size: 18px;
-        background-color: #10389c;
         border-color: #10389c;
         border-radius: 3px;
         color: #ffffff;

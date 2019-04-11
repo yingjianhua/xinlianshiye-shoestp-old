@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html style="scroll-behavior: smooth;">
+<head>
+  <meta charset='utf-8'/>
+  <meta name='viewport' content='width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no'>
+  <meta http-quiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+  <meta name='keywords' content=''>
+  <meta name=' escription' content=''>
+  <script src='./js/axios.js'></script>
+  <script src='./js/vue.min.js'></script>
+  <!-- 引入组件库 -->
+  <script src="./js/element-ui.min.js"></script>
+  <script src="./js/qs.js"></script>
+  <link rel="stylesheet" href="./css/element.css">
+  <link rel='stylesheet' href='./css/index.css'>
+
+  <script src="./js/util.js"></script>
+  <script src="./js/register-box.js"></script>
+  <script src="./js/login-box.js"></script>
+  <link rel="stylesheet" href="./css/login.css"/>
+    <script>
+        //RFQ,inquery,from
+        function gtag_report_inquery(url) {
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/UXRYCNuQkZgBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Sign In
+        function gtag_report_signIn(url) {
+            console.log('调取成功Sign In')
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/-DYJCP3Cv5gBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Join Free
+        function gtag_report_joinFree(url) {
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/w6bxCO6ftpgBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+
+        //Join US
+        function gtag_report_joinUs(url) {
+            console.log('调取成功Join US')
+            var callback = function () {
+                if (typeof(url) != 'undefined') {
+                    window.location = url;
+                }
+            };
+            gtag('event', 'conversion', {
+                'send_to': 'AW-783435725/mCwkCOm9q5gBEM2PyfUC',
+                'event_callback': callback
+            });
+            return false;
+        }
+    </script>
+  <title>shoestp</title>
+</head>
+<body>
+  <div id='wmshoes'>
+
+    <register-box :props-reg="propsReg" @registersuccess="testFormSubmit"></register-box>
+    <login-box :props-login="propsLogin" @toregister="toRegister" @loginsuccess="loginSuccess"></login-box>
+
+    <div class="con banner">
+      <div class="nav">
+        <a href="/home/usr_UsrPurchase">
+          <img name="logo" src="images/logo.png" alt="新联-鞋贸港">
+        </a>
+        <div class="navtitle cu"><a href="/home/pdt_PdtProduct" style="color: inherit;">PRODUCTS</a></div>
+        <div class="navtitle cu"><a href="#productGoods" style="color: inherit;">POPULAR GOODS</a></div>
+        <div class="search">
+          <span class="cu mw_300" v-if="sysConfig && sysConfig.user">{{sysConfig.user.name}}</span>
+          <span class="cu" @click="testFormSubmit" v-else>SIGN UP</span>
+          <input type="text" :class=" showinput ? '' : 'noinput'" v-model="search">
+          <img class="cu" src="images/serach.png" @click="inputshow">
+        </div>
+        <div class="fx">
+          <a href="https://www.facebook.com/ShoestpCN/">
+            <img src="./images/f1.png" name="share" alt="">
+          </a>
+          <a href="https://twitter.com/shoes_logo">
+            <img src="./images/f2.png" name="share" alt="">
+          </a>
+          <a href="https://www.instagram.com/shoestpcn/">
+            <img src="./images/f3.png" name="share" alt="">
+          </a>
+          <a href="https://www.linkedin.com/company/shoestp/?viewAsMember=true">
+            <img src="./images/f4.png" name="share" alt="">
+          </a>
+          <a href="https://www.youtube.com/channel/UCUHObFxGQ_FaHCKolyZ9k0w/featured?view_as=subscriber">
+            <img src="./images/f5.png" name="share" alt="">
+          </a>
+        </div>
+      </div>
+      <img name="banner" src="images/banner.png" alt="">
+      <a class="block rfq" href="javascript:;" @click="skipRFQ">RFQ</a>
+    </div>
+    <div class="con point3">
+      <div class="points">
+        <div class="point" v-for="item,index in points" :key="index">
+          <img :src="item.img" alt="">
+          <h3>{{item.h3}}</h3>
+          <p v-for="span,indexspan in item.spans" :key="indexspan">{{span}}</p>
+          <a v-if="item.view" href="/html/SVS/svsSuplies.jsp">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="con boots" v-if="men.length > 0" id="productGoods">
+      <div class="boot">
+        <h2>MEN’S BOOTS</h2>
+        <h3>Click <a href="javascript:void(0);">INQUIRY</a> And Get A Free Sample</h3>
+        <div class="shoes">
+          <div class="shoe" v-for="item,index in men">
+            <div class="imgcon">
+              <img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+            <h3>{{item.title}}</h3>
+            <h4>${{item.price}}</h4>
+            <p>Min.Order:{{item.min_order}} pairs</p>
+            <div class="shoehover">
+              <h3>
+                <a :href="'/' + item.rewrite" style="color: #b0b0b0;">{{item.title}}</a>
+              </h3>
+              <h4>${{item.price}}</h4>
+              <p>Min.Order:{{item.min_order}} pairs</p>
+              <a href="javascript:void(0);" @click="skipInquiry(item.id)">INQUIRY</a>
+            </div>
+            <div class="imgcon2">
+              <img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="dress-list" v-else>
+      <h2 style="text-align: center">NO RESULT</h2>
+      <p style="text-align: center;color: #999999;">There is no relevant content for the time being.</p>
+    </div>
+    <div class="con boots" v-if="women.length > 0">
+      <div class="boot">
+        <h2>WOMEN’S BOOTS</h2>
+        <h3>Click <a href="javascript:void(0);">INQUIRY</a> And Get A Free Sample</h3>
+        <div class="shoes">
+          <div class="shoe" v-for="item,index in women">
+            <div class="imgcon">
+              <img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+            <h3>{{item.title}}</h3>
+            <h4>${{item.price}}</h4>
+            <p>Min.Order:{{item.min_order}} pairs</p>
+            <div class="shoehover">
+              <h3>
+                <a :href="'/' + item.rewrite" style="color: #b0b0b0;">{{item.title}}</a>
+              </h3>
+              <h4>${{item.price}}</h4>
+              <p>Min.Order:{{item.min_order}} pairs</p>
+              <a href="javascript:void(0);" @click="skipInquiry(item.id)">INQUIRY</a>
+            </div>
+            <div class="imgcon2">
+              <img v-if="item.image" :src="'https://image.shoestp.com' + item.image.split(',')[0] + '?x-oss-process=image/resize,w_298,h_261'" alt="">
+            </div>
+          </div>
+        </div>
+        <p class="more"><a href="/home/pdt_PdtProduct">Visit More</a></p>
+      </div>
+    </div>
+    <div class="dress-list" v-else>
+      <h2 style="text-align: center">NO RESULT</h2>
+      <p style="text-align: center;color: #999999;">There is no relevant content for the time being.</p>
+    </div>
+    <div class="con aboutcon">
+      <div class="aboutus">
+        <img src="./images/aboutus.png" alt="">
+        <div class="msg">
+          <h4>S<div></div>H<div></div>O<div></div>E<div></div>S<div></div>T<div></div>P</h4>
+          <h2>ABOUT US</h2>
+          <h3>SHOESTP.COM</h3>
+          <p>Shoestp is the biggest platform of shoe industries in china. All kinds of well-made shoes which are more than 1000 items for every occasion are available with high quality but low price. Manufacturers direct marketing promises you the most reasonable price and our own SVS Certification System ensures you the quality of shoes. It warmly expects to establish cooperative relationships with companies and manufacturers at home and abroad to obtain common development.</p>
+        </div>
+      </div>
+    </div>
+    <div class="con shoesfoot">
+      <div class="footmsg">
+        <h2>What Is SVS?</h2>
+        <p>SVS is a certification system for the factory, which is based on the key aspects such as actual manufacturers , production capacity, product quality, R&D capacity, trade capacity, trade show, etc. And it helps buyer find their target Supplier more faster, accurate and time-saving than any other way.<a href="/html/SVS/svs.jsp">View More＋</a></p>
+        <div>
+          <a href="/html/SVS/svsSuplies.jsp" target="_blank" class="footmsgButton">
+            SVS Suppliers
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var sysConfig;
+    new Vue({
+      el:'#wmshoes',
+      data:{
+        // 注册弹框 - props属性
+        propsReg:{
+          showRegister: false,
+          step: 1
+        },
+        // 登录弹框 - props属性
+        propsLogin:{
+          showLogin: false
+        },
+
+        points:[
+          {
+            img:'images/point1.png',
+            h3:'Variety Of Suppliers',
+            spans:['More than 1000 items','Different type of shoes','Well-made shoes for every occasion'],
+            view:false
+          },
+          {
+            img:'images/point2.png',
+            h3:'The Lowest Price In The Market',
+            spans:['Low price in O2O','High quality but low price'],
+            view:false
+          },
+          {
+            img:'images/point3.png',
+            h3:'SVS Suppliers Standard',
+            spans:['·Including factors that buyers are much concerned about','·Showing the performance of manufac-turers objectively'],
+            view:true
+          }
+        ],
+        men:[],
+        women:[],
+        search: '',
+        showinput:false
+      },
+      mounted() {
+        this.getMenShoes();
+        this.getWomenShoes();
+
+        // 查看是否登录
+        this.getLoginInfo();
+
+        // 注册时 -邮箱调转回来时显示成功提示
+        if(this.GetQueryString("result")==1 && localStorage.getItem("landPageHaveSendEmail")){
+          this.propsReg.showRegister=true;
+          this.propsReg.step=3;
+          localStorage.removeItem("landPageHaveSendEmail")
+          // 否则当作页面刷新 - reset
+        }else if(this.GetQueryString("result")==0 && localStorage.getItem("landPageHaveSendEmail")){
+          this.propsReg.showRegister=true;
+          this.propsReg.step=404;
+          localStorage.removeItem("landPageHaveSendEmail")
+        }else{
+          this.propsReg.step=1;
+        }
+      },
+      methods:{
+        // 跳转RFQ
+        skipRFQ() {
+        	this.hits('pc/shoes/signIn')
+          if( !sysConfig || !sysConfig.user ){
+            this.propsLogin.showLogin=true
+            return;
+          } else {
+            window.location.href = '/home/usr_UsrConsult_publishView'
+          }
+        },
+        // 跳转inquiry
+        skipInquiry(pdtId) {
+        	this.hits('pc/shoes/signIn')
+          if( !sysConfig || !sysConfig.user ){
+            this.propsLogin.showLogin=true
+            return;
+          } else {
+            window.location.href = '/home/usr_UsrConsult_productPublishView?product_id=' + pdtId
+          }
+        },
+        // 判断登录
+        testFormSubmit(){
+        	this.hits('pc/shoes/signIn')
+          // 未登录时操作 - 显示登录框
+          if( !sysConfig || !sysConfig.user ){
+            this.propsLogin.showLogin=true
+            return;
+          } else {
+            this.$message({
+              message: 'Already Logged In',
+              type: 'success'
+            });
+          }
+          console.log("已登陆 - 在次进行操作")
+        },
+        hits(element) {
+        	var param = Qs.stringify({
+                pageName: 'pc/shoes',
+                element: element
+              })
+            axios({
+              url: '/home/temporary/PageHits_click',
+              method: 'post',
+              data: param
+            }).then(function(res) {
+              console.log(res)
+            })
+          },
+        // 判断是否已经登录
+        getLoginInfo(){
+          var self = this
+          axios({
+            url: "/home/plt_PltConfig_getSysConfig"
+          }).then(function (res) {
+            if (res.data.ret && res.data.ret == 1) {
+              sysConfig = res.data.result
+              Vue.set(self, "language", res.data.result.current_language)
+              Vue.set(self, "sysConfig", res.data.result)
+              Vue.set(self, "languageList", res.data.result.languages)
+            } else {
+              console.error("ERR::FLAG")
+            }
+          }).catch(function (err) {
+            console.error("ERR::FLAG")
+          })
+        },
+        // 登录成功后刷新登录信息
+        loginSuccess(){
+          this.propsReg.step=1;
+          this.getLoginInfo();
+          window.location.reload()
+        },
+
+        // 去注册
+        toRegister(){
+          this.propsLogin.showLogin=false;
+          this.propsReg.showRegister=true;
+        },
+        // 读取链接带参
+        GetQueryString: function(name){
+          var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+          var r = window.location.search.substr(1).match(reg);
+          if(r!=null)return  decodeURI(unescape(r[2]));
+          return null;
+        },
+        //获取男靴--378
+        getMenShoes:function(val){
+          let self = this;
+          axios.get('/home/temporary_Temporary_productByIds', {
+            params: {
+              ids: '5724,5734,5731'
+            }
+          }).then(function (res) {
+            console.log(res)
+            if(res.data.ret == 1){
+              self.$set(self,'men',res.data.result)
+            }else{
+              let msg = '获取男鞋列表失败'
+              if(res.data.msg){
+                msg = res.data.msg
+              }
+              self.$message({
+                message: msg,
+                type: 'warning'
+              });
+            }
+          })
+        },
+        //获取女靴 -- 385
+        getWomenShoes:function(val){
+          let self = this;
+          axios.get('/home/temporary_Temporary_productByIds', {
+            params: {
+              ids: '9058,6491,9029'
+            }
+          }).then(function (res) {
+            console.log(res)
+            if(res.data.ret == 1){
+              self.$set(self,'women',res.data.result)
+            }else{
+              let msg = '获取女鞋列表失败'
+              if(res.data.msg){
+                msg = res.data.msg
+              }
+              self.$message({
+                message: msg,
+                type: 'warning'
+              });
+            }
+          })
+        },
+        //show
+        inputshow:function(val){
+          if (this.search != null && this.search != undefined && this.search != '') {
+            this.changeSearch()
+          }
+          this.showinput = !this.showinput
+        },
+        // 搜索列表
+        changeSearch() {
+          window.location.href = '/home/pdt_PdtProduct?Keyword=' + this.search + '&searchtype=0'
+        }
+      }
+    })
+  </script>
+
+  <!-- Global site tag (gtag.js) - Google Ads: 783435725 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-783435725"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'AW-783435725');
+  </script>
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-127715615-6"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-127715615-6');
+  </script>
+
+</body>
+</html>

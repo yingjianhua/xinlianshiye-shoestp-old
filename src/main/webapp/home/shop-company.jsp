@@ -9,14 +9,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <title><c:if test="${supView.webSizeTitle !=''}">
-        ${supView.webSizeTitle}
-    </c:if>
+    <meta name="keywords" content="${supView.seoKeyword}">
+    <meta name="description" content="${supView.seoContent}">
+    <title>
+        <c:if test="${supView.webSizeTitle !=''}">
+            ${supView.webSizeTitle}
+        </c:if>
         <c:if test="${supView.webSizeTitle ==''}">
             An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies
-        </c:if></title>
+        </c:if>
+    </title>
     <link href="./static/css/global.css" rel="stylesheet" type="text/css">
     <link href="./static/css/global(1).css" rel="stylesheet" type="text/css">
     <link href="./static/css/user.css" rel="stylesheet" type="text/css">
@@ -318,7 +320,7 @@
             </c:if>
             <c:if test="${supView.statusAuth == 0}">
                 <div class="enterprise-info-content horizontal-arrange">
-                    <div style="margin: 0 auto;">
+                    <div style="margin: 0 auto;padding: 60px 0;">
                         <p style="text-align: center;font-size: 16px;color: #999;">
                             <span style="display: inline-block;width: 15px;height: 15px;line-height: 15px;border: 1px solid;border-radius: 50%;font-size: 12px;">!</span>
                                 <%--No Verified Information</p>--%>
@@ -391,14 +393,16 @@
                             <c:if test="${not empty supView.grade || !(supView.grade eq 'null') and !(supView.showName eq null)}">
                                 <c:if test="${supView.grade == 1}">
                                     <img src="./static/images/ico/icon-svs-yp.png" alt="">
+                                    svs
                                 </c:if>
                                 <c:if test="${supView.grade == 2}">
                                     <img src="./static/images/ico/icon-svs-jp.png" alt="">
+                                    svs
                                 </c:if>
                                 <c:if test="${supView.grade == 3}">
                                     <img src="./static/images/ico/icon-svs-zs.png" alt="">
+                                    svs
                                 </c:if>
-                                svs
                             </c:if>
                         </div>
                     </div>
@@ -473,7 +477,7 @@
                             </div>
                         </el-form-item>
                         <el-form-item>
-                            <el-button :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now
+                            <el-button class="my-primary-btn" :disabled="flag" type="primary" @click="submitForm('form')">Send inquiry now
                             </el-button>
                         </el-form-item>
                     </el-form>

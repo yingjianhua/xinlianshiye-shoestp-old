@@ -9,8 +9,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta name="keywords" content="${supView.seoKeyword}">
+    <meta name="description" content="${supView.seoContent}">
     <title>
         <c:if test="${supView.webSizeTitle !=''}">
             ${supView.webSizeTitle}
@@ -138,7 +138,7 @@
 
                 <!-- 商品展示 -->
 
-                <div class="goods-wrap">
+                <div class="goods-wrap" style="padding-bottom: 0;">
                     <div class="goods-box" v-for="item,index in products" style="width: 284px">
                         <div class="goods-item">
                             <div class="goods-pic pic_box">
@@ -170,21 +170,20 @@
 
                 <!-- 没有商品时显示 -->
                 <div style="border-top: 1px dotted #ccc;text-align: center;" v-show="products.length==0">
-                    <p style="padding: 215px 0;text-align: center;display:  inline-block;">
+                    <p style="padding: 215px 0;text-align: center;display:  inline-block;font-size: 18px;">
                         <em style="width: 20px;height: 1px;background-color: #000;display: block;float: left;margin-top: 8px;margin-right: 20px;"></em>
-                        未发布此类产品
+                        <%--未发布此类产品--%>
+                        No such product has been released
                         <em style="width: 20px;height: 1px;background-color: #000;display: block;float: right;margin-top: 8px;margin-left: 20px;"></em>
                     </p>
                 </div>
 
                 <!-- 页面跳转 - 按钮组 -->
-                <div class="page-box" style="text-align: center;">
+                <div class="my-el-pagination-wrap" v-if="totalCount>0">
                     <el-pagination
-                            v-if="totalCount>0"
-                            background
                             @current-change="handleCurrentChange"
-                            prev-text="< Previous"
-                            next-text="Next >"
+                            prev-text="Previous"
+                            next-text="Next"
                             :current-page="currentPage"
                             layout="prev, pager, next"
                             :page-count="totalCount">

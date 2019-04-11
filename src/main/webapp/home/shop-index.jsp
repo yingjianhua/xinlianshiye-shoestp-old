@@ -8,13 +8,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="renderer" content="webkit">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
+    <meta name="keywords" content="${supView.seoKeyword}">
+    <meta name="description" content="${supView.seoContent}">
     <title>
-        <c:if test="${supView.webSizeTitle !=''}">
-            ${supView.webSizeTitle}
+        <c:if test="${supView.seoTitle !=''}">
+            ${supView.seoTitle}
         </c:if>
-        <c:if test="${supView.webSizeTitle ==''}">
+        <c:if test="${supView.seoTitle ==''}">
             An Online B2B market——-Shoestp.com,gathering 300 professional shoes manufacture companies
         </c:if>
     </title>
