@@ -9,10 +9,12 @@ import com.xinlianshiye.shoestp.shop.service.usr.UsrFavoriteService;
 import com.xinlianshiye.shoestp.shop.view.usr.FavoritesView;
 
 import irille.Dao.PdtProductDao;
+import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.query.BeanQuery;
 import irille.pub.bean.sql.SQL;
+import irille.pub.util.GetValue;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.usr.UsrFavorites;
@@ -22,6 +24,8 @@ import irille.view.Page;
 public class UsrFavoriteServiceImpl implements UsrFavoriteService {
 
   @Inject private PdtProductDao pdtProductDao;
+  @Inject IO2OPdtServer IO2OPdtServer;
+
 
   @Override
   public Page<FavoritesView> page(
@@ -31,8 +35,10 @@ public class UsrFavoriteServiceImpl implements UsrFavoriteService {
                 UsrFavorites.T.PKEY,
                 UsrFavorites.T.PRODUCT,
                 PdtProduct.T.PRODUCT_TYPE,
+                PdtProduct.T.PKEY,
                 PdtProduct.T.NAME,
                 PdtProduct.T.PICTURE,
+                PdtProduct.T.MIN_OQ,
                 PdtProduct.T.CUR_PRICE)
             .FROM(PdtProduct.class)
             .LEFT_JOIN(UsrFavorites.class, UsrFavorites.T.PRODUCT, PdtProduct.T.PKEY)
@@ -52,6 +58,9 @@ public class UsrFavoriteServiceImpl implements UsrFavoriteService {
             .map(
                 map -> {
                   FavoritesView view = SetBeans.set(map, FavoritesView.class);
+                  PdtProduct product = new PdtProduct();
+                  product.setPkey(GetValue.get(map, PdtProduct.T.PKEY, Integer.class, 0));
+                  view.setIsO2O(IO2OPdtServer.judgeO2o(product) ? 1 : 0);
                   return view;
                 })
             .collect(Collectors.toList());

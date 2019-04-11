@@ -36,6 +36,8 @@ public class FavoritesView implements BaseView {
   @SetBean(OriginalField = "pkey")
   private Integer id;
 
+  private Integer isO2O;
+
   @SetBean(OriginalField = "min_oq")
   private Integer min_order;
 
@@ -153,5 +155,13 @@ public class FavoritesView implements BaseView {
 
   public void setMin_order(Integer min_order) {
     this.min_order = min_order;
+  }
+
+  public Integer getIsO2O() {
+    return isO2O;
+  }
+
+  public void setIsO2O(Integer isO2O) {
+    this.isO2O = isO2O;
   }
 }
