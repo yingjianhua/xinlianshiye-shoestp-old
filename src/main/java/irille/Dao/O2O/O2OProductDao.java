@@ -47,9 +47,31 @@ public class O2OProductDao {
         .LEFT_JOIN(PdtProduct.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
         .WHERE(O2O_PrivateExpoPdt.T.STATUS, "=?", O2O_PrivateExpoPdtStatus.ON)
         .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS)
-        .ORDER_BY(O2O_PrivateExpoPdt.T.CREATE_TIME, " DESC ");
+        .WHERE(PdtProduct.T.PRODUCT_TYPE,"=?",Pdt.OProductType.PrivateExpo)
+        .ORDER_BY(O2O_PrivateExpoPdt.T.CREATE_TIME, " DESC ")
+    	.LIMIT(start, limit);
     return Query.sql(sql).queryMaps();
   }
+  public Integer getPrivateExpoPdtListCount() {
+	    SQL sql = new SQL();
+	    sql.SELECT(
+	            PdtProduct.T.PKEY,
+	            PdtProduct.T.PICTURE,
+	            PdtProduct.T.NAME,
+	            O2O_PrivateExpoPdt.T.PRICE,
+	            O2O_PrivateExpoPdt.T.MIN_OQ,
+	            O2O_PrivateExpoPdt.T.STATUS,
+	            O2O_PrivateExpoPdt.T.VERIFY_STATUS,
+	            O2O_PrivateExpoPdt.T.MESSAGE)
+	        .FROM(O2O_PrivateExpoPdt.class)
+	        .LEFT_JOIN(PdtProduct.class, O2O_PrivateExpoPdt.T.PDT_ID, PdtProduct.T.PKEY)
+	        .WHERE(O2O_PrivateExpoPdt.T.STATUS, "=?", O2O_PrivateExpoPdtStatus.ON)
+	        .WHERE(O2O_PrivateExpoPdt.T.VERIFY_STATUS, "=?", O2O_PrivateExpoPdtStatus.PASS)
+	        .WHERE(PdtProduct.T.PRODUCT_TYPE,"=?",Pdt.OProductType.PrivateExpo)
+	        .ORDER_BY(O2O_PrivateExpoPdt.T.CREATE_TIME, " DESC ");
+	    return Query.sql(sql).queryMaps().size();
+	  }
+  
 
   @Caches
   public List<Map<String, Object>> o2oList(UsrPurchase purchase, Integer start, Integer limit) {

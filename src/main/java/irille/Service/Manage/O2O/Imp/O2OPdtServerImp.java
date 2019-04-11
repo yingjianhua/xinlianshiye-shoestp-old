@@ -98,7 +98,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
   }
 
   @Override
-  public List<PdtNewPdtInfo> O2OPrivateList(UsrPurchase purchase, int start, int limit) {
+  public Page O2OPrivateList(UsrPurchase purchase, int start, int limit) {
     List<PdtNewPdtInfo> items =
         o2OProductDao.getPrivateExpoPdtList(start, limit).stream()
             .map(
@@ -126,7 +126,7 @@ public class O2OPdtServerImp implements IO2OPdtServer {
                 })
             .collect(Collectors.toList());
     //
-    return items;
+    return new Page<>(items, start, limit,o2OProductDao.getPrivateExpoPdtListCount());
   }
 
   @Override
