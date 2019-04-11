@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -14,6 +15,7 @@ import org.json.JSONObject;
 
 import irille.Service.Manage.Pdt.IPdtProductManageService;
 import irille.Service.Pdt.Imp.PdtproductPageselect;
+import irille.Service.Plt.PltService;
 import irille.core.sys.Sys;
 import irille.core.sys.SysSeqDAO;
 import irille.pub.Str;
@@ -33,14 +35,17 @@ import irille.shop.pdt.PdtAttrDAO;
 import irille.shop.pdt.PdtColorDAO;
 import irille.shop.pdt.PdtProduct;
 import irille.shop.pdt.PdtProductDAO;
+import irille.shop.pdt.PdtSize;
 import irille.shop.pdt.PdtSizeDAO;
 import irille.shop.pdt.PdtSpec;
 import irille.shop.pdt.PdtSpecDAO;
 import irille.shop.plt.PltConfigDAO;
 import irille.shop.plt.PltFreightSeller;
 import irille.shop.usr.UsrProductCategory;
+import irille.shop.usr.UsrSupplierDAO;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtProductSaveView;
+import irille.view.plt.CountryView;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -535,6 +540,8 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
   }
 
   @Inject IPdtProductManageService iPdtProduct;
+  @Inject UsrSupplierDAO usrDao;
+  @Inject private PltService pltService;
 
   public EditProdView editProduct(Integer cat) throws JSONException {
     EditProdView data = new EditProdView();
@@ -553,19 +560,45 @@ public class PdtProductAction extends SellerAction<PdtProduct> implements IPdtPr
             false,
             SellerAction.getSupplier().getPkey());
     List<UsrProductCategoryView> views = UsrProductCategoryView.build(catList);
+    // 获取商家的目标市场
+    Map<String, Object> targetedMarket = usrDao.getTargetedMarket(getSupplier().getPkey());
+    // 获取所有国家
+    List<CountryView> countryView =
+        pltService.getCountryList(PltConfigDAO.supplierLanguage(SellerAction.getSupplier()), null);
     // 商品属性信息
     PdtAttrDAO.PageSelect pageSelect = new PdtAttrDAO.PageSelect();
-    List attrList =
-        pageSelect.getAllAttr(
-            PltConfigDAO.supplierLanguage(getSupplier()), getSupplier().getPkey(), cat);
+    List attrList = new ArrayList<>();
+    List<PdtSize> newListSize = new ArrayList<>();
+    if (cat != null) {
+      attrList =
+          pageSelect.getAllAttr(
+              PltConfigDAO.supplierLanguage(getSupplier()), getSupplier().getPkey(), cat);
+      newListSize =
+          PdtSizeDAO.newListSummary(
+              getSupplier(), PltConfigDAO.supplierLanguage(getSupplier()), 1, cat);
+    }
     JSONArray attrArray = new JSONArray(attrList, false);
     data.setCats(cats);
     data.setSupCategory(views);
     data.setAttrList(attrList);
     data.setColors(PdtColorDAO.getList());
-    data.setSizes(
-        PdtSizeDAO.newListSummary(
-            getSupplier(), PltConfigDAO.supplierLanguage(getSupplier()), 1, cat));
+    data.setSizes(newListSize);
+    data.setTargetedMarket(targetedMarket);
+    data.setCountryView(countryView);
     return data;
+  }
+
+  /**
+   * -获取产品发布所需数据
+   *
+   * @author xy
+   * @throws IOException
+   */
+  public void releaseProduct() throws IOException {
+    try {
+      write(editProduct(null));
+    } catch (JSONException e) {
+      e.printStackTrace();
+    }
   }
 }
