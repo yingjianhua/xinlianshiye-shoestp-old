@@ -21,5 +21,5 @@ public class PdtNewPdtInfo implements BaseView {
   private int min_order;
   private boolean isFavorite;
   private String rewrite;
-  private int product_type;
+  private Integer product_type;
 }
