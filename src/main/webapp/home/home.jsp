@@ -193,7 +193,7 @@
                                                     <div class="goods-info-wrap">
                                                         <div class="goods-name">
                                                             <div class="ellipsis_2">
-                                                                <div class="icon-o2o" v-if="goods.product_type == 4"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>
+                                                                <div class="icon-o2o"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>
                                                                 {{goods.title}}
                                                             </div>
                                                         </div>
