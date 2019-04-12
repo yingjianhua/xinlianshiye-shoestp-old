@@ -217,10 +217,60 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       String grade,
       Integer pdtCategory,
       Integer checkType) {
+    int skip = 5;
+    int newLimit = start > skip ? limit : (limit + start - skip);
+    if (newLimit < 0) newLimit = 0;
+    int newStart = start - skip;
+    if (newStart < 0) newStart = 0;
     List<Map<String, Object>> list =
         usrSupplierDao.listSuppliers(
-            start, limit, storeName, targetMarket, processType, grade, pdtCategory, checkType);
+            newStart,
+            newLimit,
+            storeName,
+            targetMarket,
+            processType,
+            grade,
+            pdtCategory,
+            checkType);
     List<UsrSupplierInfView> supplies = new ArrayList<>();
+    List<UsrSupplierInfView> assignedsupplies = new ArrayList<>();
+    // -----------------------指定商家集合---------------- 之后要删除的
+    List<Map<String, Object>> assignedList = usrSupplierDao.assignedSuppliers(start, limit);
+    for (Map<String, Object> map : assignedList) {
+      SvsRatingAndRosDTO SVSDto =
+          SVSInfoService.getSvsRatingAndRos(
+              GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
+      if (null != checkType && checkType == 1 && null == SVSDto) continue;
+      UsrSupplierInfView view = new UsrSupplierInfView();
+      view.setId(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
+      view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
+      view.setStoreName(GetValue.get(map, UsrSupplier.T.SHOW_NAME, String.class, null));
+      view.setAddress(GetValue.get(map, UsrSupplier.T.COMPANY_ADDR, String.class, null));
+      view.setSvs(SVSDto);
+      view.setCategories(
+          productService.getMainCateName(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0)));
+      List<UsrSupplierPdtView> pdtViews = new ArrayList<>();
+      // 获取产品信息
+      if (GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0) != 0) {
+        List<Map<String, Object>> pdtlist =
+            pdtProductDao.findPdtBySupplier(
+                GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
+        for (Map<String, Object> pdt : pdtlist) {
+          UsrSupplierPdtView pdtView = new UsrSupplierPdtView();
+          PdtProduct product = new PdtProduct();
+          product.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
+          pdtView.setPdtId(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
+          pdtView.setPdtName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
+          pdtView.setPdtPictures(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
+          pdtView.setLink(SEOUtils.getPdtProductTitle(pdtView.getPdtId(), pdtView.getPdtName()));
+          pdtView.setIsO2O(IO2OPdtServer.judgeO2o(product) ? 1 : 0);
+          pdtViews.add(pdtView);
+        }
+      }
+      view.setProducts(pdtViews);
+      assignedsupplies.add(view);
+    }
+    // -----------------------end----------------
     for (Map<String, Object> map : list) {
       SvsRatingAndRosDTO SVSDto =
           SVSInfoService.getSvsRatingAndRos(
@@ -257,11 +307,15 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       view.setProducts(pdtViews);
       supplies.add(view);
     }
+    List<UsrSupplierInfView> allList = new ArrayList<>();
+    allList.addAll(assignedsupplies);
+    allList.addAll(supplies);
     return new Page<>(
-        supplies,
+        allList,
         start,
         limit,
-        usrSupplierDao.count(storeName, targetMarket, processType, grade, pdtCategory, checkType));
+        usrSupplierDao.count(storeName, targetMarket, processType, grade, pdtCategory, checkType)
+            + skip);
   }
   /**
    * 查询供应商信息详情
