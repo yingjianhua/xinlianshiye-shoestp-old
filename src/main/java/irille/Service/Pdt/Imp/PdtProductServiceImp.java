@@ -15,6 +15,7 @@ import irille.Aops.Caches;
 import irille.Dao.PdtProductDao;
 import irille.Dao.O2O.O2OProductDao;
 import irille.Entity.O2O.O2O_Product;
+import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.Service.Pdt.IPdtProductService;
 import irille.homeAction.HomeAction;
 import irille.homeAction.pdt.dto.ExhibitionSupplierView;
@@ -49,6 +50,8 @@ public class PdtProductServiceImp implements IPdtProductService {
   @Inject PdtProductDao pdtProductDao;
 
   @Inject O2OProductDao o2OProductDao;
+  
+  @Inject IO2OPdtServer IO2OPdtServer;
 
   @Override
   public List<PdtProductBaseInfoView> getNewProductsListByIndex(IduPage iduPage) {
@@ -419,12 +422,15 @@ public class PdtProductServiceImp implements IPdtProductService {
 
     for (Map<String, Object> pdt : map) {
       MobilePdtView view = new MobilePdtView();
+      PdtProduct product=new PdtProduct();
+      product.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
       view.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
       view.setName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
       view.setPicture(GetValue.get(pdt, PdtProduct.T.PICTURE, String.class, null));
       view.setMinPrice(GetValue.get(pdt, "minPrice", BigDecimal.class, null));
       view.setMaxPrice(GetValue.get(pdt, "maxPrice", BigDecimal.class, null));
       view.setArtNo(GetValue.get(pdt, PdtProduct.T.CODE, String.class, null));
+      view.setIsO2O(IO2OPdtServer.judgeO2o(product) ? 1 : 0);
       views.add(view);
     }
 

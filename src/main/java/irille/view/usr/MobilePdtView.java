@@ -29,4 +29,6 @@ public class MobilePdtView implements BaseView {
   private BigDecimal maxPrice; // 阶梯价
 
   private String artNo; // 货号
+  
+  private Integer  isO2O;
 }
