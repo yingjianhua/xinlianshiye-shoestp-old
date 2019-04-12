@@ -222,16 +222,23 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
     if (newLimit < 0) newLimit = 0;
     int newStart = start - skip;
     if (newStart < 0) newStart = 0;
-    List<Map<String, Object>> list =
-        usrSupplierDao.listSuppliers(
-            newStart,
-            newLimit,
-            storeName,
-            targetMarket,
-            processType,
-            grade,
-            pdtCategory,
-            checkType);
+    List<Map<String, Object>> list;
+    if (newLimit > 0) {
+      list =
+          usrSupplierDao.listSuppliers(
+              newStart,
+              newLimit,
+              storeName,
+              targetMarket,
+              processType,
+              grade,
+              pdtCategory,
+              checkType);
+    } else {
+      list = new ArrayList<>();
+    }
+    ;
+    System.out.println(list.size());
     List<UsrSupplierInfView> supplies = new ArrayList<>();
     List<UsrSupplierInfView> assignedsupplies = new ArrayList<>();
     // -----------------------指定商家集合---------------- 之后要删除的
