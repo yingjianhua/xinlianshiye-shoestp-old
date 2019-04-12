@@ -22,6 +22,7 @@ public class MessageView implements BaseView {
 
   public MessageView(ReturnCode returnCode, String msg) {
     this.msg = msg;
+    this.ret = returnCode.getCode();
     this.returnCode = returnCode;
   }
 }
