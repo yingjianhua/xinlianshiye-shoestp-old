@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import irille.Aops.Caches;
-import irille.Dao.O2O.O2OProductDao;
 import irille.Dao.PdtProductDao;
+import irille.Dao.O2O.O2OProductDao;
 import irille.Entity.O2O.O2O_Product;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.Service.Pdt.IPdtProductService;
@@ -46,7 +46,7 @@ public class PdtProductServiceImp implements IPdtProductService {
   @Inject PdtProductDao pdtProductDao;
 
   @Inject O2OProductDao o2OProductDao;
-  
+
   @Inject IO2OPdtServer IO2OPdtServer;
 
   @Override
@@ -129,6 +129,10 @@ public class PdtProductServiceImp implements IPdtProductService {
                   GetValue.get(bean, PdtProduct.T.PICTURE, String.class, ""));
               pdtProductBaseInfoView.setName(
                   GetValue.get(bean, PdtProduct.T.NAME, String.class, ""));
+              pdtProductBaseInfoView.setMin_oq(
+                  GetValue.get(bean, PdtProduct.T.MIN_OQ, Integer.class, 0));
+              pdtProductBaseInfoView.setType(
+                  GetValue.get(bean, PdtProduct.T.PRODUCT_TYPE, Integer.class, 0));
               return pdtProductBaseInfoView;
             })
         .collect(Collectors.toList());
@@ -425,7 +429,7 @@ public class PdtProductServiceImp implements IPdtProductService {
 
     for (Map<String, Object> pdt : map) {
       MobilePdtView view = new MobilePdtView();
-      PdtProduct product=new PdtProduct();
+      PdtProduct product = new PdtProduct();
       product.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
       view.setPkey(GetValue.get(pdt, PdtProduct.T.PKEY, Integer.class, 0));
       view.setName(GetValue.get(pdt, PdtProduct.T.NAME, String.class, null));
