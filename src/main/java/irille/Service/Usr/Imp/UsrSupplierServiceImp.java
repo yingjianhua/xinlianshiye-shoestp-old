@@ -240,7 +240,7 @@ public class UsrSupplierServiceImp implements IUsrSupplierService {
       SvsRatingAndRosDTO SVSDto =
           SVSInfoService.getSvsRatingAndRos(
               GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
-      if (null != checkType && checkType == 1 && null == SVSDto) continue;
+      // if (null != checkType && checkType == 1 && null == SVSDto) continue;
       UsrSupplierInfView view = new UsrSupplierInfView();
       view.setId(GetValue.get(map, UsrSupplier.T.PKEY, Integer.class, 0));
       view.setLogo(GetValue.get(map, UsrSupplier.T.LOGO, String.class, null));
