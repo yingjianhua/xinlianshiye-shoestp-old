@@ -405,6 +405,37 @@ public class PdtColorDAO {
   }
 
   /**
+   * -修改产品时修改颜色
+   *
+   * @author xy
+   * @param pkey
+   * @param supplier
+   * @param name
+   * @param pictrue
+   */
+  public static PdtColor updColorBySup(
+      Integer pkey, Integer supplier, String name, String pictrue) {
+    PdtColor color =
+        Query.selectFrom(PdtColor.class)
+            .WHERE(PdtColor.T.SUPPLIER, " =? ", supplier)
+            .WHERE(PdtColor.T.PKEY, " =? ", pkey)
+            .query();
+    if (color != null) {
+      if (StringUtil.hasValue(name)) {
+        color.setName(name);
+      }
+      checkColorLength(color.getName());
+      if (StringUtil.hasValue(pictrue)) {
+        color.setPicture(pictrue);
+      }
+      translateUtil.autoTranslate(color);
+      color.upd();
+      return color;
+    }
+    return null;
+  }
+
+  /**
    * -查询新颜色数据中系统默认的颜色
    *
    * @param pdtPkey

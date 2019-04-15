@@ -259,6 +259,20 @@ public class PdtProductManageServiceImp implements IPdtProductManageService, Job
           insColorNames.put(v.getColorName(), insColor);
         }
         specMaps.put(v.getId(), insColorNames.get(v.getColorName()));
+      } else if (v.getColor() > 0) {
+        if ((!insColorNames.containsKey(v.getColorName()) || !colorPkeyList.contains(v.getColor()))
+            && v.getColorType() == 0) {
+          PdtColor updColor =
+              PdtColorDAO.updColorBySup(v.getColor(), supId, v.getColorName(), v.getColorImg());
+          if (updColor != null) {
+            for (int i = 0; i < pdtProductSaveView.getNewSpec().size(); i++) {
+              if (pdtProductSaveView.getNewSpec().get(i).getColor() == v.getColor()) {
+                pdtProductSaveView.getNewSpec().get(i).setColorName(updColor.getName());
+                pdtProductSaveView.getNewSpec().get(i).setColorImg(updColor.getPicture());
+              }
+            }
+          }
+        }
       }
     }
     // 填充规格
