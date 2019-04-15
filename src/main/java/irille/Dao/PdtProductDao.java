@@ -1,5 +1,8 @@
 package irille.Dao;
 
+import static irille.core.sys.Sys.OYn.YES;
+import static java.util.stream.Collectors.toList;
+
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
@@ -20,12 +23,17 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.logging.log4j.util.Strings;
+import org.json.JSONException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import irille.Aops.Caches;
-import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
-import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.O2O.O2O_Activity;
 import irille.Entity.O2O.O2O_PrivateExpoPdt;
 import irille.Entity.O2O.O2O_Product;
+import irille.Entity.O2O.Enums.O2O_PrivateExpoPdtStatus;
+import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.RFQ.RFQConsult;
 import irille.action.dataimport.util.StringUtil;
 import irille.core.sys.Sys;
@@ -42,9 +50,9 @@ import irille.pub.exception.WebMessageException;
 import irille.pub.svr.DbPool;
 import irille.pub.tb.FldLanguage;
 import irille.pub.tb.IEnumFld;
-import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.GetValue;
 import irille.pub.util.SEOUtils;
+import irille.pub.util.FormaterSql.FormaterSql;
 import irille.pub.util.SetBeans.SetBean.SetBeans;
 import irille.pub.util.TranslateLanguage.translateUtil;
 import irille.sellerAction.pdt.view.PrivatePdtView;
@@ -69,13 +77,6 @@ import irille.view.Page;
 import irille.view.pdt.PdtProductBaseInfoView;
 import irille.view.pdt.PdtProductCatView;
 import irille.view.pdt.PdtSearchView;
-import org.apache.logging.log4j.util.Strings;
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import static irille.core.sys.Sys.OYn.YES;
-import static java.util.stream.Collectors.toList;
 
 /** Created by IntelliJ IDEA. User: lijie@shoestp.cn Date: 2018/11/7 Time: 14:47 */
 public class PdtProductDao {
@@ -898,7 +899,7 @@ public class PdtProductDao {
       sql.SELECT(childrenQuery, "isFavorite");
     }
 
-//    子查询  查询o2o表的状态
+    //    子查询  查询o2o表的状态
     SQL childrensql = new SQL();
     childrensql
         .SELECT("count(1)")
@@ -1699,7 +1700,6 @@ public class PdtProductDao {
     return new Page(list, start, limit, count);
   }
 
-  @Caches
   public int getPdtCount() {
     return Query.sql(productRules(new SQL()).SELECT(PdtProduct.class).FROM(PdtProduct.class))
         .queryCount();
