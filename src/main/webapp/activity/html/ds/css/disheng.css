@@ -13,7 +13,7 @@
 		  -ms-align-items: center;
 		  -o-align-items: center;
 		}
-		
+
 		.flexSt {
 			display: -webkit-box;
 		    display: -ms-flexbox;
@@ -29,7 +29,7 @@
 		  -ms-align-items: center;
 		  -o-align-items: center;
 		}
-		
+
 		.flexCc {
 			display: -webkit-box;
 		    display: -ms-flexbox;
@@ -44,7 +44,7 @@
 		  -moz-align-items: center;
 		  -ms-align-items: center;
 		  -o-align-items: center;
-  
+ 
 		}
 		@keyframes slideInUp2 {
 		  from {
@@ -52,17 +52,17 @@
 		    transform: translate3d(0, 100%, 0);
 		    visibility: visible;
 		  }
-		
+
 		  to {
 		  	opacity:1;
 		    transform: translate3d(0, 0, 0);
 		  }
 		}
-		
+
 		.slideInUp2 {
 		  animation-name: slideInUp2;
 		}
-		
+
 		body{
 			min-width:1240px;
 		}
@@ -189,7 +189,7 @@
 	width:855px;
 	height:320px;
 	background:#999;
-	margin-top:35px;	
+	margin-top:35px;
 }
 #dsIndex .hfloor2{
 	padding-bottom:80px;
@@ -354,7 +354,7 @@
      -webkit-transition:all .4s;-moz-transition:all .4s;-o-transition:all .4s;transition:all .4s;
  }
 #dsIndex .hfloor5 .box1 .el-button:active,
-#dsIndex .hfloor5 .box1 .el-button:focus, 
+#dsIndex .hfloor5 .box1 .el-button:focus,
 #dsIndex .hfloor5 .box1 .el-button:hover{
  	color: #fff;
 	border:none;
@@ -418,6 +418,31 @@
 	height:78px;
 	line-height:78px;
 	color:#000;
+}
+#dsIndex .hfloorimg{
+    width: 1210px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 160px;
+    flex-wrap: wrap;
+}
+#dsIndex .hfloorimg img{
+    width: 386px;
+    height: 265px;
+    margin-bottom: 45px;
+}
+#dsIndex .hfloor7img{
+    display: flex;
+    justify-content: space-between;
+}
+#dsIndex .hfloor7img img{
+    width: 386px;
+    height: 265px;
+    margin-bottom: 45px;
+}
+#dsIndex .hfloor7 .h11 h1{
+    padding-bottom: 50px;
 }
 #dsIndex .hfloor7{
 	height:716px;
