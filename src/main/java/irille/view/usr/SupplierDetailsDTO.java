@@ -28,4 +28,6 @@ public class SupplierDetailsDTO implements BaseView {
 
   @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
   private Date lastLoginTIME; // 上次登录时间
+
+  private Byte guide; //是否点击过认证指引
 }

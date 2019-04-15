@@ -29,32 +29,32 @@ import org.json.JSONObject;
  * @author yingjianhua
  */
 @Variable(
-    group = {
-      OTempType.SHOP_APPR,
-      OTempType.PROD_APPR_NOTICE,
-      OTempType.O2O_PROD_APPR_NOTICE,
-      OTempType.RFQ_MESSAGE_NOTICE
-    },
-    enumType = UsrSupplier.T.class,
-    clazz = UsrSupplier.class,
-    attributes = {
-      @Attribute(name = "企业审核状态", field = "STATUS", type = Usr.OStatus.class),
-      @Attribute(name = "企业审核时间", field = "APPR_TIME", type = Date.class),
-      @Attribute(name = "公司名称", field = "NAME", type = String.class),
-      @Attribute(name = "企业法人", field = "ENTITY", type = String.class),
-      @Attribute(name = "理由/备注", field = "REASON", type = String.class)
-    })
+        group = {
+                OTempType.SHOP_APPR,
+                OTempType.PROD_APPR_NOTICE,
+                OTempType.O2O_PROD_APPR_NOTICE,
+                OTempType.RFQ_MESSAGE_NOTICE
+        },
+        enumType = UsrSupplier.T.class,
+        clazz = UsrSupplier.class,
+        attributes = {
+                @Attribute(name = "企业审核状态", field = "STATUS", type = Usr.OStatus.class),
+                @Attribute(name = "企业审核时间", field = "APPR_TIME", type = Date.class),
+                @Attribute(name = "公司名称", field = "NAME", type = String.class),
+                @Attribute(name = "企业法人", field = "ENTITY", type = String.class),
+                @Attribute(name = "理由/备注", field = "REASON", type = String.class)
+        })
 public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
 
   public static final Tb TB =
-      new Tb(UsrSupplier.class, "供应商")
-          .setAutoIncrement()
-          .addActList()
-          .addActApprove()
-          .addActOpt("updBase", "基本信息", "upd-icon")
-          .addActOpt("updPage", "页面资料", "upd-icon")
-          .addActOpt("updDiy", "个性装修", "upd-icon")
-          .addActOpt("updMarketing", "营销设置", "upd-icon");
+          new Tb(UsrSupplier.class, "供应商")
+                  .setAutoIncrement()
+                  .addActList()
+                  .addActApprove()
+                  .addActOpt("updBase", "基本信息", "upd-icon")
+                  .addActOpt("updPage", "页面资料", "upd-icon")
+                  .addActOpt("updDiy", "个性装修", "upd-icon")
+                  .addActOpt("updMarketing", "营销设置", "upd-icon");
 
   public enum T implements IEnumFld { // @formatter:off
     PKEY(TB.crtIntPkey()),
@@ -145,13 +145,13 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     AD_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "广告图"), // 广告图 图片大小建议: 1200*550像素
     AD_PHOTO_MOBILE(SYS.STR__1000_NULL, "移动端广告图"), // 移动端广告图 图片大小建议: 640*340像素
     AD_PHOTO_LINK(
-        SYS.MUILTI_LANGUAGE_NULL,
-        "广告连接"), // 广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
+            SYS.MUILTI_LANGUAGE_NULL,
+            "广告连接"), // 广告连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
     // /products/
     COMPANY_PHOTO(SYS.MUILTI_LANGUAGE_NULL, "企业图片"), // 企业图片 图片大小建议: 780x480像素
     COMPANY_PHOTO_LINK(
-        SYS.MUILTI_LANGUAGE_NULL,
-        "企业图片连接"), // 企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
+            SYS.MUILTI_LANGUAGE_NULL,
+            "企业图片连接"), // 企业图片连接 外链必须使用完整域名，即包含http://或https://，例： https://www.google.com。内链不需加域名，例:
     // /products/
 
     /** 个性装修 选择模板 */
@@ -159,7 +159,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     PRODUCT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "产品页个性装修"), // 产品页个性装修  多国语言
     CONTACT_PAGE_DIY(SYS.MUILTI_LANGUAGE_NULL, "联系页个性装修"), // 联系页个性装修  多国语言
     COMPANY_INTRODUCTION_PAGE_CUSTOM_DECORATION(
-        SYS.MUILTI_LANGUAGE_NULL, "公司介绍页自定义装修"), // 公司介绍页自定义装修  多国语言
+            SYS.MUILTI_LANGUAGE_NULL, "公司介绍页自定义装修"), // 公司介绍页自定义装修  多国语言
     HOME_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "首页个性装修（移动）"), // 首页个性装修（移动）
     PRODUCT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "产品页个性装修（移动）"), // 产品页个性装修（移动）
     CONTACT_PAGE_DIY_MOBILE(SYS.STR__1000_NULL, "联系页个性装修（移动）"), // 联系页个性装修（移动）
@@ -178,11 +178,12 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     TONGJI_PWD(SYS.PASSWORD__NULL, "第三方统计密码"), // 第三方统计 密码
     UPDATE_TIME(SYS.UPDATED_DATE_TIME), // 最后编辑时间
     UserId(UsrMain.fldOutKey().setName("用户").setNull()),
+    IS_GUIDE(TB.crt(Usr.OIsAuth.DEFAULT)), // 第一次指引 true false
 
     ROW_VERSION(SYS.ROW_VERSION),
-  // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
-  // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
-  ;
+    // >>>以下是自动产生的源代码行--内嵌字段定义--请保留此行用于识别>>>
+    // <<<以上是自动产生的源代码行--内嵌字段定义--请保留此行用于识别<<<
+    ;
     // >>>以下是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别>>>
     // <<<以上是自动产生的源代码行--自动建立的索引定义--请保留此行用于识别<<<
     // 索引
@@ -364,6 +365,9 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
   private String _tongjiPwd;	// 第三方统计密码  STR(40)<null>
   private Date _updateTime;	// 更新时间  TIME
   private Integer _userid;	// 用户 <表主键:UsrMain>  INT<null>
+  private Byte _isGuide;	// 供应商认证 <OIsAuth>  BYTE
+	// NO:0,未认证
+	// YES:1,已认证
   private Short _rowVersion;	// 版本  SHORT
 
 	@Override
@@ -473,6 +477,7 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
     _tongjiPwd=null;	// 第三方统计密码  STR(40)
     _updateTime=Env.getTranBeginTime();	// 更新时间  TIME
     _userid=null;	// 用户 <表主键:UsrMain>  INT
+    _isGuide=OIsAuth.DEFAULT.getLine().getKey();	// 供应商认证 <OIsAuth>  BYTE
     _rowVersion=0;	// 版本  SHORT
     return this;
   }
@@ -1633,6 +1638,18 @@ public class UsrSupplier extends BeanInt<UsrSupplier> implements IExtName {
       setUserid(null);
     else
       setUserid(userid.getPkey());
+  }
+  public Byte getIsGuide(){
+    return _isGuide;
+  }
+  public void setIsGuide(Byte isGuide){
+    _isGuide=isGuide;
+  }
+  public OIsAuth gtIsGuide(){
+    return (OIsAuth)(OIsAuth.NO.getLine().get(_isGuide));
+  }
+  public void stIsGuide(OIsAuth isGuide){
+    _isGuide=isGuide.getLine().getKey();
   }
   public Short getRowVersion(){
     return _rowVersion;
