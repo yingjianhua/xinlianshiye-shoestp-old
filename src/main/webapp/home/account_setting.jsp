@@ -242,13 +242,13 @@
                 },
                 rules: { //表单验证
                     firstName: [
-                        // {required: true,message: 'Please enter a firstName',trigger: 'blur'},
+                        {required: true,message: 'Please enter a FirstName',trigger: 'blur'},
                         // { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
                         // { pattern: /^[^ ].{1,32}$/, message: 'Name cannot exceed 32 digits' }
                         {validator: validatefirstName, trigger: 'blur'}
                     ],
                     surname: [
-                        // { required: true,message: 'Please enter a surname',trigger: 'blur'},
+                        { required: true,message: 'Please enter a Surname',trigger: 'blur'},
                         // { pattern: util_regular_obj.register.nameGlobal, message: 'Name cannot exceed 32 digits' }
                         // { pattern: /^[^ ].{1,32}$/  , message: 'Name cannot exceed 32 digits' }
                         {validator: validateSurName, trigger: 'blur'}
