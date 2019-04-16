@@ -623,24 +623,25 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     }
     final Integer limit = 5; // 图片数量上限
     Integer leftCount = 0;
+    String[] originImages = null;
     if (consult.getImage() == null || consult.getImage().isEmpty()) {
+      originImages = new String[] {};
       leftCount = limit;
     } else {
+      originImages = consult.getImage().split(",");
       leftCount = limit - consult.getImage().split(",").length;
     }
     if (images == null || images.isEmpty()) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.please_choose_image, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "请选择图片");
     }
     Integer length = images.split(",").length;
     if (length > leftCount) {
       // 上传图片超出限制了
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.images_too_much, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "图片数量超出上限");
     }
-    List<String> list = new ArrayList<>(Arrays.asList(consult.getImage().split(",")));
+    List<String> list = new ArrayList<>(Arrays.asList(originImages));
     list.addAll(Arrays.asList(images.split(",")));
     consult.setImage(list.stream().collect(Collectors.joining(",")));
     consult.setLastMessageSendTime(new Date());
