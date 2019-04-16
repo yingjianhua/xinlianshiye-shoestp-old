@@ -213,7 +213,7 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
         for(String str : zonnsId){
             timeZone zt=new timeZone();
             zt.setId(str);
-            zt.setName(TimeZone.getTimeZone(str).getDisplayName());
+            zt.setName(str);
             zones.add(zt);
         }
        write(zones);
@@ -234,7 +234,7 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
         c2.setTime(dateA);
         int nowHour=c1.get(Calendar.HOUR);
         int selectHour=c2.get(Calendar.HOUR);
-        int dif=Math.abs(selectHour-nowHour);
+        int dif=selectHour-nowHour;
         JSONObject json = new JSONObject();
         json.put("ret", 1);
         json.put("different", dif);
