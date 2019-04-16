@@ -9,6 +9,7 @@
 
 
 <style>
+	/*左侧公用列表*/
 	#shoesTp .user-menu {
         font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
 		width: 180px;
@@ -51,6 +52,10 @@
 		text-decoration: none;
 	}
 
+	/*商家询盘中-上传图片时样式不直接用el的样式*/
+	.sup-inquiry-upload-wrap .el-upload-list{
+		display: none;
+	}
 </style>
 </head>
 <body class="bg-gray  page-personal-center">
@@ -133,8 +138,7 @@
 											Product Inquires
 											<el-badge v-if="inquiresOptionUnreadInfo.t2" :value="inquiresOptionUnreadInfo.t2"></el-badge>
 										</li>
-										<li class="inquires-item sub" @click="chooesInquiryType(3)"
-											title="test">
+										<li class="inquires-item sub" @click="chooesInquiryType(3)">
 											<el-tooltip content="New Design" placement="right">
 												<div>O2O Inquires</div>
 											</el-tooltip>
@@ -730,16 +734,22 @@
 											</li>
 										</ul>
 
+										<%--少于5张时显示上传按钮--%>
 										<div v-if="!inquiryDetail.images || (inquiryDetail.images && inquiryDetail.images.length < 5)">
 											<el-upload
-													class="upload-wrap"
-													:limit="inquiryDetail.images?(5 - inquiryDetail.images.length):5"
+													class="upload-wrap sup-inquiry-upload-wrap"
 													:on-success="addFileListSupplierSuccess"
+													:before-upload="beforeAddFileSupplierUpload"
 													action="/home/usr_Purchase_upload"
 													list-type="picture">
 
-												<span class="upload">Upload Files</span> (Maximum of 5 phots)
+												<span class="upload">Upload Photos</span> (Maximum of 5 phots)
 											</el-upload>
+										</div>
+
+										<%--否则只显示名称--%>
+										<div v-else style="margin-bottom: 10px;">
+											Upload Photos:
 										</div>
 
 										<ul class="goods-pic-wrap" v-if="inquiryDetail.images && inquiryDetail.images.length">
@@ -1531,9 +1541,6 @@
                                             this.nowInquiryIndex = i;
                                             this.nowSupplierIndex = j;
                                             this.showAccordionContacterIndex = i;
-                                            console.log("嵌套for有值")
-                                            console.log(i)
-                                            console.log(j)
                                             break listForEach;
                                         }
                                     }
@@ -1606,7 +1613,6 @@
 
 			// 加载下一页询盘列表
 			loadMoreInquiryList(){
-				console.log("load more")
 				this.inquiryLisPageStart += this.inquiryLisPageLimit;
 				this.getInquiryList();
 			},
@@ -1631,8 +1637,6 @@
 
 			// 搜索事件
 			searchInInquiryList(){
-				console.log("search")
-				console.log(this.isScale)
 				this.resetInquiryOptions();
 				this.getInquiryList();
 			},
@@ -1641,8 +1645,6 @@
 			showInquiresOption(){
 				axios.get('/home/rfq_RFQConsult_unreadCount')
 						.then((res) => {
-					console.log("显示下拉选项 点击事件 suc");
-				console.log(res);
 				if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get Inquiry's options error,please try again later");
 					return
@@ -1671,7 +1673,6 @@
 
 			// 点view 查看询盘详情及报价
 			viewInquiryDetail(e){
-				console.log("viewInquiryDetail")
 				e.stopPropagation();
 				var inquiryIndex = e.currentTarget.dataset.inquiryIndex;
 				this.isScale = true;
@@ -1740,7 +1741,6 @@
 
 			//获取功能供应商详情
 			getSupplierDetail(){
-				console.log("getSupplierDetail")
 				//先清空之前的数据
 				this.supplierDetail={};
 
@@ -1762,25 +1762,37 @@
 			});
 			},
 
+			//供应商 上传图片 - upload之前
+			beforeAddFileSupplierUpload(file){
+				if (!sysConfig || !sysConfig.user) {
+					util_function_obj.alertWhenNoLogin(this);
+					return false
+				}
+				let size = file.size / 1024;
+				if (size > 500) {
+					this.$message.error('Image size cannot exceed 500k');
+					return false;
+				}
+				return true;
+			},
+
 			//供应商 上传图片 - upload成功
-			addFileListSupplierSuccess(res, file){
-				console.log("addFileListSupplierSuccess")
-				console.log(res)
-				console.log(res.ret)
-				console.log(file)
-				if (res.ret != 1) {
-					this.$message.error(res.msg || "Images upload error,please try again later");
+			addFileListSupplierSuccess(resUpload, file){
+				if (resUpload.ret != 1) {
+					this.$message.error(resUpload.msg || "Images upload error,please try again later");
 					return
 				};
 				axios.post('/home/rfq_RFQConsult_addImage', Qs.stringify({
 					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
-					images: res.result.url,
+					images: resUpload.result.url,
 				}))
 						.then((res) => {
 					if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Images upload error,please try again later");
 					return
 				};
+				// 图片上传成功后直接将图片正常显示出来，而不是el的样式显示出来
+				this.inquiryDetail.images.push(resUpload.result.url);
 				this.$message({
 					message: 'Add image success!',
 					type: 'success'
@@ -1805,7 +1817,6 @@
 				})
 						.then((res) => {
 					this.btnLoading = false;
-				console.log("获取报价详情 suc");
 				if(res.data.ret == -1){
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
@@ -1820,8 +1831,6 @@
 				}else{
 					this.quotationDetailList.push(res.data.result);
 				}
-				console.log("this.quotationDetail")
-				console.log(this.quotationDetail)
 			})
 			.catch((error) => {
 					this.btnLoading = false;
@@ -1831,7 +1840,6 @@
 
 			//获取更多报价详情
 			viewQuotationMoew(){
-				console.log("click")
 				if(this.quotationDetailListIndex>=(this.inquiryList[this.nowInquiryIndex].relations.length-1)) return;
 				this.btnLoading = true;
 				this.quotationDetailListIndex++;
@@ -1907,7 +1915,6 @@
 						consultPkey: this.inquiryList[this.nowInquiryIndex].pkey,
 					}))
 							.then((res) => {
-						console.log(res);
 				if(res.data.ret == -1){
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
@@ -1945,7 +1952,6 @@
 					quotationPkey: quotationPkey,
 				}))
 						.then((res) => {
-					console.log("关闭询盘 suc");
 				if(res.data.ret == -1){
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
@@ -1991,7 +1997,6 @@
 					supplierPkey: supplierPkey,
 				}))
 						.then((res) => {
-					console.log("添加至联系人 suc");
 				if(res.data.ret == -1){
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
@@ -2080,7 +2085,6 @@
 					}
 				})
 						.then((res) => {
-					console.log("获取商品列表 suc");
 				if (res.data.ret != 1) {
 					this.$message.error(res.data.msg || "Get product's list error,please try again later");
 					return
@@ -2094,7 +2098,6 @@
 
 			//分页加载 - 更改页数
 			addProductPageChange(page){
-				console.log("addProductPageChange")
 				this.addProductPageStart = (page-1) * this.addProductPageLimit;
 				this.getAddProductList();
 			},
@@ -2131,7 +2134,6 @@
 
 			//确认选中add product商品
 			confirmAddProduct(e){
-				console.log(this.addProductSelectedPdtIds)
 				axios.post('/home/rfq_RFQConsult_addProductRequest', Qs.stringify({
 					products: this.addProductSelectedPdtIds.join(),
 					consultPkey: this.inquiryList[this.nowInquiryIndex].pkey
@@ -2184,9 +2186,6 @@
 			//参数为 searchMore：搜索上一页，从preMessagePkey开始查询
 			//       searchLast：发消息时，获取最新消息，从nextMessagePkey开始查询
 			getChatInfo({searchMore=false,searchLast=false}={}){
-			    console.log("searchLast is")
-			    console.log(searchLast)
-			    console.log(this.chatMsgListPageNextPkey)
 				this.isAllRead = false;
 			    // 私人展厅倒计时取消 - 获取信息后重置
 				// if(this.chatMsgList && (!searchMore && !searchLast)){
@@ -2209,7 +2208,6 @@
 				})
 						.then((res) => {
 					this.isChatMsgListLoading = false;
-				console.log("获取询盘留言列表 - suc");
 				if(res.data.ret == -1){
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
@@ -2229,13 +2227,8 @@
                 }
                 // 保存最新一个 nextPkey，用以发送消息时获取最新代码
 				if(!searchMore){
-                    console.log("searchLast is true")
                     this.chatMsgListPageNextPkey = res.data.result.msgs[0].pkey || null;
                 }
-				console.log('chatMsgListPagePrePkey is:');
-				console.log(this.chatMsgListPagePrePkey);
-                console.log('chatMsgListPageNextPkey is:');
-                console.log(this.chatMsgListPageNextPkey);
 
 				let chatMsgList = res.data.result.msgs;
 				// this.chatMsgList.push(...res.data.result.msgs);
@@ -2353,10 +2346,6 @@
 
 			// 聊天时发送图片
 			chatAddImgSuc(res, file, fileList){
-				console.log("chatAddImgSuc")
-				console.log(res)
-				console.log(file)
-				console.log(fileList)
 				if (res.ret != 1) {
 					this.$message.error(res.msg || "Images upload error,please try again later");
 					return
@@ -2386,7 +2375,6 @@
 
 			// 发送消息
 			sendMsg(){
-				console.log("sendMsg")
 				if(!this.sendMsgValue && !this.sendMsgImgValue) return;
 
 				axios.post('/home/rfq_RFQConsult_sendMessage', Qs.stringify({
@@ -2395,7 +2383,6 @@
 					relationPkey: this.inquiryList[this.nowInquiryIndex].relations[this.nowSupplierIndex].quotation.pkey,
 				}))
 						.then((res) => {
-					console.log("发送消息 suc");
 				if(res.data.ret == -1){
 					util_function_obj.alertWhenNoLogin(this);
 					return false;
