@@ -1,11 +1,15 @@
 package irille.Dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.google.api.services.analyticsreporting.v4.model.OrderBy;
 
 import irille.Entity.NewInquiry.NewInquiry;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
+import irille.pub.util.GetValue;
 import irille.shop.usr.UsrSupplier;
 import irille.view.Page;
 import irille.view.newInq.newInqView;
@@ -23,6 +27,7 @@ public class NewInqDao {
             if (name != null) {
               WHERE(NewInquiry.T.NAME, "like ?","%" + name + "%");
             }
+            ORDER_BY(NewInquiry.T.CREATE_TIME,"desc");
           }
         };
     Integer count = Query.sql(sql).queryCount();
@@ -40,6 +45,7 @@ public class NewInqDao {
                       String.valueOf(o.get(NewInquiry.T.EMAIL.getFld().getCodeSqlField())));
                   view.setDetail(
                       String.valueOf(o.get(NewInquiry.T.DETAIL.getFld().getCodeSqlField())));
+                  view.setCreateTime(GetValue.get(o, NewInquiry.T.CREATE_TIME, Date.class, null));
                   return view;
                 })
             .collect(Collectors.toList());
