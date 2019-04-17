@@ -28,6 +28,7 @@ public class PdtSearchView implements BaseView {
   private String closed; // 闭合方式
   private String upper; // 表面材料
   private String picture; // 产品图片
+  private Integer isO2O;
 
   @JsonSerialize(using = I18NFieldSerializer.class)
   private String originCountry; // 原产:国家

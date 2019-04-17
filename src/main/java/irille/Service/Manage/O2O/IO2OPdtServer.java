@@ -47,7 +47,7 @@ public interface IO2OPdtServer {
 
   List<PdtNewPdtInfo> O2OList(UsrPurchase purchase, Integer start, Integer limit);
 
-  List<PdtNewPdtInfo> O2OPrivateList(UsrPurchase purchase, int start, int limit);
+  Page O2OPrivateList(UsrPurchase purchase, int start, int limit);
 
   Boolean judgeO2o(PdtProduct product);
 }

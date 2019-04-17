@@ -173,6 +173,28 @@ public class UsrSupplierDao {
     }
     return query.queryMaps();
   }
+  
+  /**
+   * 指定供应商集合,之后会删除
+   * @param start
+   * @param limit
+   * @return
+   */
+  public List assignedSuppliers(Integer start,Integer limit) {
+    SQL sql = new SQL();
+
+    sql.SELECT(
+            UsrSupplier.T.PKEY,
+            UsrSupplier.T.SHOW_NAME,
+            UsrSupplier.T.LOGO,
+            UsrSupplier.T.MAIN_SALES_AREA,
+            UsrSupplier.T.COMPANY_ADDR)
+        .FROM(UsrSupplier.class)
+        .WHERE(UsrSupplier.T.PKEY, "in(?,?,?,?,?)", 23,283,38,298,295)
+        .orderByAsc(" field(pkey,23,283,38,298,295) ")
+        .LIMIT(start, limit);
+    return Query.sql(sql).queryMaps();
+  }
 
   /*
    *   3.1.1供应商中心供应商列表
@@ -201,7 +223,9 @@ public class UsrSupplierDao {
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
         .WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN)
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
-        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
+        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType)
+        .WHERE(UsrSupplier.T.PKEY, "NOT  IN(?,?,?,?,?)", 23,283,38,298,295);
+
     if (targetMarket != null) {
       query.WHERE(
           UsrSupplier.T.PKEY,
@@ -231,6 +255,7 @@ public class UsrSupplierDao {
         .WHERE(grade != null, SVSInfo.T.GRADE, " in(" + grade + ")")
         .GROUP_BY(UsrSupplier.T.PKEY)
         .ORDER_BY(SVSInfo.T.GRADE, "desc")
+        .ORDER_BY(SVSInfo.T.BASE_SCORE, "desc")
         .ORDER_BY(PdtProduct.T.VERIFY_TIME, "asc");
     if (start != null && limit != null) {
       query.limit(start, limit);
@@ -262,7 +287,8 @@ public class UsrSupplierDao {
         .LEFT_JOIN(SVSInfo.class, UsrSupplier.T.PKEY, SVSInfo.T.SUPPLIER)
         .WHERE(UsrSupplier.T.STORE_STATUS, " =? ", SStatus.OPEN)
         .WHERE(storeName != null, UsrSupplier.T.SHOW_NAME, "like ?", "%" + storeName + "%")
-        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType);
+        .WHERE(processType != null, UsrSupplier.T.CATEGORY, "=?", processType)
+        .WHERE(UsrSupplier.T.PKEY, "NOT  IN(?,?,?,?,?)", 23,283,38,298,295);
     if (targetMarket != null) {
       query.WHERE(
           UsrSupplier.T.PKEY,

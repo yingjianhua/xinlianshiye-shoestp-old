@@ -622,12 +622,11 @@
 
                 this.$refs.form.validate((valid) => {
                     if (valid) {
-                        console.log('submit validate suc');
                         this.flag = true;
 
                         // this.submitObj.v.image =   this.imgsToUpload.join(",");
                         var submitObj = Object.assign({}, this.form);
-                        submitObj.images = this.imgsToUpload.join(",");
+                        submitObj.images = this.imgsToUpload.length>0?this.imgsToUpload.join(","):null;
                         submitObj.min_price = this.form.min_price || 0;
                         submitObj.max_price = this.form.max_price || 0;
                         var submitData = JSON.stringify(submitObj);
@@ -657,7 +656,6 @@
                                     this.rq_mark = true;
                                     // 提交成功时
                                     if (res.data.ret == 1) {
-                                        console.log('提交成功1');
                                         // 提示信息
                                         this.$message({
                                             showClose: true,
@@ -698,7 +696,6 @@
                                         util_function_obj.alertWhenNoLogin(this);
                                         return
                                     } else {
-                                        console.log('提交失败else');
                                         this.flag = false;
                                         this.$alert(res.data.msg || "Submit error,please try again later", {
                                             confirmButtonText: '<s:text name="my-inquiry-publish.Ok"/>'

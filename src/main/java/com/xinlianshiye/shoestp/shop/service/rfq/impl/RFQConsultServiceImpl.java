@@ -321,7 +321,7 @@ public class RFQConsultServiceImpl implements RFQConsultService {
                 .WHERE(RFQConsult.T.TYPE, "=?", RFQConsultType.RFQ)
                 .WHERE(RFQConsult.T.STATUS, "=?", RFQConsultStatus.runing)
                 .WHERE(RFQConsult.T.VERIFY_STATUS, "=?", RFQConsultVerifyStatus.PASS)
-                .WHERE(RFQConsult.T.CREATE_TIME, ">?", LocalDateTime.now())
+                .WHERE(RFQConsult.T.VALID_DATE, ">?", LocalDateTime.now())
                 .WHERE(RFQConsult.T.RECOMMEND, "=?", RFQConsultRecommend.RECOMMENDED)
                 .LEFT_JOIN(PltCountry.class, PltCountry.T.PKEY, RFQConsult.T.COUNTRY)
                 .ORDER_BY(RFQConsult.T.CREATE_TIME, "desc")
@@ -623,24 +623,25 @@ public class RFQConsultServiceImpl implements RFQConsultService {
     }
     final Integer limit = 5; // 图片数量上限
     Integer leftCount = 0;
+    String[] originImages = null;
     if (consult.getImage() == null || consult.getImage().isEmpty()) {
+      originImages = new String[] {};
       leftCount = limit;
     } else {
+      originImages = consult.getImage().split(",");
       leftCount = limit - consult.getImage().split(",").length;
     }
     if (images == null || images.isEmpty()) {
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.please_choose_image, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "请选择图片");
     }
     Integer length = images.split(",").length;
     if (length > leftCount) {
       // 上传图片超出限制了
       throw new WebMessageException(
           MessageBuild.buildMessage(ReturnCode.images_too_much, language));
-      //      throw new WebMessageException(ReturnCode.valid_notempty, "图片数量超出上限");
     }
-    List<String> list = new ArrayList<>(Arrays.asList(consult.getImage().split(",")));
+    List<String> list = new ArrayList<>(Arrays.asList(originImages));
     list.addAll(Arrays.asList(images.split(",")));
     consult.setImage(list.stream().collect(Collectors.joining(",")));
     consult.setLastMessageSendTime(new Date());

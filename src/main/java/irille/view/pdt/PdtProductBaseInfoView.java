@@ -36,6 +36,7 @@ public class PdtProductBaseInfoView implements BaseView {
   private boolean isFav;
 
   private String rewrite;
+  private Integer type;
 
   public void setImage(String image) {
     if (image != null) {

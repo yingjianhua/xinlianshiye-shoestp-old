@@ -279,6 +279,7 @@
       methods:{
         // 跳转RFQ
         skipRFQ() {
+        	this.hits('pc/shoes/signIn')
           if( !sysConfig || !sysConfig.user ){
             this.propsLogin.showLogin=true
             return;
@@ -288,6 +289,7 @@
         },
         // 跳转inquiry
         skipInquiry(pdtId) {
+        	this.hits('pc/shoes/signIn')
           if( !sysConfig || !sysConfig.user ){
             this.propsLogin.showLogin=true
             return;
@@ -297,6 +299,7 @@
         },
         // 判断登录
         testFormSubmit(){
+        	this.hits('pc/shoes/signIn')
           // 未登录时操作 - 显示登录框
           if( !sysConfig || !sysConfig.user ){
             this.propsLogin.showLogin=true
@@ -309,6 +312,19 @@
           }
           console.log("已登陆 - 在次进行操作")
         },
+        hits(element) {
+        	var param = Qs.stringify({
+                pageName: 'pc/shoes',
+                element: element
+              })
+            axios({
+              url: '/home/temporary/PageHits_click',
+              method: 'post',
+              data: param
+            }).then(function(res) {
+              console.log(res)
+            })
+          },
         // 判断是否已经登录
         getLoginInfo(){
           var self = this

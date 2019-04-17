@@ -666,6 +666,8 @@
             },
             // 点击左侧分类时跳转
             categorySearch(e) {
+                document.body.scrollTop = 0
+                document.documentElement.scrollTop = 0
                 this.lose = 1
                 this.curr = 1;
                 this.cated = e.currentTarget.dataset.cated;

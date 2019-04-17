@@ -355,7 +355,7 @@
         watch: {
             checkedCode: {
                 handler: function(val, oldVal) {
-                    if (val.length === this.favoriteList.length) {
+                    if (this.favoriteList.length > 0 && val.length === this.favoriteList.length) {
                         this.isAllChecked = true;
                     } else {
                         this.isAllChecked = false;

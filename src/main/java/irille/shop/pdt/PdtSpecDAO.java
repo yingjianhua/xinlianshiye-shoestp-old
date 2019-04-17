@@ -156,7 +156,7 @@ public class PdtSpecDAO {
                     setColor(bean.getColor());
                     setColorImg(bean.getPics());
                     setColorName(bean.gtColor().getName());
-                    setColorType((int) bean.gtColor().getType());
+                    setColorType((int) bean.gtColor().getDefaultColor());
                   }
                 })
         .collect(Collectors.toList());

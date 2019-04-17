@@ -27,6 +27,7 @@ import irille.Entity.O2O.Enums.O2O_ActivityStatus;
 import irille.Entity.O2O.Enums.O2O_ProductStatus;
 import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSGradeType;
+import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.core.sys.Sys;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
@@ -57,6 +58,8 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
   @Inject private PdtProductDao pdtProductDao;
 
   @Inject ObjectMapper om;
+  
+  @Inject IO2OPdtServer IO2OPdtServer;
 
   private static final Integer men = 373; // PdtCat男鞋顶级分类pkey
   private static final Integer women = 380; // PdtCat女鞋顶级分类pkey
@@ -294,8 +297,15 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     sql.ORDER_BY(PdtProduct.T.UPDATE_TIME, " DESC ");
     Integer count = Query.sql(sql).queryMaps().size();
     sql.LIMIT(start, limit);
+    List<PdtSearchView> results=new ArrayList<>();
     List<PdtSearchView> items = toView(Query.sql(sql).queryMaps(), language);
-    return new Page(items, start, limit, count);
+    for (PdtSearchView pdtSearchView : items) {
+    	PdtProduct product=new PdtProduct();
+    	product.setPkey(pdtSearchView.getPdtId());
+    	pdtSearchView.setIsO2O(IO2OPdtServer.judgeO2o(product) ? 1 : 0);
+    	results.add(pdtSearchView);
+    }
+    return new Page(results, start, limit, count);
   }
 
   public List<PdtSearchView> toView(List<Map<String, Object>> data, Language language) {

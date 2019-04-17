@@ -5,10 +5,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionInvocation;
 import com.xinlianshiye.shoestp.common.dao.usr.UsrMainDao;
 import com.xinlianshiye.shoestp.common.dao.usr.impl.UsrMainDaoImpl;
@@ -16,7 +12,6 @@ import com.xinlianshiye.shoestp.seller.service.usr.IUsrSupplierSellerDao;
 import com.xinlianshiye.shoestp.seller.service.usr.imp.UsrSupplierSellerDaoImp;
 
 import irille.pub.tb.FldLanguage.Language;
-import irille.pub.util.AppConfig;
 import irille.shop.plt.PltConfig;
 import irille.shop.plt.PltConfig.Variable;
 import irille.shop.plt.PltErate;
@@ -70,22 +65,23 @@ public class SessionMsg {
   }
 
   public static void update(SessionMsg sessionmsg, ActionInvocation actionInvocation) {
-    HttpServletRequest request = ServletActionContext.getRequest();
+    //    HttpServletRequest request = ServletActionContext.getRequest();
     Map<String, Object> session = actionInvocation.getInvocationContext().getSession();
-    HttpServletResponse response =
-        (HttpServletResponse) ActionContext.getContext().get(ServletActionContext.HTTP_RESPONSE);
+    //    HttpServletResponse response =
+    //        (HttpServletResponse)
+    // ActionContext.getContext().get(ServletActionContext.HTTP_RESPONSE);
     // 设置是否为移动设备
-    String agent = request.getHeader("User-Agent").toLowerCase();
-    if (request.getRequestURI() != null && request.getRequestURI().indexOf("/home/") == -1) {
-      for (String device : mobile_device_array) {
-        if (agent.indexOf(device) > 0) {
-          response.setStatus(301);
-          response.setHeader("Location", AppConfig.domain + "m");
-          response.setHeader("Connection", "close");
-          return;
-        }
-      }
-    }
+    //    String agent = request.getHeader("User-Agent").toLowerCase();
+    //    if (request.getRequestURI() != null && request.getRequestURI().indexOf("/home/") == -1) {
+    //      for (String device : mobile_device_array) {
+    //        if (agent.indexOf(device) > 0) {
+    //          response.setStatus(301);
+    //          response.setHeader("Location", AppConfig.domain + "m");
+    //          response.setHeader("Connection", "close");
+    //          return;
+    //        }
+    //      }
+    //    }
 
     Object localObj = session.get(WW_TRANS_I18N_LOCALE);
     if (localObj == null) {

@@ -76,4 +76,7 @@ public interface IPdtProductAction extends ISellerAction {
 
   @RequestMapping(alias = "获取所有私人展厅商品")
   void getPrivates() throws IOException;
+
+  @RequestMapping(alias = "获取产品发布所需数据")
+  void releaseProduct() throws IOException;
 }

@@ -193,6 +193,7 @@
                                                     <div class="goods-info-wrap">
                                                         <div class="goods-name">
                                                             <div class="ellipsis_2">
+                                                                <div class="icon-o2o"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>
                                                                 {{goods.title}}
                                                             </div>
                                                         </div>
@@ -309,6 +310,7 @@
                         <div class="product-content">
                             <div class="product-info ellipsis_2">
                                 <a class="ellipsis_2" :href="'/'+item.rewrite" target="_blank">
+                                    <div class="icon-o2o" v-if="item.product_type == 4"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>
                                     {{item.title}}
                                 </a>
                             </div>
@@ -357,6 +359,7 @@
                         <div class="product-content">
                             <div class="product-info ellipsis_2">
                                 <a class="ellipsis_2" :href="'/'+item.rewrite" target="_blank">
+                                    <div class="icon-o2o" v-if="item.product_type == 4"><img src="/home/v3/static/images/ico/icon_o2o.png" alt="O2O">O2O</div>
                                     {{item.title}}
                                 </a>
                             </div>

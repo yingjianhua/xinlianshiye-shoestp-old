@@ -95,7 +95,7 @@ public class SQL {
   }
 
   public <T extends BeanMain<?, ?>> SQL LEFT_JOIN(
-          SQL sql, String alias, String fld1, IEnumFld fld2) {
+      SQL sql, String alias, String fld1, IEnumFld fld2) {
     return mybatisSQL.LEFT_OUTER_JOIN(sql, alias, fld1, fld2);
   }
 
@@ -115,6 +115,12 @@ public class SQL {
       IEnumFld fld, String conditions, Serializable... params) {
     mybatisSQL.WHERE(fld, conditions);
     mybatisSQL.params(params);
+    return mybatisSQL.getSelf();
+  }
+
+  public <T extends BeanMain<?, ?>> SQL WHERE(SQL sql, String s) {
+    mybatisSQL.WHERE("(" + sql.toString() + ")" + s);
+    mybatisSQL.params(sql.PARAMS());
     return mybatisSQL.getSelf();
   }
 
@@ -211,10 +217,10 @@ public class SQL {
               WHERE(fld, " =? ", mv.getContent());
             }
             if (mv.getCondition() == 5) {
-              WHERE(fld, " like ?","%" + mv.getContent() + "%");
+              WHERE(fld, " like ?", "%" + mv.getContent() + "%");
             }
             if (mv.getCondition() == 6) {
-              WHERE(fld, " not like ?","%" + mv.getContent() + "%");
+              WHERE(fld, " not like ?", "%" + mv.getContent() + "%");
             }
           } else {
             if (mv.getCondition() == 1) {
@@ -256,9 +262,11 @@ public class SQL {
   public <T extends BeanMain<?, ?>> SQL ORDER_BY(IEnumFld fld, String type) {
     return mybatisSQL.ORDER_BY(fld, type);
   }
+
   public <T extends BeanMain<?, ?>> SQL orderByDesc(String field) {
-    return mybatisSQL.ORDER_BY(field , "desc");
+    return mybatisSQL.ORDER_BY(field, "desc");
   }
+
   public <T extends BeanMain<?, ?>> SQL orderByAsc(String field) {
     return mybatisSQL.ORDER_BY(field, "asc");
   }
@@ -399,16 +407,9 @@ public class SQL {
     }
 
     public <T extends BeanMain<?, ?>> SQL LEFT_OUTER_JOIN(
-            SQL sql, String alias, String fld1, IEnumFld fld2) {
+        SQL sql, String alias, String fld1, IEnumFld fld2) {
       return super.LEFT_OUTER_JOIN(
-              "("
-                      + sql
-                      + ") "
-                      + alias
-                      + " ON "
-                      + fld1
-                      + "="
-                      + columnLabelWithAlias(fld2));
+          "(" + sql + ") " + alias + " ON " + fld1 + "=" + columnLabelWithAlias(fld2));
     }
 
     public <T extends BeanMain<?, ?>> SQL WHERE(IEnumFld fld, String conditions, IEnumFld fld2) {

@@ -764,4 +764,12 @@ public class UsrSupplierAction extends SellerAction<UsrSupplier> implements IUsr
     dao.updSupplierSeo(getSupplier().getPkey(), backgddSeoview);
     write();
   }
+  /**
+   * 关闭SVS指引
+   * @author chen
+   */
+  public  void closeGuide() throws IOException{
+    dao.updSvsGuide(getSupplier().getPkey());
+    write();
+  }
 }
