@@ -326,7 +326,6 @@ ul{
                         id: self.id,
                     }))
                     .then(function (res) {
-                        console.log(res);
                         if(res.data.ret != 1){
                             self.$message.error('Failed to get information, please refresh the page and try again');
                         }else{
@@ -336,7 +335,6 @@ ul{
                     })
                     .catch(function (error) {
                         self.$message.error("Network error, please refresh the page and try again");
-                        console.log(error);
                     });
             },
             methods: {
@@ -355,7 +353,6 @@ ul{
                     this.imgsToUpload = [];
                     // 删除图片后，将授予的图片地址放入数组
                     $.each(fileList, (i, v) => {
-                        console.log(v)
                         this.imgsToUpload.push(v.response.result.url)
                     })
 
@@ -365,9 +362,6 @@ ul{
                 },
                 // elementui 上传功能 *2 - 上传成功操作
                 handlePictureCardPreview(response, file, fileList) {
-                    console.log(response)
-                    console.log(file)
-                    console.log(fileList)
                     // if (response.ret != 1) {
                     //     this.$message.error('Image upload failed, please refresh the page and try again');
                     //     return;
@@ -378,8 +372,6 @@ ul{
                     if (this.imgsToUpload.length >= 5) {
                         $(".upImg .el-upload.el-upload--picture-card").hide();
                     }
-                    console.log(this.imgsToUpload)
-
                 },
                 // 上传图片文件之前
                 beforeUpload(file) {
@@ -420,12 +412,11 @@ ul{
                             this.$refs[formName].validate((valid) => {
                                 if (valid) {
                                     this.flag = true;
-                                    console.log(this.form)
-                                    this.form.images = this.imgsToUpload.join(",");
+                                    this.form.images = this.imgsToUpload.length>0?this.imgsToUpload.join(","):null;
+
                                     this.form.pdtId = this.id;
                                     axios.post(url, this.form)
                                         .then((res) => {
-                                            console.log(res)
                                             // 提交成功时
                                             if (res.data.ret == 1) {
                                                 // 提示信息
@@ -454,7 +445,6 @@ ul{
                                         .catch((err) => {
                                             this.flag = false;
                                             this.$message.error("Network error, please refresh the page and try again");
-                                            console.log(err)
                                         })
                                 } else {
                                     console.log('error submit!!');

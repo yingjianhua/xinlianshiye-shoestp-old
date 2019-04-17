@@ -221,7 +221,12 @@ public class VariableServiceImp implements IVariableService {
           } else if (variable.getFieldType().isEnum()) {
             object = fromValue1(variable.getFieldType(), field.get(obj));
           } else {
-            object = field.get(obj);
+            try {
+              JSONObject json = new JSONObject(field.get(obj).toString());
+              object = json.get("en").toString();
+            } catch (Exception e) {
+              object = field.get(obj);
+            }
           }
         } catch (IllegalArgumentException
             | IllegalAccessException

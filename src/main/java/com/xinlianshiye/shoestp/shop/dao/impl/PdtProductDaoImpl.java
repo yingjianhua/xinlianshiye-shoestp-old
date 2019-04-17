@@ -29,6 +29,7 @@ import irille.Entity.SVS.SVSInfo;
 import irille.Entity.SVS.Enums.SVSGradeType;
 import irille.Service.Manage.O2O.IO2OPdtServer;
 import irille.core.sys.Sys;
+import irille.core.sys.Sys.OYn;
 import irille.pub.bean.Query;
 import irille.pub.bean.sql.SQL;
 import irille.pub.tb.FldLanguage;
@@ -152,6 +153,7 @@ public class PdtProductDaoImpl implements com.xinlianshiye.shoestp.shop.dao.PdtP
     favorite.SELECT(" IF(count(*)>0,1,0) ");
     favorite.FROM(UsrFavorites.class);
     favorite.WHERE(UsrFavorites.T.PRODUCT, " =pdtPkey ");
+    favorite.WHERE(UsrFavorites.T.SHOW_STATE,"=?",OYn.YES);
     favorite.WHERE(UsrFavorites.T.PURCHASE, "=?", null == purchase ? -1 : purchase.getPkey());
 
     SQL sql = new SQL();

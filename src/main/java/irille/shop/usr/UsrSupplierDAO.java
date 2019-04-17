@@ -2632,6 +2632,7 @@ public class UsrSupplierDAO {
                     T.NAME,
                     UsrMain.T.EMAIL,
                     T.TARGETED_MARKET,
+                    T.IS_GUIDE,
                     UsrMain.T.LAST_LOGIN,
                     SVSInfo.T.AUTHENTICATION_TIME)
                 .FROM(UsrSupplier.class)
@@ -2650,6 +2651,7 @@ public class UsrSupplierDAO {
     view.setAuthentication_time(
         (Date) map.get(SVSInfo.T.AUTHENTICATION_TIME.getFld().getCodeSqlField()));
     view.setSvsRatingAndRosDTO(svsInfoService.getSvsRatingAndRos(supplierId));
+    view.setGuide((Byte) map.get(T.IS_GUIDE.getFld().getCodeSqlField()));
     return view;
   }
 
@@ -2688,4 +2690,9 @@ public class UsrSupplierDAO {
     usrSupplier.upd();
   }
   /** ———————————————————分割线(3.1.1END)————————————————————————— */
+  public void updSvsGuide(Integer pkey){
+    UsrSupplier usrSupplier = BeanBase.load(UsrSupplier.class, pkey);
+    usrSupplier.setIsGuide((byte)1);
+    usrSupplier.upd();
+  }
 }

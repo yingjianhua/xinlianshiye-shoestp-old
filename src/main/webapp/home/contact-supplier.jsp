@@ -221,7 +221,6 @@
                 }
             })
                 .then(function (res) {
-                    console.log(res);
                     if (res.data.ret != 1) {
                         self.$message.error(res.data.msg || "Failed to get, please refresh the page and try again");
                         return
@@ -244,7 +243,6 @@
                     this.imgsToUpload = [];
                     // 删除图片后，将授予的图片地址放入数组
                     $.each(fileList, (i, v) => {
-                        console.log(v)
                         this.imgsToUpload.push(v.response.result.url)
                     })
 
@@ -254,21 +252,15 @@
                 },
                 // elementui 上传功能 *2 - 上传成功操作
                 handlePictureCardPreview(response, file, fileList) {
-                    console.log("上传成功response" + response)
-                    console.log(file)
-                    console.log(fileList)
                     if (response.ret != 1) return;
                     // 添加图片后，在前面显示 img
                     this.imgsToUpload.push(file.response.result.url);
                     if (this.imgsToUpload.length >= 5) {
                         $(".upImg .el-upload.el-upload--picture-card,.upImg .add-photos-font").hide();
                     }
-                    console.log(this.imgsToUpload)
-
                 },
                 // 上传图片文件之前
                 beforeUpload(file){
-                    console.log(file)
                     if (!sysConfig || !sysConfig.user) {
                         sessionStorage['Temp_Contact_Supplier_form']=JSON.stringify(this.form)
                         util_function_obj.alertWhenNoLogin(this);
@@ -302,17 +294,13 @@
                             self.$refs[formName].validate((valid) => {
                                 if (valid) {
                                     self.flag = true;
-                                    console.log(self.form)
-                                    self.form.images = self.imgsToUpload.join(",");
+                                    self.form.images = self.imgsToUpload.length>0?self.imgsToUpload.join(","):null;
                                     // self.form.pdtId = self.id;
-                                    console.log(self.imgsToUpload)
-                                    console.log('submit!');
                                     let data = JSON.stringify(self.form)
                                     axios.post("/home/rfq_RFQConsult_putSupplierInquiry",data,
                                         {headers: {'Content-Type': 'application/json'}}
                                     )
                                         .then((res) => {
-                                        console.log(res)
                                         // 提交成功时
                                         if (res.data.ret == 1) {
                                         // 提示信息

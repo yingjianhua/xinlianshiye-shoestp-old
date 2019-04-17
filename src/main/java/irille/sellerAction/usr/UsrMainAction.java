@@ -8,14 +8,19 @@ import irille.pub.exception.ReturnCode;
 import irille.pub.exception.WebMessageException;
 import irille.pub.util.AppConfig;
 import irille.pub.util.CacheUtils;
+import irille.pub.util.HttpUtils;
 import irille.pub.validate.Regular;
 import irille.pub.validate.ValidRegex;
+import irille.sellerAction.view.timeZone;
 import irille.shop.usr.UsrMain;
 import irille.sellerAction.SellerAction;
 import irille.shop.usr.UsrMainDao;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.simplejavamail.email.EmailBuilder;
 import org.simplejavamail.mailer.Mailer;
 import org.slf4j.Logger;
@@ -27,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.security.SecureRandom;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class UsrMainAction extends  SellerAction<UsrMain> {
@@ -38,6 +45,10 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
     @Getter @Setter private String code;
     @Getter @Setter private String newEmail;
     @Getter @Setter private String sureEmail;
+    @Getter @Setter private String fromCode;
+    @Getter @Setter private String toCode;
+    @Getter @Setter private String money;
+    @Getter @Setter private String zoneId;
     @Inject private Mailer mailer;
     @Inject private UsrMainDao usrMainDao;
     @Inject private UsrMainDao.updEmail updEmail;
@@ -166,6 +177,68 @@ public class UsrMainAction extends  SellerAction<UsrMain> {
         updEmail.commit();
         CacheUtils.sixtyValidCode.invalidate(code);
         write();
+    }
+    public  void queryRate() {
+        String host = "https://ali-waihui.showapi.com";
+        String path = "/waihui-transform";
+        String method = "GET";
+        String appcode = "f94da6a10b084e71ac4bf69405e21af5";
+        Map<String, String> headers = new HashMap<String, String>();
+        //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
+        headers.put("Authorization", "APPCODE " + appcode);
+        Map<String, String> querys = new HashMap<String, String>();
+        querys.put("fromCode", fromCode);
+        querys.put("money", money);
+        querys.put("toCode", toCode);
+
+
+        try {
+
+            HttpResponse response = HttpUtils.doGet(host, path, method, headers, querys);
+            //获取response的body
+            JSONObject jsonA = new JSONObject(EntityUtils.toString(response.getEntity()));
+            System.out.println(jsonA.getString("showapi_res_body"));
+            JSONObject jsonB = new JSONObject(jsonA.getString("showapi_res_body"));
+            JSONObject json = new JSONObject();
+            json.put("ret", 1);
+            json.put("money", jsonB.getString("money"));
+            writerOrExport(json);
+        } catch (Exception e) {
+            throw LOG.err("NetWork error", "网络错误");
+        }
+    }
+    public void getTimeZone() throws IOException{
+        String [] zonnsId = TimeZone.getAvailableIDs();
+        List<timeZone> zones=new ArrayList<timeZone>();
+        for(String str : zonnsId){
+            timeZone zt=new timeZone();
+            zt.setId(str);
+            zt.setName(str);
+            zones.add(zt);
+        }
+       write(zones);
+
+    }
+    public void getTimeDifferent() throws Exception {
+        if(Str.isEmpty(getZoneId())){
+            throw LOG.err("Please select time zone", "请选择时区");
+        }
+        Date date= new Date();
+        SimpleDateFormat londonSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        londonSdf.setTimeZone(TimeZone.getTimeZone(getZoneId()));
+        londonSdf.format(date);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date dateA = formatter.parse(londonSdf.format(date).toString());
+        Calendar c1 = Calendar.getInstance();   //当前日期
+        Calendar c2 = Calendar.getInstance();
+        c2.setTime(dateA);
+        int nowHour=c1.get(Calendar.HOUR);
+        int selectHour=c2.get(Calendar.HOUR);
+        int dif=selectHour-nowHour;
+        JSONObject json = new JSONObject();
+        json.put("ret", 1);
+        json.put("different", dif);
+        writerOrExport(json);
     }
 }
 
